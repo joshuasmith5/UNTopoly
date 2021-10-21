@@ -5,6 +5,7 @@ class Player{
 		this.name = pName;
 		this.position = 0;
 		this.money = 1500;
+		this.monopolies = [0, 0, 0, 0, 0, 0, 0, 0]
 		this.jailCards = 0;
 		this.jailTurns = 0;
 		this.inJail = false;
@@ -22,13 +23,13 @@ class Player{
 }
 
 class Property{
-	constructor(pName, pCost, pRent){
+	constructor(pName, pCost, hCost, pRent){
 		this.name = pName;
-		this.houseCost = 0;
 		this.cost = pCost;
+		this.houseCost = hCost;
 		this.rent = pRent;
 		this.development = 0;
-		this.ownedBy = 0;
+		this.ownedBy = -1;
 		this.isMortgaged = false;
 	}
 	logInfo(){
@@ -45,7 +46,7 @@ class Property{
 class Utility{
 	constructor(uName){
 		this.name = uName;
-		this.ownedBy = 0;
+		this.ownedBy = -1;
 		this.isMortgaged = false;
 		//cost = 150
 	}
@@ -75,7 +76,7 @@ class Utility{
 class BusStop{
 	constructor(bName){
 		this.name = bName;
-		this.ownedBy = 0;
+		this.ownedBy = -1;
 		this.isMortgaged = false;
 		//cost = 200
 	}
