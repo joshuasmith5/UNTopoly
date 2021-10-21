@@ -1,16 +1,17 @@
 <style>
  
   h1{
-  	text-align: left;
+    text-align: left;
     color: white; 
-    font-size: 100px;
+    font-size: 8vw;
     margin: 60px 12%;
     display: block;
+    font-family: Verdana, Arial, sans-serif;
   }
 
   #gamescreenimage {
     background-image: url(img_flwr.gif);
-    background-position: left top;
+    background-position: right top;
     background-repeat: no-repeat;
     padding: 15px;
   }
@@ -23,8 +24,8 @@
     text-align: center;
     text-decoration: none;
     display: block;
-    font-size: 40px;
-    margin: 10px 190px;
+    font-size: 4vw;
+    margin: 10px 18%;
     cursor: pointer;
     border-radius: 8px;
     width: 35%;
