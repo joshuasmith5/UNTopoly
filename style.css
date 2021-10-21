@@ -32,4 +32,19 @@
     float: left;
   }
 
+ .button-dice{
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 4% 0px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 2vw;
+    margin: 30% 4%;
+    cursor: pointer;
+    width: 10%;
+    float: right;
+ }
+
 </style>
