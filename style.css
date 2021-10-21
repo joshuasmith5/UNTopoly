@@ -1,9 +1,9 @@
 <style>
   #gamescreenimage {
-  background-image: url(img_flwr.gif);
-  background-position: left top;
-  background-repeat: no-repeat;
-  padding: 15px;
+    background-image: url(img_flwr.gif);
+    background-position: left top;
+    background-repeat: no-repeat;
+    padding: 15px;
   }
   
   .button {
@@ -19,6 +19,7 @@
     cursor: pointer;
     border-radius: 8px;
     width: 190px;
+    float: right;
   }
 
 </style>
