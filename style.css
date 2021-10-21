@@ -1,4 +1,16 @@
 <style>
+  body{
+  	background-color: rgba(0, 0, 0, .8);
+  }
+  
+  h1{
+  	text-align: left;
+    color: white; 
+    font-size: 100px;
+    margin: 60px 12%;
+    display: block;
+  }
+
   #gamescreenimage {
     background-image: url(img_flwr.gif);
     background-position: left top;
@@ -14,12 +26,12 @@
     text-align: center;
     text-decoration: none;
     display: block;
-    font-size: 22px;
-    margin: 10px 150px;
+    font-size: 40px;
+    margin: 10px 190px;
     cursor: pointer;
     border-radius: 8px;
-    width: 190px;
-    float: right;
+    width: 35%;
+    float: left;
   }
 
 </style>
