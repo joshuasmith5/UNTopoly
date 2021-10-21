@@ -14,6 +14,7 @@
     background-position: right top;
     background-repeat: no-repeat;
     padding: 15px;
+    background-size: 50%;
   }
   
   .button {
@@ -30,6 +31,7 @@
     border-radius: 8px;
     width: 35%;
     float: left;
+    font-family: Verdana, Arial, sans-serif;
   }
 
  .button-dice{
