@@ -6,7 +6,7 @@ class Player {
 		this.name = pName;
 		this.position = 0;
 		this.money = 1500;
-		this.monopolies = [0, 0, 0, 0, 0, 0, 0, 0]
+		this.monopolies = [0, 0, 0, 0, 0, 0, 0, 0];
 		this.jailCards = 0;
 		this.jailTurns = 0;
 		this.inJail = false;
@@ -16,7 +16,7 @@ class Player {
 		console.log(this.name);
 		console.log(this.position);
 		console.log(this.money);
-        console.log(this.monopolies);
+		console.log(this.monopolies);
 		console.log(this.jailCards);
 		console.log(this.jailTurns);
 		console.log(this.inJail);
@@ -36,7 +36,7 @@ class Property {
 	}
 	logInfo() {
 		console.log(this.name);
-        console.log(this.cost);
+		console.log(this.cost);
 		console.log(this.houseCost);
 		console.log(this.rent);
 		console.log(this.development);
@@ -99,7 +99,7 @@ class BusStop {
 			case 4:
 				return 200;
 				break;
-			defaut:
+			default:
 				console.log("error");
 				break;
 		}	
@@ -221,7 +221,7 @@ let doubleCount = 0;    // how many consecutive doubles have been rolled
 
 while (gameActive) 
 {
-	alert(players[activePlayer].name + '\'s turn');
+	console.log(players[activePlayer].name + '\'s turn');
 	doubleCount = 0;
 
 	while (1) // loops if player rolls double, breaks if not
@@ -239,8 +239,7 @@ while (gameActive)
 			players[activePlayer].money += 200; // pass the Union
 		}
 
-		alert('Position is now ' + players[activePlayer].position);
-		alert('Money is now' + players[activePlayer].money);
+		console.log('Position is now ' + players[activePlayer].position);
 
 		switch (players[activePlayer].position)
 		{
@@ -337,8 +336,8 @@ while (gameActive)
 				break;
 			case 30:	// Go to Jail
 				console.log('Go to jail');
-				//players[activePlayer].inJail = true;
-				//players[activePlayer].position = 10;
+				players[activePlayer].inJail = true;
+				players[activePlayer].position = 10;
 				break;
 			case 31:	// General Academic Building
 				properties[17].logInfo();
@@ -371,6 +370,8 @@ while (gameActive)
 			default:
 				console.log('ERROR: Position unknown');
 		}
+
+		console.log('Money is now ' + players[activePlayer].money);
 
 		// NEED TO CHECK FOR BANKRUPTCY
 
