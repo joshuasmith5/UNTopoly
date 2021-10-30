@@ -1,5 +1,4 @@
 
-
 // CLASSES
 
 class Player {
@@ -132,9 +131,9 @@ class Card {
 const playerNames = ['Colin', 'Josh', 'Lori', 'Eli'];
 
 const players = [];
-playerNames.forEach(playerName => players.push(new Player(playerName)));    // creates player objects for each user-input player
-const properties = [                                                        // creates pre-set property objects
-    new Property('Sage Hall', 60, 50, [2,10,30,90,160,250]),                // name, cost, houseCost, rent
+playerNames.forEach(playerName => players.push(new Player(playerName))); // creates player objects for each user-input player
+const properties = [	// creates pre-set property objects (name, cost, houseCost, rent)
+    new Property('Sage Hall', 60, 50, [2,10,30,90,160,250]),
     new Property('Sycamore Hall', 60, 50, [4,20,60,180,320,450]),
     new Property('Wooten Hall', 100, 50, [6,30,90,270,400,550]),
     new Property('Business Building', 100, 50, [6,30,90,270,400,550]),
@@ -157,17 +156,17 @@ const properties = [                                                        // c
     new Property('Eagle Student Services Center', 350, 200, [35,175,500,1100,1300,1500]),
     new Property('Willis Library', 400, 200, [50,200,600,1400,1700,2000])
 ];
-const utilities = [                                                         // creates pre-set utility objects
+const utilities = [		// creates pre-set utility objects
     new Utility('Eagle Landing'),
     new Utility('Bruce Cafeteria')
 ];
-const busStops = [                                                          // creates pre-set bus stop objects
+const busStops = [      // creates pre-set bus stop objects
     new BusStop('Discovery Park Bus Stop'),
-    new BusStop('Second Bus Stop'),                                         // NEEDS NAMING
-    new BusStop('Third Bus Stop'),                                          // NEEDS NAMING
+    new BusStop('Second Bus Stop'), // NEEDS NAMING
+    new BusStop('Third Bus Stop'), // NEEDS NAMING
     new BusStop('Union Bus Stop')
 ];
-const chestCards = [                                                        // creates pre-set community chest card objects
+const chestCards = [    // creates pre-set community chest card objects
     new Card('advanceUnion', 'Advance to the Union (Collect $200)'),
     new Card('doctorFee', 'Doctor’s fee. Pay $50'),
     new Card('schoolFee', 'Pay school fees of $50'),
@@ -185,7 +184,7 @@ const chestCards = [                                                        // c
     new Card('goJail', 'Go to Parking Jail. Go directly to Parking Jail, do not pass the Union, do not collect $200'),
     new Card('jailFree', 'Get out of Parking Jail free. This card can be kept until needed')
 ];
-const chanceCards = [                                                       // creates pre-set chance card objects
+const chanceCards = [	// creates pre-set chance card objects
     new Card('advanceUnion', 'Advance to the Union (Collect $200)'),
     new Card('advanceDiscovery', 'Take a trip to the Discovery Park Bus Stop. If you pass the Union, collect $200'),
     new Card('advanceKerr', 'Advance to Kerr Hall. If you pass the Union, collect $200'),
@@ -220,3 +219,176 @@ let doubleCount = 0;    // how many consecutive doubles have been rolled
 
 // GAME
 
+while (gameActive) 
+{
+	alert(players[activePlayer].name + '\'s turn');
+	doubleCount = 0;
+
+	while (1) // loops if player rolls double, breaks if not
+	{
+		// NEED TO CHECK IF IN JAIL
+
+		// NEED TO WAIT FOR DICE BUTTON
+		diceOne = Math.floor(Math.random() * 5 + 1); // random 1-6
+		diceTwo = Math.floor(Math.random() * 5 + 1); // random 1-6
+		console.log('You rolled ' + diceOne + ' and ' + diceTwo);
+		players[activePlayer].position += diceOne + diceTwo;
+		if (players[activePlayer].position > 39) // handles looping around board
+		{
+			players[activePlayer].position %= 40;
+			players[activePlayer].money += 200; // pass the Union
+		}
+
+		alert('Position is now ' + players[activePlayer].position);
+		alert('Money is now' + players[activePlayer].money);
+
+		switch (players[activePlayer].position)
+		{
+			case 0:		// Union
+				console.log('Union');
+				break;
+			case 1:		// Sage Hall
+				properties[0].logInfo();
+				break;
+			case 2:		// Community Chest
+				console.log('Community chest');
+				break;
+			case 3:		// Sycamore Hall
+				properties[1].logInfo();
+				break;
+			case 4:		// Tuition Payment
+				console.log('Tuition payment, pay $200');
+				players[activePlayer].money -= 200;
+				break;
+			case 5:		// Discovery Park Bus Stop
+				busStops[0].logInfo();
+				break;
+			case 6:		// Wooten Hall
+				properties[2].logInfo();
+				break;
+			case 7:		// Chance
+				console.log('Chance');
+				break;
+			case 8:		// Business Building
+				properties[3].logInfo();
+				break;
+			case 9:		// Joe Green Hall
+				properties[4].logInfo();
+				break;
+			case 10:	// Garage
+				console.log('Garage');
+				break;
+			case 11:	// Kerr Hall
+				properties[5].logInfo();
+				break;
+			case 12:	// Eagle Landing
+				utilities[0].logInfo();
+				break;
+			case 13:	// Maple Hall
+				properties[6].logInfo();
+				break;
+			case 14:	// Rawlins Hall
+				properties[7].logInfo();
+				break;
+			case 15:	// Second Bus Stop
+				busStops[1].logInfo();
+				break;
+			case 16:	// The Pit
+				properties[8].logInfo();
+				break;
+			case 17:	// Community Chest
+				console.log('Community chest');
+				break;
+			case 18:	// Pohl Recreation Center
+				properties[9].logInfo();
+				break;
+			case 19:	// Chesnut Hall
+				properties[10].logInfo();
+				break;
+			case 20:	// Voertman's
+				console.log('Voertman\'s');
+				break;
+			case 21:	// West Hall
+				properties[11].logInfo();
+				break;
+			case 22:	// Chance
+				console.log('Chance');
+				break;
+			case 23:	// Legends Hall
+				properties[12].logInfo();
+				break;
+			case 24:	// Environmental Science Building
+				properties[13].logInfo();
+				break;
+			case 25:	// Third Bus Stop
+				busStops[2].logInfo();
+				break;
+			case 26:	// Chemistry Building
+				properties[14].logInfo();
+				break;
+			case 27:	// Bruce Cafeteria
+				utilities[1].logInfo();
+				break;
+			case 28:	// Music Building
+				properties[15].logInfo();
+				break;
+			case 29:	// Chilton Hall
+				properties[16].logInfo();
+				break;
+			case 30:	// Go to Jail
+				console.log('Go to jail');
+				//players[activePlayer].inJail = true;
+				//players[activePlayer].position = 10;
+				break;
+			case 31:	// General Academic Building
+				properties[17].logInfo();
+				break;
+			case 32:	// Art Building
+				properties[18].logInfo();
+				break;
+			case 33:	// Community Chest
+				console.log('Community chest');
+				break;
+			case 34:	// Language Building
+				properties[19].logInfo();
+				break;
+			case 35:	// Union Bus Stop
+				busStops[4].logInfo();
+				break;
+			case 36:	// Chance
+				console.log('Chance');
+				break;
+			case 37:	// Eagle Student Services Center
+				properties[20].logInfo();
+				break;
+			case 38:	// Loan Payment
+				console.log('Loan payment, pay $100');
+				players[activePlayer].money -= 100;
+				break;
+			case 39:	// Willis Library
+				properties[21].logInfo();
+				break;
+			default:
+				console.log('ERROR: Position unknown');
+		}
+
+		// NEED TO CHECK FOR BANKRUPTCY
+
+		if (diceOne == diceTwo) // checks if player rolled double
+		{
+			doubleCount++;
+			if (doubleCount == 3) // send player to jail if three doubles rolled in a row
+			{
+				players[activePlayer].inJail = true;
+				break;
+			}
+		}
+		else // ends turn if player didn't roll double
+		{
+			break;
+		}
+	}
+
+	activePlayer++;
+	activePlayer %= players.length;	// returns to first player’s turn after all others
+}
