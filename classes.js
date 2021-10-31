@@ -6,7 +6,6 @@ class Player {
 		this.name = pName;
 		this.position = 0;
 		this.money = 1500;
-		this.monopolies = [0, 0, 0, 0, 0, 0, 0, 0];
 		this.jailCards = 0;
 		this.jailTurns = 0;
 		this.inJail = false;
@@ -16,7 +15,6 @@ class Player {
 		console.log(this.name);
 		console.log(this.position);
 		console.log(this.money);
-		console.log(this.monopolies);
 		console.log(this.jailCards);
 		console.log(this.jailTurns);
 		console.log(this.inJail);
@@ -32,6 +30,7 @@ class Property {
 		this.rent = pRent;
 		this.development = 0;
 		this.ownedBy = -1;
+		this.isMonopoly = false;
 		this.isMortgaged = false;
 	}
 	logInfo() {
@@ -41,6 +40,7 @@ class Property {
 		console.log(this.rent);
 		console.log(this.development);
 		console.log(this.ownedBy);
+		console.log(this.isMonopoly);
 		console.log(this.isMortgaged);
 	}
 }
@@ -214,14 +214,26 @@ let doubleCount = 0;    // how many consecutive doubles have been rolled
 
 // FUNCTIONS
 
-
+function PropertySpace(propertyNum)
+{
+	if (properties[propertyNum].ownedBy == -1) // runs if not owned by player
+	{
+		console.log("Buy");
+		//let input = prompt("Would you like to buy ${properties[propertyNum].name} for ${properties[propertyNum].cost}? Y/N");
+	}
+	else if (properties[propertyNum].ownedBy != activePlayer && !properties[propertyNum].isMortgaged) // runs if owned by different player and not mortgaged
+	{
+		console.log("Rent");
+	}
+	properties[propertyNum].logInfo();
+}
 
 
 // GAME
 
 while (gameActive) 
 {
-	console.log(players[activePlayer].name + '\'s turn');
+	console.log(players["\n" + activePlayer].name + "'s turn");
 	doubleCount = 0;
 
 	while (1) // loops if player rolls double, breaks if not
@@ -235,6 +247,7 @@ while (gameActive)
 		players[activePlayer].position += diceOne + diceTwo;
 		if (players[activePlayer].position > 39) // handles looping around board
 		{
+			throw new Error("END"); // TEMP
 			players[activePlayer].position %= 40;
 			players[activePlayer].money += 200; // pass the Union
 		}
@@ -247,13 +260,21 @@ while (gameActive)
 				console.log('Union');
 				break;
 			case 1:		// Sage Hall
-				properties[0].logInfo();
+				PropertySpace(0);
+				if (properties[0].ownedBy == activePlayer && properties[1].ownedBy == activePlayer)
+				{
+					properties[0].isMonopoly = properties[1].isMonopoly = true;
+				}
 				break;
 			case 2:		// Community Chest
 				console.log('Community chest');
 				break;
 			case 3:		// Sycamore Hall
-				properties[1].logInfo();
+				PropertySpace(1);
+				if (properties[0].ownedBy == activePlayer && properties[1].ownedBy == activePlayer)
+				{
+					properties[0].isMonopoly = properties[1].isMonopoly = true;
+				}
 				break;
 			case 4:		// Tuition Payment
 				console.log('Tuition payment, pay $200');
@@ -263,76 +284,136 @@ while (gameActive)
 				busStops[0].logInfo();
 				break;
 			case 6:		// Wooten Hall
-				properties[2].logInfo();
+				PropertySpace(2);
+				if (properties[2].ownedBy == activePlayer && properties[3].ownedBy == activePlayer && properties[4].ownedBy == activePlayer)
+				{
+					properties[2].isMonopoly = properties[3].isMonopoly = properties[4].isMonopoly = true;
+				}
 				break;
 			case 7:		// Chance
 				console.log('Chance');
 				break;
 			case 8:		// Business Building
-				properties[3].logInfo();
+				PropertySpace(3);
+				if (properties[2].ownedBy == activePlayer && properties[3].ownedBy == activePlayer && properties[4].ownedBy == activePlayer)
+				{
+					properties[2].isMonopoly = properties[3].isMonopoly = properties[4].isMonopoly = true;
+				}
 				break;
 			case 9:		// Joe Green Hall
-				properties[4].logInfo();
+				PropertySpace(4);
+				if (properties[2].ownedBy == activePlayer && properties[3].ownedBy == activePlayer && properties[4].ownedBy == activePlayer)
+				{
+					properties[2].isMonopoly = properties[3].isMonopoly = properties[4].isMonopoly = true;
+				}
 				break;
 			case 10:	// Garage
 				console.log('Garage');
 				break;
 			case 11:	// Kerr Hall
-				properties[5].logInfo();
+				PropertySpace(5);
+				if (properties[5].ownedBy == activePlayer && properties[6].ownedBy == activePlayer && properties[7].ownedBy == activePlayer)
+				{
+					properties[5].isMonopoly = properties[6].isMonopoly = properties[7].isMonopoly = true;
+				}
 				break;
 			case 12:	// Eagle Landing
 				utilities[0].logInfo();
 				break;
 			case 13:	// Maple Hall
-				properties[6].logInfo();
+				PropertySpace(6);
+				if (properties[5].ownedBy == activePlayer && properties[6].ownedBy == activePlayer && properties[7].ownedBy == activePlayer)
+				{
+					properties[5].isMonopoly = properties[6].isMonopoly = properties[7].isMonopoly = true;
+				}
 				break;
 			case 14:	// Rawlins Hall
-				properties[7].logInfo();
+				PropertySpace(7);
+				if (properties[5].ownedBy == activePlayer && properties[6].ownedBy == activePlayer && properties[7].ownedBy == activePlayer)
+				{
+					properties[5].isMonopoly = properties[6].isMonopoly = properties[7].isMonopoly = true;
+				}
 				break;
 			case 15:	// Second Bus Stop
 				busStops[1].logInfo();
 				break;
 			case 16:	// The Pit
-				properties[8].logInfo();
+				PropertySpace(8);
+				if (properties[8].ownedBy == activePlayer && properties[9].ownedBy == activePlayer && properties[10].ownedBy == activePlayer)
+				{
+					properties[8].isMonopoly = properties[9].isMonopoly = properties[10].isMonopoly = true;
+				}
 				break;
 			case 17:	// Community Chest
 				console.log('Community chest');
 				break;
 			case 18:	// Pohl Recreation Center
-				properties[9].logInfo();
+				PropertySpace(9);
+				if (properties[8].ownedBy == activePlayer && properties[9].ownedBy == activePlayer && properties[10].ownedBy == activePlayer)
+				{
+					properties[8].isMonopoly = properties[9].isMonopoly = properties[10].isMonopoly = true;
+				}
 				break;
 			case 19:	// Chesnut Hall
-				properties[10].logInfo();
+				PropertySpace(10);
+				if (properties[8].ownedBy == activePlayer && properties[9].ownedBy == activePlayer && properties[10].ownedBy == activePlayer)
+				{
+					properties[8].isMonopoly = properties[9].isMonopoly = properties[10].isMonopoly = true;
+				}
 				break;
 			case 20:	// Voertman's
-				console.log('Voertman\'s');
+				console.log("Voertman's");
 				break;
 			case 21:	// West Hall
-				properties[11].logInfo();
+				PropertySpace(11);
+				if (properties[11].ownedBy == activePlayer && properties[12].ownedBy == activePlayer && properties[13].ownedBy == activePlayer)
+				{
+					properties[11].isMonopoly = properties[12].isMonopoly = properties[13].isMonopoly = true;
+				}
 				break;
 			case 22:	// Chance
 				console.log('Chance');
 				break;
 			case 23:	// Legends Hall
-				properties[12].logInfo();
+				PropertySpace(12);
+				if (properties[11].ownedBy == activePlayer && properties[12].ownedBy == activePlayer && properties[13].ownedBy == activePlayer)
+				{
+					properties[11].isMonopoly = properties[12].isMonopoly = properties[13].isMonopoly = true;
+				}
 				break;
 			case 24:	// Environmental Science Building
-				properties[13].logInfo();
+				PropertySpace(13);
+				if (properties[11].ownedBy == activePlayer && properties[12].ownedBy == activePlayer && properties[13].ownedBy == activePlayer)
+				{
+					properties[11].isMonopoly = properties[12].isMonopoly = properties[13].isMonopoly = true;
+				}
 				break;
 			case 25:	// Third Bus Stop
 				busStops[2].logInfo();
 				break;
 			case 26:	// Chemistry Building
-				properties[14].logInfo();
+				PropertySpace(14);
+				if (properties[14].ownedBy == activePlayer && properties[15].ownedBy == activePlayer && properties[16].ownedBy == activePlayer)
+				{
+					properties[14].isMonopoly = properties[15].isMonopoly = properties[16].isMonopoly = true;
+				}
 				break;
 			case 27:	// Bruce Cafeteria
 				utilities[1].logInfo();
 				break;
 			case 28:	// Music Building
-				properties[15].logInfo();
+				PropertySpace(15);
+				if (properties[14].ownedBy == activePlayer && properties[15].ownedBy == activePlayer && properties[16].ownedBy == activePlayer)
+				{
+					properties[14].isMonopoly = properties[15].isMonopoly = properties[16].isMonopoly = true;
+				}
 				break;
 			case 29:	// Chilton Hall
-				properties[16].logInfo();
+				PropertySpace(16);
+				if (properties[14].ownedBy == activePlayer && properties[15].ownedBy == activePlayer && properties[16].ownedBy == activePlayer)
+				{
+					properties[14].isMonopoly = properties[15].isMonopoly = properties[16].isMonopoly = true;
+				}
 				break;
 			case 30:	// Go to Jail
 				console.log('Go to jail');
@@ -340,16 +421,28 @@ while (gameActive)
 				players[activePlayer].position = 10;
 				break;
 			case 31:	// General Academic Building
-				properties[17].logInfo();
+				PropertySpace(17);
+				if (properties[17].ownedBy == activePlayer && properties[18].ownedBy == activePlayer && properties[19].ownedBy == activePlayer)
+				{
+					properties[17].isMonopoly = properties[18].isMonopoly = properties[19].isMonopoly = true;
+				}
 				break;
 			case 32:	// Art Building
-				properties[18].logInfo();
+				PropertySpace(18);
+				if (properties[17].ownedBy == activePlayer && properties[18].ownedBy == activePlayer && properties[19].ownedBy == activePlayer)
+				{
+					properties[17].isMonopoly = properties[18].isMonopoly = properties[19].isMonopoly = true;
+				}
 				break;
 			case 33:	// Community Chest
 				console.log('Community chest');
 				break;
 			case 34:	// Language Building
-				properties[19].logInfo();
+				PropertySpace(19);
+				if (properties[17].ownedBy == activePlayer && properties[18].ownedBy == activePlayer && properties[19].ownedBy == activePlayer)
+				{
+					properties[17].isMonopoly = properties[18].isMonopoly = properties[19].isMonopoly = true;
+				}
 				break;
 			case 35:	// Union Bus Stop
 				busStops[3].logInfo();
@@ -358,14 +451,22 @@ while (gameActive)
 				console.log('Chance');
 				break;
 			case 37:	// Eagle Student Services Center
-				properties[20].logInfo();
+				PropertySpace(20);
+				if (properties[20].ownedBy == activePlayer && properties[21].ownedBy == activePlayer)
+				{
+					properties[20].isMonopoly = properties[21].isMonopoly = true;
+				}
 				break;
 			case 38:	// Loan Payment
 				console.log('Loan payment, pay $100');
 				players[activePlayer].money -= 100;
 				break;
 			case 39:	// Willis Library
-				properties[21].logInfo();
+				PropertySpace(21);
+				if (properties[20].ownedBy == activePlayer && properties[21].ownedBy == activePlayer)
+				{
+					properties[20].isMonopoly = properties[21].isMonopoly = true;
+				}
 				break;
 			default:
 				console.log('ERROR: Position unknown');
@@ -380,6 +481,7 @@ while (gameActive)
 			doubleCount++;
 			if (doubleCount == 3) // send player to jail if three doubles rolled in a row
 			{
+				console.log("3 doubles rolled, go to jail");
 				players[activePlayer].inJail = true;
 				break;
 			}
