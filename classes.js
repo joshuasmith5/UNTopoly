@@ -152,7 +152,7 @@ const properties = [	// creates pre-set property objects (name, cost, houseCost,
     new Property('Chilton Hall', 280, 150, [24,120,360,850,1025,1200]),
     new Property('General Academic Building', 300, 200, [26,130,390,900,1100,1275]),
     new Property('Art Building', 300, 200, [26,130,390,900,1100,1275]),
-    new Property('Lang Building', 320, 200, [28,150,450,1000,1200,1400]),
+    new Property('Language Building', 320, 200, [28,150,450,1000,1200,1400]),
     new Property('Eagle Student Services Center', 350, 200, [35,175,500,1100,1300,1500]),
     new Property('Willis Library', 400, 200, [50,200,600,1400,1700,2000])
 ];
@@ -218,14 +218,30 @@ function PropertySpace(propertyNum)
 {
 	if (properties[propertyNum].ownedBy == -1) // runs if not owned by player
 	{
-		console.log("Buy");
-		//let input = prompt("Would you like to buy ${properties[propertyNum].name} for ${properties[propertyNum].cost}? Y/N");
+		console.log("Buy " + properties[propertyNum].name + " for $" + properties[propertyNum].cost);
+		//let input = prompt("Would you like to buy " + properties[propertyNum].name + " for " + properties[propertyNum].cost + "? Y/N");
+		//if (input == "Y")
+		//{
+			players[activePlayer].money -= properties[propertyNum].cost;
+			properties[propertyNum].isOwned = activePlayer;
+		//}
 	}
 	else if (properties[propertyNum].ownedBy != activePlayer && !properties[propertyNum].isMortgaged) // runs if owned by different player and not mortgaged
 	{
-		console.log("Rent");
+		console.log("Must pay rent for " + properties[propertyNum].name);
+		if (properties[propertyNum].isMonopoly && properties[propertyNum].development == 0) // doubles rent if has monopoly and unimproved
+		{
+			players[activePlayer].money -= properties[propertyNum].rent[0] * 2;
+		}
+		else
+		{
+			players[activePlayer].money -= properties[propertyNum].rent[properties[propertyNum].development];
+		}
 	}
-	properties[propertyNum].logInfo();
+	else
+	{
+		console.log("Landed on " + properties[propertyNum].name);
+	}
 }
 
 
