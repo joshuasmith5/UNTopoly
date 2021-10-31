@@ -352,7 +352,7 @@ while (gameActive)
 				properties[19].logInfo();
 				break;
 			case 35:	// Union Bus Stop
-				busStops[4].logInfo();
+				busStops[3].logInfo();
 				break;
 			case 36:	// Chance
 				console.log('Chance');
