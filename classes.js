@@ -233,10 +233,12 @@ function PropertySpace(propertyNum)
 		if (properties[propertyNum].isMonopoly && properties[propertyNum].development == 0) // doubles rent if has monopoly and unimproved
 		{
 			players[activePlayer].money -= properties[propertyNum].rent[0] * 2;
+			players[properties[propertyNum].ownedBy].money += properties[propertyNum].rent[0] * 2;
 		}
 		else
 		{
 			players[activePlayer].money -= properties[propertyNum].rent[properties[propertyNum].development];
+			players[properties[propertyNum].ownedBy].money += properties[propertyNum].rent[properties[propertyNum].development];
 		}
 	}
 	else
