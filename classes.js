@@ -233,7 +233,7 @@ function PropertySpace(propertyNum)
 
 while (gameActive) 
 {
-	console.log(players["\n" + activePlayer].name + "'s turn");
+	console.log("\n" + players[activePlayer].name + "'s turn");
 	doubleCount = 0;
 
 	while (1) // loops if player rolls double, breaks if not
