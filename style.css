@@ -1,9 +1,11 @@
-
+  html{
+    overflow-y: scroll; 
+  }
   h1{
-    text-align: left;
+    text-align: center;
     color: white; 
-    font-size: 8vw;
-    margin: 60px 12%;
+    font-size: 5vw;
+    margin: 15px;
     display: block;
     font-family: Verdana, Arial, sans-serif;
   }
@@ -12,23 +14,42 @@
     background-image: url(board.PNG);
     background-position: right top;
     background-repeat: no-repeat;
-    padding: 15px;
+    padding: 0px;
+    margin: 0px;
     background-size: 50%;
+    width: auto;
+    height: 950px;
   }
   
   .button {
     background-color: #00853E;
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 15px 15px;
     text-align: center;
     text-decoration: none;
     display: block;
     font-size: 4vw;
-    margin: 10px 18%;
+    margin: 15px 25%;
     cursor: pointer;
     border-radius: 8px;
-    width: 35%;
+    width: 50%;
+    float: left;
+    font-family: Verdana, Arial, sans-serif;
+  }
+  .button2 {
+    background-color: #00853E;
+    border: none;
+    color: white;
+    padding: 15px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 2vw;
+    margin: 15px 25%;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 50%;
     float: left;
     font-family: Verdana, Arial, sans-serif;
   }
@@ -47,3 +68,23 @@
     width: 10%;
     float: right;
  }
+
+.container {
+  display: flex;
+}
+
+#col-1 {
+  flex: 1;
+}
+
+#col-2 {
+  flex: 1;
+}
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}

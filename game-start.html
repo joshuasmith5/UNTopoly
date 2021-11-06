@@ -11,35 +11,41 @@
 
 
 <body>
-  <h1 style="color:white; text-align:center">UNT-opoly</h1>
-	<div style="color: white; text-align: center;">
-		How many players will there be?
-		<select id="numPlayers" title="How many players will there be?">
-			<option selected="selected">2</option>
-			<option>3</option>
-			<option>4</option>
-		</select>
+<section class="container">
+	<div id="col-1">
+		<div class="center">
+		<h1 style="color:white; text-align:center">UNT-opoly</h1>
+			<div style="color: white; text-align: center;">
+				How many players will there be?
+				<select id="numPlayers" title="How many players will there be?">
+					<option selected="selected">2</option>
+					<option>3</option>
+					<option>4</option>
+				</select>
+			</div>
+			<br>
+			<div id="p1info" style ="color: white; text-align:center" class="playerIn">
+				Player 1: <input type="text"  id="p1Name" maxlength="16"/>
+			</div>
+			<br>
+			<div id="p2info" style ="color: white; text-align:center" class="playerIn">
+				Player 2: <input type="text" id="p2Name" maxlength="16"/>
+			</div>
+			<br>
+			<div id="p3info" style ="color: white; text-align:center" class="playerIn">
+				Player 3: <input type="text" id="p3Name" maxlength="16"/>
+			</div>
+			<br>
+			<div id="p4info" style ="color: white; text-align:center" class="playerIn">
+				Player 4: <input type="text" id="p4Name" maxlength="16"/>
+			</div>
+			<br>
+			<input type="button" class="button2" value="Start Game" onclick="playerSetup(document.getElementById('numPlayers').value);"/>
+		</div>
 	</div>
-	<br>
-	<div id="p1info" style ="color: white; text-align:center" class="playerIn">
-		Player 1: <input type="text"  id="p1Name" maxlength="16"/>
+	<div id="col-2">
+		<img src="board.png" style='height: 100%; width: 100%; object-fit: contain'/>
 	</div>
-	<br>
-	<div id="p2info" style ="color: white; text-align:center" class="playerIn">
-		Player 2: <input type="text" id="p2Name" maxlength="16"/>
-	</div>
-	<br>
-	<div id="p3info" style ="color: white; text-align:center" class="playerIn">
-		Player 3: <input type="text" id="p3Name" maxlength="16"/>
-	</div>
-	<br>
-	<div id="p4info" style ="color: white; text-align:center" class="playerIn">
-		Player 4: <input type="text" id="p4Name" maxlength="16"/>
-	</div>
-	<br>
-	<div style="text-align:center">
-		<input type="button" value="Start Game" onclick="playerSetup(document.getElementById('numPlayers').value);"/>
-	</div>
-
+</section>
 </body>
 </html>
