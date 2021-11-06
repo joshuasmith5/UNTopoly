@@ -248,10 +248,7 @@ function PropertySpace(propertyNum)
 }
 
 function playerSetup(numP){
-	
-	//var numPlayers = Number( document.getElementById("numPlayers").value );
-	console.log("There will be " + numP + " players this game.");
-	
+		
 	for(var i=0; i<numP; i++)
 	{
 		players[i].name = String(document.getElementById("p"+(i+1)+"Name").value);
