@@ -247,10 +247,10 @@ function PropertySpace(propertyNum)
 	}
 }
 
-function playerSetup(){
+function playerSetup(numP){
 	
-	var numPlayers = Number( document.getElementById("numPlayers").value );
-	console.log("There will be " + numPlayers + " players.");
+	//var numPlayers = Number( document.getElementById("numPlayers").value );
+	console.log("There will be " + numP + " players this game.");
 	
 	for(var i=0; i<numPlayers; i++)
 	{
