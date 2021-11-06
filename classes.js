@@ -126,7 +126,7 @@ class Card {
 
 
 // VARIABLES
-var numPlayers;
+
 // temporary, will need to get player name from the user during setup phase in future
 const playerNames = ['Colin', 'Josh', 'Lori', 'Eli'];
 
@@ -252,7 +252,7 @@ function playerSetup(numP){
 	//var numPlayers = Number( document.getElementById("numPlayers").value );
 	console.log("There will be " + numP + " players this game.");
 	
-	for(var i=0; i<numPlayers; i++)
+	for(var i=0; i<numP; i++)
 	{
 		players[i].name = String(document.getElementById("p"+(i+1)+"Name").value);
 		console.log( players[i].name+ " is "+ "player " +(i+1));
