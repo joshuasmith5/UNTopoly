@@ -10,16 +10,7 @@
     font-family: Verdana, Arial, sans-serif;
   }
 
-  #gamescreenimage {
-    background-image: url(board.PNG);
-    background-position: right top;
-    background-repeat: no-repeat;
-    padding: 0px;
-    margin: 0px;
-    background-size: 50%;
-    width: auto;
-    height: 950px;
-  }
+  
   
   .button2 {
     background-color: #00853E;
