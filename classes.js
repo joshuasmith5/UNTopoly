@@ -52,21 +52,6 @@ class Utility {
 		this.isMortgaged = false;
 		//cost = 150
 	}
-	
-	rent(numOwned, diceRoll) {
-		switch(numOwned) {
-			case 1:
-				return (diceRoll*4);
-				break;
-			case 2:
-				return(diceRoll*10);
-				break;
-			default:
-				console.log("error");
-				break;
-		}
-	}
-	
 	logInfo() {
 		console.log(this.name);
 		console.log(this.ownedBy);
@@ -81,30 +66,6 @@ class BusStop {
 		this.isMortgaged = false;
 		//cost = 200
 	}
-	
-	//Before this function call:
-	//player lands on bus stop, is owned, owner is found, number of railroads owned by 
-	//owner found. number owned passed into switch statment to calculate rent.
-	rent(numOwned) {
-		switch(numOwned) {
-			case 1:
-				return 25;
-				break;
-			case 2:
-				return 50;
-				break;
-			case 3:
-				return 100;
-				break;
-			case 4:
-				return 200;
-				break;
-			default:
-				console.log("error");
-				break;
-		}	
-	}
-	
 	logInfo() {
 		console.log(this.name);
 		console.log(this.ownedBy);
@@ -117,7 +78,6 @@ class Card {
 		this.type = cType;
 		this.description = cDescription;
 	}
-	
 	logInfo() {
 		console.log(this.type);
 		console.log(this.description);
@@ -247,6 +207,80 @@ function PropertySpace(propertyNum)
 	}
 }
 
+function UtilitySpace(utilityNum)
+{
+	if (utilities[utilityNum].ownedBy == -1) // runs if not owned by player
+	{
+		console.log("Buy " + utilities[utilityNum].name + " for $" + utilities[utilityNum].cost);
+		//let input = prompt("Would you like to buy " + utilities[utilityNum].name + " for " + utilities[utilityNum].cost + "? Y/N");
+		//if (input == "Y")
+		//{
+			players[activePlayer].money -= 150;
+			utilities[utilityNum].ownedBy = activePlayer;
+			console.log(utilities[utilityNum].ownedBy);
+		//}
+	}
+	else if (utilities[utilityNum].ownedBy != activePlayer && !utilities[utilityNum].isMortgaged) // runs if owned by different player and not mortgaged
+	{
+		console.log("Must pay rent for " + utilities[utilityNum].name);
+		let numOwned = 0;
+		for (let i = 0; i < 2; i++) // finds the amount of utilities owned by the player
+		{
+			if (utilities[i].ownedBy == activePlayer)
+			{
+				numOwned++;
+			}
+		}
+		switch (numOwned)
+		{
+			case 1:
+				players[activePlayer].money -= (diceOne + diceTwo) * 4;
+				break;
+			case 2:
+				players[activePlayer].money -= (diceOne + diceTwo) * 10;
+				break;
+			default:
+				console.log('ERROR: Number of utilities owned unknown');
+		}
+	}
+	else
+	{
+		console.log("Landed on " + utilities[utilityNum].name);
+	}
+}
+
+function BusStopSpace(busNum)
+{
+	if (busStops[busNum].ownedBy == -1) // runs if not owned by player
+	{
+		console.log("Buy " + busStops[busNum].name + " for $" + busStops[busNum].cost);
+		//let input = prompt("Would you like to buy " + busStops[busNum].name + " for " + busStops[busNum].cost + "? Y/N");
+		//if (input == "Y")
+		//{
+			players[activePlayer].money -= 200;
+			busStops[busNum].ownedBy = activePlayer;
+			console.log(busStops[busNum].ownedBy);
+		//}
+	}
+	else if (busStops[busNum].ownedBy != activePlayer && !busStops[busNum].isMortgaged) // runs if owned by different player and not mortgaged
+	{
+		console.log("Must pay rent for " + busStops[busNum].name);
+		let numOwned = 0;
+		for (let i = 0; i < 4; i++) // finds the amount of bus stops owned by the player
+		{
+			if (busStops[i].ownedBy == activePlayer)
+			{
+				numOwned++;
+			}
+		}
+		players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1); // 25, 50, 100, 200
+	}
+	else
+	{
+		console.log("Landed on " + busStops[busNum].name);
+	}
+}
+
 
 // GAME
 
@@ -302,7 +336,7 @@ while (gameActive)
 				players[activePlayer].money -= 200;
 				break;
 			case 5:		// Discovery Park Bus Stop
-				busStops[0].logInfo();
+				BusStopSpace(0);
 				break;
 			case 6:		// Wooten Hall
 				PropertySpace(2);
@@ -343,7 +377,7 @@ while (gameActive)
 				}
 				break;
 			case 12:	// Eagle Landing
-				utilities[0].logInfo();
+				UtilitySpace(0);
 				break;
 			case 13:	// Maple Hall
 				PropertySpace(6);
@@ -362,7 +396,7 @@ while (gameActive)
 				}
 				break;
 			case 15:	// Second Bus Stop
-				busStops[1].logInfo();
+				BusStopSpace(1);
 				break;
 			case 16:	// The Pit
 				PropertySpace(8);
@@ -422,7 +456,7 @@ while (gameActive)
 				}
 				break;
 			case 25:	// Third Bus Stop
-				busStops[2].logInfo();
+				BusStopSpace(2);
 				break;
 			case 26:	// Chemistry Building
 				PropertySpace(14);
@@ -433,7 +467,7 @@ while (gameActive)
 				}
 				break;
 			case 27:	// Bruce Cafeteria
-				utilities[1].logInfo();
+				UtilitySpace(1);
 				break;
 			case 28:	// Music Building
 				PropertySpace(15);
@@ -484,7 +518,7 @@ while (gameActive)
 				}
 				break;
 			case 35:	// Union Bus Stop
-				busStops[3].logInfo();
+				BusStopSpace(3);
 				break;
 			case 36:	// Chance
 				console.log('Chance');
