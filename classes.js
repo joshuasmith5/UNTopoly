@@ -2,8 +2,8 @@
 // CLASSES
 
 class Player {
-	constructor(pName) {
-		this.name = pName;
+	constructor(name) {
+		this.name = name;
 		this.position = 0;
 		this.money = 1500;
 		this.jailCards = 0;
@@ -23,11 +23,11 @@ class Player {
 }
 
 class Property {
-	constructor(pName, pCost, hCost, pRent) {
-		this.name = pName;
-		this.cost = pCost;
-		this.houseCost = hCost;
-		this.rent = pRent;
+	constructor(name, cost, houseCost, rent) {
+		this.name = name;
+		this.cost = cost;
+		this.houseCost = houseCost;
+		this.rent = rent;
 		this.development = 0;
 		this.ownedBy = -1;
 		this.isMonopoly = false;
@@ -46,8 +46,8 @@ class Property {
 }
 
 class Utility {
-	constructor(uName) {
-		this.name = uName;
+	constructor(name) {
+		this.name = name;
 		this.ownedBy = -1;
 		this.isMortgaged = false;
 		//cost = 150
@@ -60,8 +60,8 @@ class Utility {
 }
 
 class BusStop {
-	constructor(bName) {
-		this.name = bName;
+	constructor(name) {
+		this.name = name;
 		this.ownedBy = -1;
 		this.isMortgaged = false;
 		//cost = 200
@@ -74,9 +74,9 @@ class BusStop {
 }
 
 class Card {
-	constructor(cType, cDescription) {
-		this.type = cType;
-		this.description = cDescription;
+	constructor(type, description) {
+		this.type = type;
+		this.description = description;
 	}
 	logInfo() {
 		console.log(this.type);
