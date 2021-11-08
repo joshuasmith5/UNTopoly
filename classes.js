@@ -163,7 +163,7 @@ const chanceCards = [	// creates pre-set chance card objects
     new Card('jailFree', 'Get out of Parking Jail free. This card can be kept until needed')
 ];
 
-let gameActive = true;  // keeps track of whether game is still going
+let isGameActive = true;  // keeps track of whether game is still going
 let houseCount = 32;    // how many houses the bank has to sell
 let hotelCount = 12;    // how many hotels the bank has to sell
 let activePlayer = 0;   // determines which player's turn it is
@@ -284,7 +284,7 @@ function BusStopSpace(busNum)
 
 // GAME
 
-while (gameActive) 
+while (isGameActive) 
 {
 	console.log("\n" + players[activePlayer].name + "'s turn");
 	doubleCount = 0;
