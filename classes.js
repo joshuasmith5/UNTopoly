@@ -160,6 +160,38 @@ class BusStop {
 		console.log(this.ownedBy);
 		console.log(this.isMortgaged);
 	}
+	busStopSpace()
+	{
+		if (this.ownedBy == -1) // runs if not owned by player
+		{
+			console.log("Buy " + this.name + " for $" + this.cost);
+			//let input = prompt("Would you like to buy " + this.name + " for " + this.cost + "? Y/N");
+			//if (input == "Y")
+			//{
+				players[activePlayer].money -= 200;
+				this.ownedBy = activePlayer;
+				console.log(this.ownedBy);
+			//}
+		}
+		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
+		{
+			console.log("Must pay rent for " + busStops[busNum].name);
+			let numOwned = 0;
+			for (let i = 0; i < 4; i++) // finds the amount of bus stops owned by the player
+			{
+				if (busStops[i].ownedBy == this.ownedBy)
+				{
+					numOwned++;
+				}
+			}
+			players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1); // 25, 50, 100, 200
+			players[this.ownedBy].money += 25 * Math.pow(2, numOwned - 1);
+		}
+		else
+		{
+			console.log("Landed on " + this.name);
+		}
+	}
 }
 
 class Card {
@@ -263,38 +295,6 @@ let doubleCount = 0;    // how many consecutive doubles have been rolled
 
 // FUNCTIONS
 
-function busStopSpace(busNum)
-{
-	if (busStops[busNum].ownedBy == -1) // runs if not owned by player
-	{
-		console.log("Buy " + busStops[busNum].name + " for $" + busStops[busNum].cost);
-		//let input = prompt("Would you like to buy " + busStops[busNum].name + " for " + busStops[busNum].cost + "? Y/N");
-		//if (input == "Y")
-		//{
-			players[activePlayer].money -= 200;
-			busStops[busNum].ownedBy = activePlayer;
-			console.log(busStops[busNum].ownedBy);
-		//}
-	}
-	else if (busStops[busNum].ownedBy != activePlayer && !busStops[busNum].isMortgaged) // runs if owned by different player and not mortgaged
-	{
-		console.log("Must pay rent for " + busStops[busNum].name);
-		let numOwned = 0;
-		for (let i = 0; i < 4; i++) // finds the amount of bus stops owned by the player
-		{
-			if (busStops[i].ownedBy == activePlayer)
-			{
-				numOwned++;
-			}
-		}
-		players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1); // 25, 50, 100, 200
-	}
-	else
-	{
-		console.log("Landed on " + busStops[busNum].name);
-	}
-}
-
 function playerSetup(numP)
 {
 	for (let i=0; i<numP; i++)
@@ -355,7 +355,7 @@ while (isGameActive)
 				players[activePlayer].money -= 200;
 				break;
 			case 5:		// Discovery Park Bus Stop
-				busStopSpace(0);
+				busStops[0].busStopSpace();
 				break;
 			case 6:		// Wooten Hall
 				properties[2].propertySpace();
@@ -391,7 +391,7 @@ while (isGameActive)
 				properties[7].checkMonopoly(3, 5, 6);
 				break;
 			case 15:	// Second Bus Stop
-				busStopSpace(1);
+				busStops[1].busStopSpace();
 				break;
 			case 16:	// The Pit
 				properties[8].propertySpace();
@@ -427,7 +427,7 @@ while (isGameActive)
 				properties[13].checkMonopoly(3, 11, 12);
 				break;
 			case 25:	// Third Bus Stop
-				busStopSpace(2);
+				busStops[2].busStopSpace();
 				break;
 			case 26:	// Chemistry Building
 				properties[14].propertySpace();
@@ -465,7 +465,7 @@ while (isGameActive)
 				properties[19].checkMonopoly(3, 17, 18);
 				break;
 			case 35:	// Union Bus Stop
-				busStopSpace(3);
+				busStops[3].busStopSpace();
 				break;
 			case 36:	// Chance
 				console.log('Chance');
