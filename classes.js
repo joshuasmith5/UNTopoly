@@ -380,7 +380,7 @@ while (isGameActive)
 				properties[5].checkMonopoly(3, 6, )7;
 				break;
 			case 12:	// Eagle Landing
-				utilitySpace(0);
+				utilities[0].utilitySpace();
 				break;
 			case 13:	// Maple Hall
 				properties[6].propertySpace();
@@ -434,7 +434,7 @@ while (isGameActive)
 				properties[14].checkMonopoly(3, 15, 16);
 				break;
 			case 27:	// Bruce Cafeteria
-				utilitySpace(1);
+				utilities[1].utilitySpace();
 				break;
 			case 28:	// Music Building
 				properties[15].propertySpace();
