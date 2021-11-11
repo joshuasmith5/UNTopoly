@@ -43,6 +43,52 @@ class Property {
 		console.log(this.isMonopoly);
 		console.log(this.isMortgaged);
 	}
+	checkMonopoly(pairNum, pair1Property, pair2Property) {
+		if (pairNum == 2) {
+			if (!this.isMonopoly && properties[pair1Property].ownedBy == activePlayer && this.ownedBy == activePlayer){
+				properties[pair1Property].isMonopoly = this.isMonopoly = true;
+				console.log("Monopoly!");
+			}
+		} else if (pairNum == 3) {
+			if (!this.isMonopoly && this.ownedBy == activePlayer && properties[pair1Property].ownedBy == activePlayer && properties[pair2Property].ownedBy == activePlayer){
+				this.isMonopoly = properties[pair1Property].isMonopoly = properties[pair2Property].isMonopoly = true;
+				console.log("Monopoly!");
+			}
+		} else {
+			console.log("Failure: pairNum not valid entry");	
+		}
+	}
+	propertySpace() {
+		if (this.ownedBy == -1) // runs if not owned by player
+		{
+			console.log("Buy " + this.name + " for $" + this.cost);
+			//let input = prompt("Would you like to buy " + this.name + " for " + this.cost + "? Y/N");
+			//if (input == "Y")
+			//{
+				players[activePlayer].money -= this.cost;
+				this.ownedBy = activePlayer;
+				console.log(this.ownedBy);
+			//}
+		}
+		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
+		{
+			console.log("Must pay rent for " + this.name);
+			if (this.isMonopoly && this.development == 0) // doubles rent if has monopoly and unimproved
+			{
+				players[activePlayer].money -= this.rent[0] * 2;
+				players[this.ownedBy].money += this.rent[0] * 2;
+			}
+			else
+			{
+				players[activePlayer].money -= this.rent[this.development];
+				players[this.ownedBy].money += this.rent[this.development];
+			}
+		}
+		else
+		{
+			console.log("Landed on " + this.name);
+		}
+	}
 }
 
 class Utility {
@@ -116,17 +162,17 @@ const properties = [	// creates pre-set property objects (name, cost, houseCost,
     new Property('Eagle Student Services Center', 350, 200, [35,175,500,1100,1300,1500]),
     new Property('Willis Library', 400, 200, [50,200,600,1400,1700,2000])
 ];
-const utilities = [		// creates pre-set utility objects
+const utilities = [ // creates pre-set utility objects
     new Utility('Eagle Landing'),
     new Utility('Bruce Cafeteria')
 ];
-const busStops = [      // creates pre-set bus stop objects
+const busStops = [ // creates pre-set bus stop objects
     new BusStop('Discovery Park Bus Stop'),
     new BusStop('Second Bus Stop'), // NEEDS NAMING
     new BusStop('Third Bus Stop'), // NEEDS NAMING
     new BusStop('Union Bus Stop')
 ];
-const chestCards = [    // creates pre-set community chest card objects
+const chestCards = [ // creates pre-set community chest card objects
     new Card('advanceUnion', 'Advance to the Union (Collect $200)'),
     new Card('doctorFee', 'Doctor’s fee. Pay $50'),
     new Card('schoolFee', 'Pay school fees of $50'),
@@ -174,40 +220,7 @@ let doubleCount = 0;    // how many consecutive doubles have been rolled
 
 // FUNCTIONS
 
-function PropertySpace(propertyNum)
-{
-	if (properties[propertyNum].ownedBy == -1) // runs if not owned by player
-	{
-		console.log("Buy " + properties[propertyNum].name + " for $" + properties[propertyNum].cost);
-		//let input = prompt("Would you like to buy " + properties[propertyNum].name + " for " + properties[propertyNum].cost + "? Y/N");
-		//if (input == "Y")
-		//{
-			players[activePlayer].money -= properties[propertyNum].cost;
-			properties[propertyNum].ownedBy = activePlayer;
-			console.log(properties[propertyNum].ownedBy);
-		//}
-	}
-	else if (properties[propertyNum].ownedBy != activePlayer && !properties[propertyNum].isMortgaged) // runs if owned by different player and not mortgaged
-	{
-		console.log("Must pay rent for " + properties[propertyNum].name);
-		if (properties[propertyNum].isMonopoly && properties[propertyNum].development == 0) // doubles rent if has monopoly and unimproved
-		{
-			players[activePlayer].money -= properties[propertyNum].rent[0] * 2;
-			players[properties[propertyNum].ownedBy].money += properties[propertyNum].rent[0] * 2;
-		}
-		else
-		{
-			players[activePlayer].money -= properties[propertyNum].rent[properties[propertyNum].development];
-			players[properties[propertyNum].ownedBy].money += properties[propertyNum].rent[properties[propertyNum].development];
-		}
-	}
-	else
-	{
-		console.log("Landed on " + properties[propertyNum].name);
-	}
-}
-
-function UtilitySpace(utilityNum)
+function utilitySpace(utilityNum)
 {
 	if (utilities[utilityNum].ownedBy == -1) // runs if not owned by player
 	{
@@ -249,7 +262,7 @@ function UtilitySpace(utilityNum)
 	}
 }
 
-function BusStopSpace(busNum)
+function busStopSpace(busNum)
 {
 	if (busStops[busNum].ownedBy == -1) // runs if not owned by player
 	{
@@ -281,8 +294,21 @@ function BusStopSpace(busNum)
 	}
 }
 
+function playerSetup(numP)
+{
+	for (let i=0; i<numP; i++)
+	{
+		players[i].name = String(document.getElementById("p"+(i+1)+"Name").value);
+		console.log(players[i].name+ " is "+ "player " +(i+1));
+	}
+
+	//call play function
+}
+
 
 // GAME
+
+gameActive = false;
 
 while (isGameActive) 
 {
@@ -313,177 +339,109 @@ while (isGameActive)
 				console.log('Union');
 				break;
 			case 1:		// Sage Hall
-				PropertySpace(0);
-				if (!properties[0].isMonopoly && properties[0].ownedBy == activePlayer && properties[1].ownedBy == activePlayer)
-				{
-					properties[0].isMonopoly = properties[1].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[0].propertySpace();
+				properties[0].checkMonopoly(2, 1, undefined);
 				break;
 			case 2:		// Community Chest
 				console.log('Community chest');
 				break;
 			case 3:		// Sycamore Hall
-				PropertySpace(1);
-				if (!properties[1].isMonopoly && properties[0].ownedBy == activePlayer && properties[1].ownedBy == activePlayer)
-				{
-					properties[0].isMonopoly = properties[1].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[1].propertySpace();
+				properties[1].checkMonopoly(2, 0, undefined);
 				break;
 			case 4:		// Tuition Payment
 				console.log('Tuition payment, pay $200');
 				players[activePlayer].money -= 200;
 				break;
 			case 5:		// Discovery Park Bus Stop
-				BusStopSpace(0);
+				busStopSpace(0);
 				break;
 			case 6:		// Wooten Hall
-				PropertySpace(2);
-				if (!properties[2].isMonopoly && properties[2].ownedBy == activePlayer && properties[3].ownedBy == activePlayer && properties[4].ownedBy == activePlayer)
-				{
-					properties[2].isMonopoly = properties[3].isMonopoly = properties[4].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[2].propertySpace();
+				properties[2].checkMonopoly(3, 3, 4);
 				break;
 			case 7:		// Chance
 				console.log('Chance');
 				break;
 			case 8:		// Business Building
-				PropertySpace(3);
-				if (!properties[3].isMonopoly && properties[2].ownedBy == activePlayer && properties[3].ownedBy == activePlayer && properties[4].ownedBy == activePlayer)
-				{
-					properties[2].isMonopoly = properties[3].isMonopoly = properties[4].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[3].propertySpace();
+				properties[3].checkMonopoly(3, 2, 4);
 				break;
 			case 9:		// Joe Green Hall
-				PropertySpace(4);
-				if (!properties[4].isMonopoly && properties[2].ownedBy == activePlayer && properties[3].ownedBy == activePlayer && properties[4].ownedBy == activePlayer)
-				{
-					properties[2].isMonopoly = properties[3].isMonopoly = properties[4].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[4].propertySpace();
+				properties[4].checkMonopoly(3, 2, 3);
 				break;
 			case 10:	// Garage
 				console.log('Garage');
 				break;
 			case 11:	// Kerr Hall
-				PropertySpace(5);
-				if (!properties[5].isMonopoly && properties[5].ownedBy == activePlayer && properties[6].ownedBy == activePlayer && properties[7].ownedBy == activePlayer)
-				{
-					properties[5].isMonopoly = properties[6].isMonopoly = properties[7].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[5].propertySpace();
+				properties[5].checkMonopoly(3, 6, )7;
 				break;
 			case 12:	// Eagle Landing
-				UtilitySpace(0);
+				utilitySpace(0);
 				break;
 			case 13:	// Maple Hall
-				PropertySpace(6);
-				if (!properties[6].isMonopoly && properties[5].ownedBy == activePlayer && properties[6].ownedBy == activePlayer && properties[7].ownedBy == activePlayer)
-				{
-					properties[5].isMonopoly = properties[6].isMonopoly = properties[7].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[6].propertySpace();
+				properties[6].checkMonopoly(3, 5, 7);
 				break;
 			case 14:	// Rawlins Hall
-				PropertySpace(7);
-				if (!properties[7].isMonopoly && properties[5].ownedBy == activePlayer && properties[6].ownedBy == activePlayer && properties[7].ownedBy == activePlayer)
-				{
-					properties[5].isMonopoly = properties[6].isMonopoly = properties[7].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[7].propertySpace();
+				properties[7].checkMonopoly(3, 5, 6);
 				break;
 			case 15:	// Second Bus Stop
-				BusStopSpace(1);
+				busStopSpace(1);
 				break;
 			case 16:	// The Pit
-				PropertySpace(8);
-				if (!properties[8].isMonopoly && properties[8].ownedBy == activePlayer && properties[9].ownedBy == activePlayer && properties[10].ownedBy == activePlayer)
-				{
-					properties[8].isMonopoly = properties[9].isMonopoly = properties[10].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[8].propertySpace();
+				properties[8].checkMonopoly(3, 9, 10);
 				break;
 			case 17:	// Community Chest
 				console.log('Community chest');
 				break;
 			case 18:	// Pohl Recreation Center
-				PropertySpace(9);
-				if (!properties[9].isMonopoly && properties[8].ownedBy == activePlayer && properties[9].ownedBy == activePlayer && properties[10].ownedBy == activePlayer)
-				{
-					properties[8].isMonopoly = properties[9].isMonopoly = properties[10].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[9].propertySpace();
+				properties[9].checkMonopoly(3, 8, 10);
 				break;
 			case 19:	// Chesnut Hall
-				PropertySpace(10);
-				if (!properties[10].isMonopoly && properties[8].ownedBy == activePlayer && properties[9].ownedBy == activePlayer && properties[10].ownedBy == activePlayer)
-				{
-					properties[8].isMonopoly = properties[9].isMonopoly = properties[10].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[10].propertySpace();
+				properties[10].checkMonopoly(3, 8, 9);
 				break;
 			case 20:	// Voertman's
 				console.log("Voertman's");
 				break;
 			case 21:	// West Hall
-				PropertySpace(11);
-				if (!properties[11].isMonopoly && properties[11].ownedBy == activePlayer && properties[12].ownedBy == activePlayer && properties[13].ownedBy == activePlayer)
-				{
-					properties[11].isMonopoly = properties[12].isMonopoly = properties[13].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[11].propertySpace();
+				properties[11].checkMonopoly(3, 12, 13);
 				break;
 			case 22:	// Chance
 				console.log('Chance');
 				break;
 			case 23:	// Legends Hall
-				PropertySpace(12);
-				if (!properties[12].isMonopoly && properties[11].ownedBy == activePlayer && properties[12].ownedBy == activePlayer && properties[13].ownedBy == activePlayer)
-				{
-					properties[11].isMonopoly = properties[12].isMonopoly = properties[13].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[12].propertySpace();
+				properties[12].checkMonopoly(3, 11, 13);
 				break;
 			case 24:	// Environmental Science Building
-				PropertySpace(13);
-				if (!properties[13].isMonopoly && properties[11].ownedBy == activePlayer && properties[12].ownedBy == activePlayer && properties[13].ownedBy == activePlayer)
-				{
-					properties[11].isMonopoly = properties[12].isMonopoly = properties[13].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[13].propertySpace();
+				properties[13].checkMonopoly(3, 11, 12);
 				break;
 			case 25:	// Third Bus Stop
-				BusStopSpace(2);
+				busStopSpace(2);
 				break;
 			case 26:	// Chemistry Building
-				PropertySpace(14);
-				if (!properties[14].isMonopoly && properties[14].ownedBy == activePlayer && properties[15].ownedBy == activePlayer && properties[16].ownedBy == activePlayer)
-				{
-					properties[14].isMonopoly = properties[15].isMonopoly = properties[16].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[14].propertySpace();
+				properties[14].checkMonopoly(3, 15, 16);
 				break;
 			case 27:	// Bruce Cafeteria
-				UtilitySpace(1);
+				utilitySpace(1);
 				break;
 			case 28:	// Music Building
-				PropertySpace(15);
-				if (!properties[15].isMonopoly && properties[14].ownedBy == activePlayer && properties[15].ownedBy == activePlayer && properties[16].ownedBy == activePlayer)
-				{
-					properties[14].isMonopoly = properties[15].isMonopoly = properties[16].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[15].propertySpace();
+				properties[15].checkMonopoly(3, 14, 16);
 				break;
 			case 29:	// Chilton Hall
-				PropertySpace(16);
-				if (!properties[16].isMonopoly && properties[14].ownedBy == activePlayer && properties[15].ownedBy == activePlayer && properties[16].ownedBy == activePlayer)
-				{
-					properties[14].isMonopoly = properties[15].isMonopoly = properties[16].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[16].propertySpace();
+				properties[16].checkMonopoly(3, 14, 15);
 				break;
 			case 30:	// Go to Jail
 				console.log('Go to jail');
@@ -491,57 +449,37 @@ while (isGameActive)
 				players[activePlayer].position = 10;
 				break;
 			case 31:	// General Academic Building
-				PropertySpace(17);
-				if (!properties[17].isMonopoly && properties[17].ownedBy == activePlayer && properties[18].ownedBy == activePlayer && properties[19].ownedBy == activePlayer)
-				{
-					properties[17].isMonopoly = properties[18].isMonopoly = properties[19].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[17].propertySpace();
+				properties[17].checkMonopoly(3, 18, 19);
 				break;
 			case 32:	// Art Building
-				PropertySpace(18);
-				if (!properties[18].isMonopoly && properties[17].ownedBy == activePlayer && properties[18].ownedBy == activePlayer && properties[19].ownedBy == activePlayer)
-				{
-					properties[17].isMonopoly = properties[18].isMonopoly = properties[19].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[18].propertySpace();
+				properties[18].checkMonopoly(3, 17, 19);
 				break;
 			case 33:	// Community Chest
 				console.log('Community chest');
 				break;
 			case 34:	// Language Building
-				PropertySpace(19);
-				if (!properties[19].isMonopoly && properties[17].ownedBy == activePlayer && properties[18].ownedBy == activePlayer && properties[19].ownedBy == activePlayer)
-				{
-					properties[17].isMonopoly = properties[18].isMonopoly = properties[19].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[19].propertySpace();
+				properties[19].checkMonopoly(3, 17, 18);
 				break;
 			case 35:	// Union Bus Stop
-				BusStopSpace(3);
+				busStopSpace(3);
 				break;
 			case 36:	// Chance
 				console.log('Chance');
 				break;
 			case 37:	// Eagle Student Services Center
-				PropertySpace(20);
-				if (!properties[20].isMonopoly && properties[20].ownedBy == activePlayer && properties[21].ownedBy == activePlayer)
-				{
-					properties[20].isMonopoly = properties[21].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[20].propertySpace();
+				properties[20].checkMonopoly(2, 21, undefined);
 				break;
 			case 38:	// Loan Payment
 				console.log('Loan payment, pay $100');
 				players[activePlayer].money -= 100;
 				break;
 			case 39:	// Willis Library
-				PropertySpace(21);
-				if (!properties[21].isMonopoly && properties[20].ownedBy == activePlayer && properties[21].ownedBy == activePlayer)
-				{
-					properties[20].isMonopoly = properties[21].isMonopoly = true;
-					console.log("Monopoly!");
-				}
+				properties[21].propertySpace();
+				properties[21].checkMonopoly(2, 20, undefined);
 				break;
 			default:
 				console.log('ERROR: Position unknown');
