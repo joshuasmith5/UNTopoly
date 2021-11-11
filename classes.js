@@ -103,6 +103,49 @@ class Utility {
 		console.log(this.ownedBy);
 		console.log(this.isMortgaged);
 	}
+	utilitySpace()
+	{
+		if (this.ownedBy == -1) // runs if not owned by player
+		{
+			console.log("Buy " + this.name + " for $" + this.cost);
+			//let input = prompt("Would you like to buy " + this.name + " for " + this.cost + "? Y/N");
+			//if (input == "Y")
+			//{
+				players[activePlayer].money -= 150;
+				this.ownedBy = activePlayer;
+				console.log(this.ownedBy);
+			//}
+		}
+		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
+		{
+			console.log("Must pay rent for " + this.name);
+			let numOwned = 0;
+			for (let i = 0; i < 2; i++) // finds the amount of utilities owned by the player
+			{
+				if (utilities[i].ownedBy == this.ownedBy)
+				{
+					numOwned++;
+				}
+			}
+			switch (numOwned)
+			{
+				case 1:
+					players[activePlayer].money -= (diceOne + diceTwo) * 4;
+					players[this.ownedBy].money += (diceOne + diceTwo) * 4;
+					break;
+				case 2:
+					players[activePlayer].money -= (diceOne + diceTwo) * 10;
+					players[this.ownedBy].money += (diceOne + diceTwo) * 10;
+					break;
+				default:
+					console.log('ERROR: Number of utilities owned unknown');
+			}
+		}
+		else
+		{
+			console.log("Landed on " + this.name);
+		}
+	}
 }
 
 class BusStop {
@@ -219,48 +262,6 @@ let doubleCount = 0;    // how many consecutive doubles have been rolled
 
 
 // FUNCTIONS
-
-function utilitySpace(utilityNum)
-{
-	if (utilities[utilityNum].ownedBy == -1) // runs if not owned by player
-	{
-		console.log("Buy " + utilities[utilityNum].name + " for $" + utilities[utilityNum].cost);
-		//let input = prompt("Would you like to buy " + utilities[utilityNum].name + " for " + utilities[utilityNum].cost + "? Y/N");
-		//if (input == "Y")
-		//{
-			players[activePlayer].money -= 150;
-			utilities[utilityNum].ownedBy = activePlayer;
-			console.log(utilities[utilityNum].ownedBy);
-		//}
-	}
-	else if (utilities[utilityNum].ownedBy != activePlayer && !utilities[utilityNum].isMortgaged) // runs if owned by different player and not mortgaged
-	{
-		console.log("Must pay rent for " + utilities[utilityNum].name);
-		let numOwned = 0;
-		for (let i = 0; i < 2; i++) // finds the amount of utilities owned by the player
-		{
-			if (utilities[i].ownedBy == activePlayer)
-			{
-				numOwned++;
-			}
-		}
-		switch (numOwned)
-		{
-			case 1:
-				players[activePlayer].money -= (diceOne + diceTwo) * 4;
-				break;
-			case 2:
-				players[activePlayer].money -= (diceOne + diceTwo) * 10;
-				break;
-			default:
-				console.log('ERROR: Number of utilities owned unknown');
-		}
-	}
-	else
-	{
-		console.log("Landed on " + utilities[utilityNum].name);
-	}
-}
 
 function busStopSpace(busNum)
 {
