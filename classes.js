@@ -173,7 +173,7 @@ class BusStop {
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
 		{
-			console.log("Must pay rent for " + busStops[busNum].name);
+			console.log("Must pay rent for " + this.name);
 			let numOwned = 0;
 			for (let i = 0; i < 4; i++) // finds the amount of bus stops owned by the player
 			{
