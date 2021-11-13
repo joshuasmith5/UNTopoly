@@ -61,14 +61,8 @@ class Property {
 	propertySpace() {
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
-			console.log("Buy " + this.name + " for $" + this.cost);
-			//let input = prompt("Would you like to buy " + this.name + " for " + this.cost + "? Y/N");
-			//if (input == "Y")
-			//{
-				players[activePlayer].money -= this.cost;
-				this.ownedBy = activePlayer;
-				console.log(this.ownedBy);
-			//}
+			console.log("Would you like to buy " + this.name + " for $" + this.cost + "?");
+			inputToggle = "Buy Property";
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
 		{
@@ -77,17 +71,24 @@ class Property {
 			{
 				players[activePlayer].money -= this.rent[0] * 2;
 				players[this.ownedBy].money += this.rent[0] * 2;
+				console.log("You have paid $" + this.rent[0] * 2);
 			}
 			else
 			{
 				players[activePlayer].money -= this.rent[this.development];
 				players[this.ownedBy].money += this.rent[this.development];
+				console.log("You have paid $" + this.rent[this.development]);
 			}
 		}
 		else
 		{
 			console.log("Landed on " + this.name);
 		}
+	}
+	buyProperty() {
+		players[activePlayer].money -= this.cost;
+		this.ownedBy = activePlayer;
+		console.log("You have bought " + this.name);
 	}
 }
 
@@ -106,14 +107,8 @@ class Utility {
 	{
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
-			console.log("Buy " + this.name + " for $150");
-			//let input = prompt("Would you like to buy " + this.name + " for $150? Y/N");
-			//if (input == "Y")
-			//{
-				players[activePlayer].money -= 150;
-				this.ownedBy = activePlayer;
-				console.log(this.ownedBy);
-			//}
+			console.log("Would you like to buy " + this.name + " for $150?");
+			inputToggle = "Buy Utility";
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
 		{
@@ -131,19 +126,27 @@ class Utility {
 				case 1:
 					players[activePlayer].money -= (diceOne + diceTwo) * 4;
 					players[this.ownedBy].money += (diceOne + diceTwo) * 4;
+					console.log("You have paid $" + (diceOne + diceTwo) * 4);
 					break;
 				case 2:
 					players[activePlayer].money -= (diceOne + diceTwo) * 10;
 					players[this.ownedBy].money += (diceOne + diceTwo) * 10;
+					console.log("You have paid $" + (diceOne + diceTwo) * 10);
 					break;
 				default:
-					console.log('ERROR: Number of utilities owned unknown');
+					throw new Error("Number of utilities owned unknown");
 			}
 		}
 		else
 		{
 			console.log("Landed on " + this.name);
 		}
+	}
+	buyUtility()
+	{
+		players[activePlayer].money -= 150;
+		this.ownedBy = activePlayer;
+		console.log("You have bought " + this.name);
 	}
 }
 
@@ -162,14 +165,8 @@ class BusStop {
 	{
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
-			console.log("Buy " + this.name + " for $200");
-			//let input = prompt("Would you like to buy " + this.name + " for $150? Y/N");
-			//if (input == "Y")
-			//{
-				players[activePlayer].money -= 200;
-				this.ownedBy = activePlayer;
-				console.log(this.ownedBy);
-			//}
+			console.log("Would you like to buy " + this.name + " for $200?");
+			inputToggle = "Buy Bus Stop";
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
 		{
@@ -184,11 +181,18 @@ class BusStop {
 			}
 			players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1); // 25, 50, 100, 200
 			players[this.ownedBy].money += 25 * Math.pow(2, numOwned - 1);
+			console.log("You have paid $" + 25 * Math.pow(2, numOwned - 1));
 		}
 		else
 		{
 			console.log("Landed on " + this.name);
 		}
+	}
+	buyBusStop()
+	{
+		players[activePlayer].money -= 200;
+		this.ownedBy = activePlayer;
+		console.log("You have bought " + this.name);
 	}
 }
 
@@ -207,7 +211,7 @@ class Card {
 // VARIABLES
 
 // temporary, will need to get player name from the user during setup phase in future
-const playerNames = ['Colin', 'Josh', 'Lori', 'Eli'];
+//const playerNames = ['Colin', 'Josh', 'Lori', 'Eli'];
 
 const players = [];
 //playerNames.forEach(playerName => players.push(new Player(playerName))); // creates player objects for each user-input player
@@ -282,13 +286,17 @@ const chanceCards = [	// creates pre-set chance card objects
     new Card('jailFree', 'Get out of Parking Jail free. This card can be kept until needed')
 ];
 
-let isGameActive = true;  // keeps track of whether game is still going
-let houseCount = 32;    // how many houses the bank has to sell
-let hotelCount = 12;    // how many hotels the bank has to sell
-let activePlayer = 0;   // determines which player's turn it is
-let diceOne = 0;        // first dice roll
-let diceTwo = 0;        // second dice roll
-let doubleCount = 0;    // how many consecutive doubles have been rolled
+let houseCount = 32;    	// how many houses the bank has to sell
+let hotelCount = 12;    	// how many hotels the bank has to sell
+let activePlayer = 0;   	// determines which player's turn it is
+let diceOne = 0;        	// first dice roll
+let diceTwo = 0;        	// second dice roll
+let doubleCount = 0;    	// how many consecutive doubles have been rolled
+let doubleRolled = false; 	// determines if double rolled
+
+let response = "";			// user response
+let diceRollable = true; 	// determines if dice can be rolled (at beginning of turn and such)
+let inputToggle = "None"; 	// determines what input is needed for
 
 
 // FUNCTIONS
@@ -299,215 +307,426 @@ function playerSetup(numP)
 	{
 		//players[i].name = String(document.getElementById("p"+(i+1)+"Name").value);
 		players.push(new Player(String(document.getElementById("p"+(i+1)+"Name").value)));
-		console.log(players[i].name+ " is "+ "player " +(i+1));
+		console.log(players[i].name + " is player " + (i+1));
 	}
-	
-	
-	playGame();
+
+	console.log("\n" + players[activePlayer].name + "'s turn");
 }
 
-
-// GAME
-
-function playGame(){
-	
-	while (isGameActive) 
+function diceRoll()
+{
+	if (diceRollable)
 	{
-		console.log("\n" + players[activePlayer].name + "'s turn");
-		doubleCount = 0;
+		diceRollable = false;
 
-		while (1) // loops if player rolls double, breaks if not
+		diceOne = Math.floor(Math.random() * 5 + 1); // random 1-6
+		diceTwo = Math.floor(Math.random() * 5 + 1); // random 1-6
+		console.log('You rolled ' + diceOne + ' and ' + diceTwo);
+
+		if (diceOne == diceTwo) // checks if player rolled double
 		{
-			// NEED TO CHECK IF IN JAIL
-
-			// NEED TO WAIT FOR DICE BUTTON
-			diceOne = Math.floor(Math.random() * 5 + 1); // random 1-6
-			diceTwo = Math.floor(Math.random() * 5 + 1); // random 1-6
-			console.log('You rolled ' + diceOne + ' and ' + diceTwo);
-			players[activePlayer].position += diceOne + diceTwo;
-			if (players[activePlayer].position > 39) // handles looping around board
+			if (players[activePlayer].inJail) // leave jail if double rolled while jailed
 			{
-				throw new Error("END"); // TEMP
-				players[activePlayer].position %= 40;
-				players[activePlayer].money += 200; // pass the Union
+				console.log("Leaving jail");
+				players[activePlayer].inJail = false;
+				startTurn();
 			}
-
-			console.log('Position is now ' + players[activePlayer].position);
-
-			switch (players[activePlayer].position)
-			{
-				case 0:		// Union
-					console.log('Union');
-					break;
-				case 1:		// Sage Hall
-					properties[0].propertySpace();
-					properties[0].checkMonopoly(2, 1, undefined);
-					break;
-				case 2:		// Community Chest
-					console.log('Community chest');
-					break;
-				case 3:		// Sycamore Hall
-					properties[1].propertySpace();
-					properties[1].checkMonopoly(2, 0, undefined);
-					break;
-				case 4:		// Tuition Payment
-					console.log('Tuition payment, pay $200');
-					players[activePlayer].money -= 200;
-					break;
-				case 5:		// Discovery Park Bus Stop
-					busStops[0].busStopSpace();
-					break;
-				case 6:		// Wooten Hall
-					properties[2].propertySpace();
-					properties[2].checkMonopoly(3, 3, 4);
-					break;
-				case 7:		// Chance
-					console.log('Chance');
-					break;
-				case 8:		// Business Building
-					properties[3].propertySpace();
-					properties[3].checkMonopoly(3, 2, 4);
-					break;
-				case 9:		// Joe Green Hall
-					properties[4].propertySpace();
-					properties[4].checkMonopoly(3, 2, 3);
-					break;
-				case 10:	// Garage
-					console.log('Garage');
-					break;
-				case 11:	// Kerr Hall
-					properties[5].propertySpace();
-					properties[5].checkMonopoly(3, 6, 7);
-					break;
-				case 12:	// Eagle Landing
-					utilities[0].utilitySpace();
-					break;
-				case 13:	// Maple Hall
-					properties[6].propertySpace();
-					properties[6].checkMonopoly(3, 5, 7);
-					break;
-				case 14:	// Rawlins Hall
-					properties[7].propertySpace();
-					properties[7].checkMonopoly(3, 5, 6);
-					break;
-				case 15:	// Second Bus Stop
-					busStops[1].busStopSpace();
-					break;
-				case 16:	// The Pit
-					properties[8].propertySpace();
-					properties[8].checkMonopoly(3, 9, 10);
-					break;
-				case 17:	// Community Chest
-					console.log('Community chest');
-					break;
-				case 18:	// Pohl Recreation Center
-					properties[9].propertySpace();
-					properties[9].checkMonopoly(3, 8, 10);
-					break;
-				case 19:	// Chesnut Hall
-					properties[10].propertySpace();
-					properties[10].checkMonopoly(3, 8, 9);
-					break;
-				case 20:	// Voertman's
-					console.log("Voertman's");
-					break;
-				case 21:	// West Hall
-					properties[11].propertySpace();
-					properties[11].checkMonopoly(3, 12, 13);
-					break;
-				case 22:	// Chance
-					console.log('Chance');
-					break;
-				case 23:	// Legends Hall
-					properties[12].propertySpace();
-					properties[12].checkMonopoly(3, 11, 13);
-					break;
-				case 24:	// Environmental Science Building
-					properties[13].propertySpace();
-					properties[13].checkMonopoly(3, 11, 12);
-					break;
-				case 25:	// Third Bus Stop
-					busStops[2].busStopSpace();
-					break;
-				case 26:	// Chemistry Building
-					properties[14].propertySpace();
-					properties[14].checkMonopoly(3, 15, 16);
-					break;
-				case 27:	// Bruce Cafeteria
-					utilities[1].utilitySpace();
-					break;
-				case 28:	// Music Building
-					properties[15].propertySpace();
-					properties[15].checkMonopoly(3, 14, 16);
-					break;
-				case 29:	// Chilton Hall
-					properties[16].propertySpace();
-					properties[16].checkMonopoly(3, 14, 15);
-					break;
-				case 30:	// Go to Jail
-					console.log('Go to jail');
-					players[activePlayer].inJail = true;
-					players[activePlayer].position = 10;
-					break;
-				case 31:	// General Academic Building
-					properties[17].propertySpace();
-					properties[17].checkMonopoly(3, 18, 19);
-					break;
-				case 32:	// Art Building
-					properties[18].propertySpace();
-					properties[18].checkMonopoly(3, 17, 19);
-					break;
-				case 33:	// Community Chest
-					console.log('Community chest');
-					break;
-				case 34:	// Language Building
-					properties[19].propertySpace();
-					properties[19].checkMonopoly(3, 17, 18);
-					break;
-				case 35:	// Union Bus Stop
-					busStops[3].busStopSpace();
-					break;
-				case 36:	// Chance
-					console.log('Chance');
-					break;
-				case 37:	// Eagle Student Services Center
-					properties[20].propertySpace();
-					properties[20].checkMonopoly(2, 21, undefined);
-					break;
-				case 38:	// Loan Payment
-					console.log('Loan payment, pay $100');
-					players[activePlayer].money -= 100;
-					break;
-				case 39:	// Willis Library
-					properties[21].propertySpace();
-					properties[21].checkMonopoly(2, 20, undefined);
-					break;
-				default:
-					console.log('ERROR: Position unknown');
-			}
-
-			console.log('Money is now $' + players[activePlayer].money);
-
-			// NEED TO CHECK FOR BANKRUPTCY
-
-			if (diceOne == diceTwo) // checks if player rolled double
+			else
 			{
 				doubleCount++;
 				if (doubleCount == 3) // send player to jail if three doubles rolled in a row
 				{
 					console.log("3 doubles rolled, go to jail");
 					players[activePlayer].inJail = true;
-					break;
+					endTurn();
+				}
+				else
+				{
+					console.log("Double!");
+					doubleRolled = true;
+					startTurn();
 				}
 			}
-			else // ends turn if player didn't roll double
+		}
+		else
+		{
+			if (players[activePlayer].inJail)
 			{
-				break;
+				jailTurn();
+			}
+			else
+			{
+				doubleRolled = false;
+				startTurn();
 			}
 		}
+	}
+}
 
-		activePlayer++;
-		activePlayer %= players.length;	// returns to first player’s turn after all others
+function startTurn()
+{
+	players[activePlayer].position += diceOne + diceTwo;
+	if (players[activePlayer].position > 39) // handles looping around board
+	{
+		players[activePlayer].position %= 40;
+		players[activePlayer].money += 200; // pass the Union
 	}
 
+	console.log('Position is now ' + players[activePlayer].position);
+
+	switch (players[activePlayer].position)
+	{
+		case 0:		// Union
+			console.log('Union');
+			endTurn();
+			break;
+		case 1:		// Sage Hall
+			properties[0].propertySpace();
+			break;
+		case 2:		// Community Chest
+			console.log('Community chest');
+			endTurn();
+			break;
+		case 3:		// Sycamore Hall
+			properties[1].propertySpace();
+			break;
+		case 4:		// Tuition Payment
+			console.log('Tuition payment, pay $200');
+			players[activePlayer].money -= 200;
+			endTurn();
+			break;
+		case 5:		// Discovery Park Bus Stop
+			busStops[0].busStopSpace();
+			break;
+		case 6:		// Wooten Hall
+			properties[2].propertySpace();
+			break;
+		case 7:		// Chance
+			console.log('Chance');
+			endTurn();
+			break;
+		case 8:		// Business Building
+			properties[3].propertySpace();
+			break;
+		case 9:		// Joe Green Hall
+			properties[4].propertySpace();
+			break;
+		case 10:	// Garage
+			console.log('Garage');
+			endTurn();
+			break;
+		case 11:	// Kerr Hall
+			properties[5].propertySpace();
+			break;
+		case 12:	// Eagle Landing
+			utilities[0].utilitySpace();
+			break;
+		case 13:	// Maple Hall
+			properties[6].propertySpace();
+			break;
+		case 14:	// Rawlins Hall
+			properties[7].propertySpace();
+			break;
+		case 15:	// General Acedemic Building Bus Stop
+			busStops[1].busStopSpace();
+			break;
+		case 16:	// The Pit
+			properties[8].propertySpace();
+			break;
+		case 17:	// Community Chest
+			console.log('Community chest');
+			endTurn();
+			break;
+		case 18:	// Pohl Recreation Center
+			properties[9].propertySpace();
+			break;
+		case 19:	// Chesnut Hall
+			properties[10].propertySpace();
+			break;
+		case 20:	// Voertman's
+			console.log("Voertman's");
+			endTurn();
+			break;
+		case 21:	// West Hall
+			properties[11].propertySpace();
+			break;
+		case 22:	// Chance
+			console.log('Chance');
+			endTurn();
+			break;
+		case 23:	// Legends Hall
+			properties[12].propertySpace();
+			break;
+		case 24:	// Environmental Science Building
+			properties[13].propertySpace();
+			break;
+		case 25:	// Maple Hall Bus Stop
+			busStops[2].busStopSpace();
+			break;
+		case 26:	// Chemistry Building
+			properties[14].propertySpace();
+			break;
+		case 27:	// Bruce Cafeteria
+			utilities[1].utilitySpace();
+			break;
+		case 28:	// Music Building
+			properties[15].propertySpace();
+			break;
+		case 29:	// Chilton Hall
+			properties[16].propertySpace();
+			break;
+		case 30:	// Go to Jail
+			console.log('Go to jail');
+			doubleRolled = false;
+			players[activePlayer].inJail = true;
+			players[activePlayer].position = 10;
+			endTurn();
+			break;
+		case 31:	// General Academic Building
+			properties[17].propertySpace();
+			break;
+		case 32:	// Art Building
+			properties[18].propertySpace();
+			break;
+		case 33:	// Community Chest
+			console.log('Community chest');
+			endTurn();
+			break;
+		case 34:	// Language Building
+			properties[19].propertySpace();
+			break;
+		case 35:	// Union Bus Stop
+			busStops[3].busStopSpace();
+			break;
+		case 36:	// Chance
+			console.log('Chance');
+			endTurn();
+			break;
+		case 37:	// Eagle Student Services Center
+			properties[20].propertySpace();
+			break;
+		case 38:	// Loan Payment
+			console.log('Loan payment, pay $100');
+			players[activePlayer].money -= 100;
+			endTurn();
+			break;
+		case 39:	// Willis Library
+			properties[21].propertySpace();
+			break;
+		default:
+			throw new Error("Position unknown");
+	}
+}
+
+function endTurn()
+{
+	console.log('Money is now $' + players[activePlayer].money);
+
+	// NEED TO CHECK FOR BANKRUPTCY
+
+	if (!doubleRolled) // ends turn if player didn't roll double
+	{
+		activePlayer++;
+		activePlayer %= players.length;	// returns to first player’s turn after all others
+		doubleCount = 0;
+		console.log("\n" + players[activePlayer].name + "'s turn");
+	}
+	else
+	{
+		console.log("Roll again");
+	}
+
+	diceRollable = true;
+}
+
+function jailTurn()
+{
+	console.log("In jail");
+	endTurn();
+}
+
+// runs if user presses enter while clicked onto the input box
+document.getElementById('answer').addEventListener('keyup', function(event)
+{
+	if (event.code === 'Enter')
+  	{
+    	response = document.getElementById('answer').value;
+   		document.getElementById('answer').value = '';
+		if (inputToggle != "None")
+		{
+			input();
+		}
+ 	}
+});
+
+function input()
+{
+	if (response == "Y" || response == "N")
+	{
+		switch (inputToggle)
+		{
+			case "Buy Property":
+				if (response == "Y")
+				{
+					switch (players[activePlayer].position)
+					{
+						case 1:		// Sage Hall
+							properties[0].buyProperty();
+							properties[0].checkMonopoly(2, 1, undefined);
+							break;
+						case 3:		// Sycamore Hall
+							properties[1].buyProperty();
+							properties[1].checkMonopoly(2, 0, undefined);
+							break;
+						case 6:		// Wooten Hall
+							properties[2].buyProperty();
+							properties[2].checkMonopoly(3, 3, 4);
+							break;
+						case 8:		// Business Building
+							properties[3].buyProperty();
+							properties[3].checkMonopoly(3, 2, 4);
+							break;
+						case 9:		// Joe Green Hall
+							properties[4].buyProperty();
+							properties[4].checkMonopoly(3, 2, 3);
+							break;
+						case 11:	// Kerr Hall
+							properties[5].buyProperty();
+							properties[5].checkMonopoly(3, 6, 7);
+							break;
+						case 13:	// Maple Hall
+							properties[6].buyProperty();
+							properties[6].checkMonopoly(3, 5, 7);
+							break;
+						case 14:	// Rawlins Hall
+							properties[7].buyProperty();
+							properties[7].checkMonopoly(3, 5, 6);
+							break;
+						case 16:	// The Pit
+							properties[8].buyProperty();
+							properties[8].checkMonopoly(3, 9, 10);
+							break;
+						case 18:	// Pohl Recreation Center
+							properties[9].buyProperty();
+							properties[9].checkMonopoly(3, 8, 10);
+							break;
+						case 19:	// Chesnut Hall
+							properties[10].buyProperty();
+							properties[10].checkMonopoly(3, 8, 9);
+							break;
+						case 21:	// West Hall
+							properties[11].buyProperty();
+							properties[11].checkMonopoly(3, 12, 13);
+							break;
+						case 23:	// Legends Hall
+							properties[12].buyProperty();
+							properties[12].checkMonopoly(3, 11, 13);
+							break;
+						case 24:	// Environmental Science Building
+							properties[13].buyProperty();
+							properties[13].checkMonopoly(3, 11, 12);
+							break;
+						case 26:	// Chemistry Building
+							properties[14].buyProperty();
+							properties[14].checkMonopoly(3, 15, 16);
+							break;
+						case 28:	// Music Building
+							properties[15].buyProperty();
+							properties[15].checkMonopoly(3, 14, 16);
+							break;
+						case 29:	// Chilton Hall
+							properties[16].buyProperty();
+							properties[16].checkMonopoly(3, 14, 15);
+							break;
+						case 31:	// General Academic Building
+							properties[17].buyProperty();
+							properties[17].checkMonopoly(3, 18, 19);
+							break;
+						case 32:	// Art Building
+							properties[18].buyProperty();
+							properties[18].checkMonopoly(3, 17, 19);
+							break;
+						case 34:	// Language Building
+							properties[19].buyProperty();
+							properties[19].checkMonopoly(3, 17, 18);
+							break;
+						case 37:	// Eagle Student Services Center
+							properties[20].buyProperty();
+							properties[20].checkMonopoly(2, 21, undefined);
+							break;
+						case 39:	// Willis Library
+							properties[21].buyProperty();
+							properties[21].checkMonopoly(2, 20, undefined);
+							break;
+						default:
+							throw new Error("Position unknown");
+					}
+				}
+				else
+				{
+					// AUCTION
+				}
+				break;
+			case "Buy Utility":
+				if (response == "Y")
+				{
+					switch (players[activePlayer].position)
+					{
+						case 12:	// Eagle Landing
+							utilities[0].buyUtility();
+							break;
+						case 27:	// Bruce Cafeteria
+							utilities[1].buyUtility();
+							break;
+						default:
+							throw new Error("Position unknown");
+					}
+				}
+				else
+				{
+					// AUCTION
+				}
+				break;
+			case "Buy Bus Stop":
+				if (response == "Y")
+				{
+					switch (players[activePlayer].position)
+					{
+						case 5:		// Discovery Park Bus Stop
+							busStops[0].buyBusStop();
+							break;
+						case 15:	// General Acedemic Building Bus Stop
+							busStops[1].buyBusStop();
+							break;
+						case 25:	// Maple Hall Bus Stop
+							busStops[2].buyBusStop();
+							break;
+						case 35:	// Union Bus Stop
+							busStops[3].buyBusStop();
+							break;
+						default:
+							throw new Error("Position unknown");
+					}
+				}
+				else
+				{
+					// AUCTION
+				}
+				break;
+			case "Use Jail Card":
+
+				break;
+			case "Pay Jail Fee":
+
+				break;
+			default:
+				throw new Error("Input toggle unknown");
+		}
+		inputToggle = "None";
+		endTurn();
+	}
+	else
+	{
+		console.log("Incorrect input, only enter 'Y' or 'N'");
+	}
 }
