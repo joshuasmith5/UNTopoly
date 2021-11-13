@@ -92,12 +92,10 @@ class Property {
 }
 
 class Utility {
-	constructor(name,price) {
+	constructor(name) {
 		this.name = name;
 		this.ownedBy = -1;
 		this.isMortgaged = false;
-		//this.price = price;
-		this.cost = 150;
 	}
 	logInfo() {
 		console.log(this.name);
@@ -108,8 +106,8 @@ class Utility {
 	{
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
-			console.log("Buy " + this.name + " for $" + this.cost);
-			//let input = prompt("Would you like to buy " + this.name + " for " + this.cost + "? Y/N");
+			console.log("Buy " + this.name + " for $150");
+			//let input = prompt("Would you like to buy " + this.name + " for $150? Y/N");
 			//if (input == "Y")
 			//{
 				players[activePlayer].money -= 150;
@@ -154,7 +152,6 @@ class BusStop {
 		this.name = name;
 		this.ownedBy = -1;
 		this.isMortgaged = false;
-		this.cost = 200;
 	}
 	logInfo() {
 		console.log(this.name);
@@ -165,8 +162,8 @@ class BusStop {
 	{
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
-			console.log("Buy " + this.name + " for $" + this.cost);
-			//let input = prompt("Would you like to buy " + this.name + " for " + this.cost + "? Y/N");
+			console.log("Buy " + this.name + " for $200");
+			//let input = prompt("Would you like to buy " + this.name + " for $150? Y/N");
 			//if (input == "Y")
 			//{
 				players[activePlayer].money -= 200;
@@ -244,8 +241,8 @@ const utilities = [ // creates pre-set utility objects
 ];
 const busStops = [ // creates pre-set bus stop objects
     new BusStop('Discovery Park Bus Stop'),
-    new BusStop('General Acedemic Building Bus Stop'), // NEEDS NAMING
-    new BusStop('Maple Hall Bus Stop'), // NEEDS NAMING
+    new BusStop('General Acedemic Building Bus Stop'),
+    new BusStop('Maple Hall Bus Stop'),
     new BusStop('Union Transfer Bus Stop')
 ];
 const chestCards = [ // creates pre-set community chest card objects
