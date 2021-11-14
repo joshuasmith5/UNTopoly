@@ -11,7 +11,7 @@
 
 
 <body>
-<input type="hidden" name="answer" id="answer">
+	<div id="start">
 <section class="container">
 	<div id="col-1">
 		<div class="center">
@@ -48,5 +48,26 @@
 		<img src="board.png" style='height: 100%; width: 100%; opacity: 75%; object-fit: contain'/>
 	</div>
 </section>
+</div>
+
+<div id="game">
+	<img src="board.png" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
+	
+	<input type="text" placeholder="Y/N" name="answer" id="answer">
+	<button onclick="diceRoll()">
+		Roll Dice
+	</button>
+	
+	<section class="game-container">
+		<div id="col-1">
+			<div class= "player-info-back"></div>
+		</div>
+		<div id="col-2">
+			<div class= "sub-settings-back"></div>
+			<!-- <div class= "dice-button"></div> -->
+		</div>
+	</section>
+	<div class= "notifications-back"></div>
+</div>
 </body>
 </html>

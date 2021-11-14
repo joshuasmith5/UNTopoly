@@ -101,3 +101,16 @@
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+#game {
+	display: none;
+  background-color: rgba(0, 123, 60, .8);
+	border: 2px solid black;
+	border-spacing: 3px;
+	margin: 25px;
+	float: left;
+}
+#start {
+	display: inline;
+	
+}

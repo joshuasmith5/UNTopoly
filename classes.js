@@ -1,6 +1,5 @@
 
 // CLASSES
-
 class Player {
 	constructor(name) {
 		this.name = name;
@@ -311,6 +310,16 @@ function playerSetup(numP)
 	}
 
 	console.log("\n" + players[activePlayer].name + "'s turn");
+	var x = document.getElementById("start");
+	var y = document.getElementById("game")
+  	if (x.style.display === "none") {
+    	x.style.display = "none";
+		y.style.display = "block";
+  	} 
+	else {
+    	x.style.display = "none";
+		y.style.display = "block";
+  	}
 }
 
 function diceRoll()
@@ -546,18 +555,20 @@ function jailTurn()
 }
 
 // runs if user presses enter while clicked onto the input box
-document.getElementById('answer').addEventListener('keyup', function(event)
-{
-	if (event.code === 'Enter')
-  	{
-    	response = document.getElementById('answer').value;
-   		document.getElementById('answer').value = '';
-		if (inputToggle != "None")
-		{
-			input();
-		}
- 	}
-});
+window.onload = function() {
+    document.getElementById('answer').addEventListener('keyup', function(event)
+    {
+        if (event.code === 'Enter')
+        {
+            response = document.getElementById('answer').value;
+            document.getElementById('answer').value = '';
+            if (inputToggle != "None")
+            {
+                input();
+            }
+        }
+    });
+}
 
 function input()
 {
