@@ -373,6 +373,7 @@ function diceRoll()
 {
 	if (diceRollable)
 	{
+		doubleRolled = false;
 		diceRollable = false;
 
 		diceOne = Math.floor(Math.random() * 5 + 1); // random 1-6
@@ -420,7 +421,6 @@ function diceRoll()
 			}
 			else
 			{
-				doubleRolled = false;
 				startTurn();
 			}
 		}
