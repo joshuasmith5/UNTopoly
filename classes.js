@@ -831,8 +831,8 @@ function input()
 	}
 	else
 	{
-		console.log("Incorrect input, only enter 'Y' or 'N'");
-		document.getElementById('log').innerHTML += "<p>Incorrect input, only enter 'Y' or 'N'</p>";
+		console.log("Incorrect input, only enter 'Y', 'y', 'N', or 'n'");
+		document.getElementById('log').innerHTML += "<p>Incorrect input, only enter 'Y', 'y', 'N', or 'n'</p>";
 		updateScroll();
 	}
 }
