@@ -10,9 +10,8 @@
     font-family: Verdana, Arial, sans-serif;
   }
 
-  p
-  {
-    margin: 0;
+  p{
+    margin: 20px;
   }
  
   .button2 {
