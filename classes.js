@@ -309,7 +309,6 @@ function playerSetup(numP)
 		console.log(players[i].name + " is player " + (i+1));
 	}
 
-	console.log("\n" + players[activePlayer].name + "'s turn");
 	var x = document.getElementById("start");
 	var y = document.getElementById("game")
   	if (x.style.display === "none") {
@@ -320,6 +319,8 @@ function playerSetup(numP)
     	x.style.display = "none";
 		y.style.display = "block";
   	}
+	
+	console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
 }
 
 function diceRoll()
@@ -538,7 +539,7 @@ function endTurn()
 		activePlayer++;
 		activePlayer %= players.length;	// returns to first player’s turn after all others
 		doubleCount = 0;
-		console.log("\n" + players[activePlayer].name + "'s turn");
+		console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
 	}
 	else
 	{
