@@ -61,6 +61,8 @@ class Property {
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
 			console.log("Would you like to buy " + this.name + " for $" + this.cost + "?");
+			document.getElementById('log').innerHTML +="<p> Would you like to buy " + this.name + " for $" + this.cost + "</p>";
+			updateScroll();
 			inputToggle = "Buy Property";
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
@@ -82,6 +84,7 @@ class Property {
 		else
 		{
 			console.log("Landed on " + this.name);
+			
 		}
 	}
 	buyProperty() {
@@ -107,6 +110,7 @@ class Utility {
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
 			console.log("Would you like to buy " + this.name + " for $150?");
+			document.getElementById('log').innerHTML +="<p> Would you like to buy " + this.name + " for $150? </p>";
 			inputToggle = "Buy Utility";
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
@@ -299,6 +303,11 @@ let inputToggle = "None"; 	// determines what input is needed for
 
 
 // FUNCTIONS
+function updateScroll(){
+    var element = document.getElementById("log");
+    element.scrollTop = element.scrollHeight;
+}
+
 
 function playerSetup(numP)
 {
@@ -320,6 +329,7 @@ function playerSetup(numP)
     	x.style.display = "none";
 		y.style.display = "block";
   	}
+
 }
 
 function diceRoll()

@@ -114,3 +114,17 @@
 	display: inline;
 	
 }
+
+#log {
+  display: flex;
+  flex-direction: column;
+	width: 307px;
+	height: 92px;
+	margin: 0px;
+	padding-left: 1px;
+	border: 1px solid gray;
+	font-family: Consolas, "Courier New", monospace;
+	font-size: 13px;
+	background-color: #FFFFFF;
+	overflow-y: scroll;
+}
