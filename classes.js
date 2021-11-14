@@ -78,16 +78,16 @@ class Property {
 			{
 				players[activePlayer].money -= this.rent[0] * 2;
 				players[this.ownedBy].money += this.rent[0] * 2;
-				console.log("You have paid $" + this.rent[0] * 2);
-				document.getElementById('log').innerHTML += "<p>You have paid $" + this.rent[0] * 2 + "</p>";
+				console.log(players[activePlayer] + " has paid $" + this.rent[0] * 2);
+				document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has paid $" + this.rent[0] * 2 + "</p>";
 				updateScroll();
 			}
 			else
 			{
 				players[activePlayer].money -= this.rent[this.development];
 				players[this.ownedBy].money += this.rent[this.development];
-				console.log("You have paid $" + this.rent[this.development]);
-				document.getElementById('log').innerHTML += "<p>You have paid $" + this.rent[this.development] + "</p>";
+				console.log(players[activePlayer] + " has paid $" + this.rent[this.development]);
+				document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has paid $" + this.rent[this.development] + "</p>";
 				updateScroll();
 			}
 			endTurn();
@@ -103,8 +103,8 @@ class Property {
 	buyProperty() {
 		players[activePlayer].money -= this.cost;
 		this.ownedBy = activePlayer;
-		console.log("You have bought " + this.name);
-		document.getElementById('log').innerHTML += "<p>You have bought " + this.name + "</p>";
+		console.log(players[activePlayer] + " has bought " + this.name);
+		document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has bought " + this.name + "</p>";
 		updateScroll();
 	}
 }
@@ -146,15 +146,15 @@ class Utility {
 				case 1:
 					players[activePlayer].money -= (diceOne + diceTwo) * 4;
 					players[this.ownedBy].money += (diceOne + diceTwo) * 4;
-					console.log("You have paid $" + (diceOne + diceTwo) * 4);
-					document.getElementById('log').innerHTML += "<p>You have paid $" + (diceOne + diceTwo) * 4 + "</p>";
+					console.log(players[activePlayer] + " has paid $" + (diceOne + diceTwo) * 4);
+					document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has paid $" + (diceOne + diceTwo) * 4 + "</p>";
 					updateScroll();
 					break;
 				case 2:
 					players[activePlayer].money -= (diceOne + diceTwo) * 10;
 					players[this.ownedBy].money += (diceOne + diceTwo) * 10;
-					console.log("You have paid $" + (diceOne + diceTwo) * 10);
-					document.getElementById('log').innerHTML += "<p>You have paid$" + (diceOne + diceTwo) * 4 + "</p>";
+					console.log(players[activePlayer] + " has paid $" + (diceOne + diceTwo) * 10);
+					document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has paid $" + (diceOne + diceTwo) * 4 + "</p>";
 					updateScroll();
 					break;
 				default:
@@ -174,8 +174,8 @@ class Utility {
 	{
 		players[activePlayer].money -= 150;
 		this.ownedBy = activePlayer;
-		console.log("You have bought " + this.name);
-		document.getElementById('log').innerHTML += "<p>You have bought " + this.name + "</p>";
+		console.log(players[activePlayer] + " has bought " + this.name);
+		document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has bought " + this.name + "</p>";
 		updateScroll();
 	}
 }
@@ -215,8 +215,8 @@ class BusStop {
 			}
 			players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1); // 25, 50, 100, 200
 			players[this.ownedBy].money += 25 * Math.pow(2, numOwned - 1);
-			console.log("You have paid $" + 25 * Math.pow(2, numOwned - 1));
-			document.getElementById('log').innerHTML += "<p>You have paid $" + 25 * Math.pow(2, numOwned - 1) + "</p>";
+			console.log(players[activePlayer] + " has paid $" + 25 * Math.pow(2, numOwned - 1));
+			document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has paid $" + 25 * Math.pow(2, numOwned - 1) + "</p>";
 			updateScroll();
 			endTurn();
 		}
@@ -232,8 +232,8 @@ class BusStop {
 	{
 		players[activePlayer].money -= 200;
 		this.ownedBy = activePlayer;
-		console.log("You have bought " + this.name);
-		document.getElementById('log').innerHTML += "<p>You have bought " + this.name + "</p>";
+		console.log(players[activePlayer] + " has bought " + this.name);
+		document.getElementById('log').innerHTML += "<p>" + players[activePlayer] + " has bought " + this.name + "</p>";
 		updateScroll();
 	}
 }
@@ -332,7 +332,7 @@ let diceTwo = 0;        	// second dice roll
 let doubleCount = 0;    	// how many consecutive doubles have been rolled
 let doubleRolled = false; 	// determines if double rolled
 
-let response = "";			// user response
+let response = "";		// user response
 let diceRollable = true; 	// determines if dice can be rolled (at beginning of turn and such)
 let inputToggle = "None"; 	// determines what input is needed for
 
@@ -364,8 +364,8 @@ function playerSetup(numP)
 		y.style.display = "block";
   	}
 	
-	console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
-	document.getElementById('log').innerHTML += "<p>\n" + players[activePlayer].name + "'s turn, roll the dice</p>";
+	console.log(players[activePlayer].name + "'s turn, roll the dice");
+	document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, roll the dice</p>";
 	updateScroll();
 }
 
@@ -434,6 +434,9 @@ function startTurn()
 	{
 		players[activePlayer].position %= 40;
 		players[activePlayer].money += 200; // pass the Union
+		console.log("Passed the Union, collect $200");
+		document.getElementById('log').innerHTML += "<p>Passed the Union, collect $200</p>";
+		updateScroll();
 	}
 
 	console.log('Position is now ' + players[activePlayer].position);
@@ -622,7 +625,8 @@ function endTurn()
 		activePlayer %= players.length;	// returns to first player’s turn after all others
 		doubleCount = 0;
 		console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
-		document.getElementById('log').innerHTML += "<p>\n" + players[activePlayer].name + "'s turn, roll the dice</p>";
+		document.getElementById('log').innerHTML += "<p></p>";
+		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, roll the dice</p>";
 		updateScroll();
 	}
 	else
