@@ -35,22 +35,21 @@
 /*
  -figure out how to make height of button bigger
  -remove resizability functionality for now
-*/
  .button-dice{
     background-color: white;
     border: none;
     color: black;
-    padding: 15px 15px;
+    padding: 4% 0px;
     text-align: center;
     text-decoration: none;
     display: block;
     font-size: 2vw;
-    margin: 5px 25%;
-    width: 240px;
-    /*cursor: pointer
-    float: right;*/
-    font-family: Verdana, Arial, sans-serif;
+    margin: 30% 4%;
+    cursor: pointer;
+    width: 10%;
+    float: right;
  }
+*/
 
 .player-info-back {
   height: 550px;
@@ -134,9 +133,3 @@
 	background-color: #FFFFFF;
 	overflow-y: scroll;
 }
-/*
-currently not working, later project
-#numPlayers {
-	width: 40px;	
-}
-*/
