@@ -5,18 +5,18 @@ class Player {
 		this.name = name;
 		this.position = 0;
 		this.money = 1500;
-		this.jailCards = 0;
-		this.jailTurns = 0;
-		this.inJail = false;
+		this.hellCards = 0;
+		this.hellTurns = 0;
+		this.inHell = false;
 		this.hasLost = false;
 	}
 	logInfo() {
 		console.log(this.name);
 		console.log(this.position);
 		console.log(this.money);
-		console.log(this.jailCards);
-		console.log(this.jailTurns);
-		console.log(this.inJail);
+		console.log(this.hellCards);
+		console.log(this.hellTurns);
+		console.log(this.inHell);
 		console.log(this.hasLost);
 	}
 }
@@ -302,8 +302,8 @@ const chestCards = [ // creates pre-set community chest card objects
     new Card('fundMatures', 'Holiday fund matures. Collect $100'),
     new Card('insuranceMatures', 'Life insurance matures. Collect $100'),
     new Card('bankError', 'Bank error in your favor. Collect $200'),
-    new Card('goJail', 'Go to Parking Jail. Go directly to Parking Jail, do not pass the Union, do not collect $200'),
-    new Card('jailFree', 'Get out of Parking Jail free. This card can be kept until needed')
+    new Card('goHell', 'Go to Parking Hell. Go directly to Parking Hell, do not pass the Union, do not collect $200'),
+    new Card('hellFree', 'Get out of Parking Hell free. This card can be kept until needed')
 ];
 const chanceCards = [	// creates pre-set chance card objects
     new Card('advanceUnion', 'Advance to the Union (Collect $200)'),
@@ -320,8 +320,8 @@ const chanceCards = [	// creates pre-set chance card objects
     new Card('generalRepairs', 'Make general repairs on all your property. For each house pay $25. For each hotel pay $100'),
     new Card('dividend', 'Bank pays you dividend of $50'),
     new Card('loanMatures', 'Your building loan matures. Collect $150'),
-    new Card('goJail', 'Go to Parking Jail. Go directly to Parking Jail, do not pass the Union, do not collect $200'),
-    new Card('jailFree', 'Get out of Parking Jail free. This card can be kept until needed')
+    new Card('goHell', 'Go to Parking Hell. Go directly to Parking Hell, do not pass the Union, do not collect $200'),
+    new Card('hellFree', 'Get out of Parking Hell free. This card can be kept until needed')
 ];
 
 let houseCount = 32;    	// how many houses the bank has to sell
@@ -339,7 +339,8 @@ let inputToggle = "None"; 	// determines what input is needed for
 
 // FUNCTIONS
 
-function updateScroll(){
+function updateScroll()
+{
     var element = document.getElementById("log");
     element.scrollTop = element.scrollHeight;
 }
@@ -385,23 +386,23 @@ function diceRoll()
 
 		if (diceOne == diceTwo) // checks if player rolled double
 		{
-			if (players[activePlayer].inJail) // leave jail if double rolled while jailed
+			if (players[activePlayer].inHell) // leave hell if double rolled while helled
 			{
-				console.log("Leaving jail");
-				document.getElementById('log').innerHTML += "<p>Leaving jail</p>";
+				console.log("Leaving hell");
+				document.getElementById('log').innerHTML += "<p>Leaving hell</p>";
 				updateScroll();
-				players[activePlayer].inJail = false;
+				players[activePlayer].inHell = false;
 				startTurn();
 			}
 			else
 			{
 				doubleCount++;
-				if (doubleCount == 3) // send player to jail if three doubles rolled in a row
+				if (doubleCount == 3) // send player to hell if three doubles rolled in a row
 				{
-					console.log("3 doubles rolled, go to jail");
-					document.getElementById('log').innerHTML += "<p>3 doubles rolled, go to jail</p>";
+					console.log("3 doubles rolled, go to hell");
+					document.getElementById('log').innerHTML += "<p>3 doubles rolled, go to hell</p>";
 					updateScroll();
-					players[activePlayer].inJail = true;
+					players[activePlayer].inHell = true;
 					endTurn();
 				}
 				else
@@ -416,9 +417,9 @@ function diceRoll()
 		}
 		else
 		{
-			if (players[activePlayer].inJail)
+			if (players[activePlayer].inHell)
 			{
-				jailTurn();
+				hellTurn();
 			}
 			else
 			{
@@ -561,12 +562,12 @@ function startTurn()
 		case 29:	// Chilton Hall
 			properties[16].propertySpace();
 			break;
-		case 30:	// Go to Jail
-			console.log('Go to jail');
-			document.getElementById('log').innerHTML += "<p>Go to jail</p>";
+		case 30:	// Go to Parking Hell
+			console.log('Go to parking hell');
+			document.getElementById('log').innerHTML += "<p>Go to parking hell</p>";
 			updateScroll();
 			doubleRolled = false;
-			players[activePlayer].inJail = true;
+			players[activePlayer].inHell = true;
 			players[activePlayer].position = 10;
 			endTurn();
 			break;
@@ -640,10 +641,10 @@ function endTurn()
 	diceRollable = true;
 }
 
-function jailTurn()
+function hellTurn()
 {
-	console.log("In jail");
-	document.getElementById('log').innerHTML += "<p>In jail</p>";
+	console.log("In parking hell");
+	document.getElementById('log').innerHTML += "<p>In parking hell</p>";
 	updateScroll();
 	endTurn();
 }
@@ -818,10 +819,10 @@ function input()
 					// AUCTION
 				}
 				break;
-			case "Use Jail Card":
+			case "Use Hell Card":
 
 				break;
-			case "Pay Jail Fee":
+			case "Pay Hell Fee":
 
 				break;
 			default:
