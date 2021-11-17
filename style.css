@@ -48,7 +48,8 @@
     margin: 5px 5px;
     cursor: pointer;
     width: 10%;
-    float: right;
+    /*float: right;*/
+    font-family: Verdana, Arial, sans-serif;
  }
 
 .player-info-back {
