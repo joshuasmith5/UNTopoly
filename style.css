@@ -46,9 +46,9 @@
     display: block;
     font-size: 2vw;
     margin: 5px 25%;
-    cursor: pointer;
-    width: 40px;
-    /*float: right;*/
+    width: 140px;
+    /*cursor: pointer
+    float: right;*/
     font-family: Verdana, Arial, sans-serif;
  }
 
