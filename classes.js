@@ -283,8 +283,8 @@ const utilities = [ // creates pre-set utility objects
 ];
 const busStops = [ // creates pre-set bus stop objects
     new BusStop('Discovery Park Bus Stop'),
-    new BusStop('General Acedemic Building Bus Stop'),
-    new BusStop('Maple Hall Bus Stop'),
+    new BusStop('Fouts Field Bus Stop'),
+    new BusStop('Mean Green Bus Stop'),
     new BusStop('Union Transfer Bus Stop')
 ];
 const chestCards = [ // creates pre-set community chest card objects
