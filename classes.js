@@ -46,14 +46,14 @@ class Property {
 		if (pairNum == 2) {
 			if (!this.isMonopoly && properties[pair1Property].ownedBy == activePlayer && this.ownedBy == activePlayer){
 				properties[pair1Property].isMonopoly = this.isMonopoly = true;
-				console.log("Monopoly!");
+				console.log("Congrats " + players[activePlayer].name + "! You have a monopoly!");
 				document.getElementById('log').innerHTML += "<p>Monopoly!</p>";
 				updateScroll();
 			}
 		} else if (pairNum == 3) {
 			if (!this.isMonopoly && this.ownedBy == activePlayer && properties[pair1Property].ownedBy == activePlayer && properties[pair2Property].ownedBy == activePlayer){
 				this.isMonopoly = properties[pair1Property].isMonopoly = properties[pair2Property].isMonopoly = true;
-				console.log("Monopoly!");
+				console.log("Congrats " + players[activePlayer].name + "! You have a monopoly!");
 				document.getElementById('log').innerHTML += "<p>Monopoly!</p>";
 				updateScroll();
 			}
@@ -71,7 +71,7 @@ class Property {
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
 		{
-			console.log("Must pay rent for " + this.name);
+			console.log( this.name + " is owned by " + players[this.ownedBy].name + " You owe rent.");
 			document.getElementById('log').innerHTML += "<p>Must pay rent for " + this.name + "</p>";
 			updateScroll();
 			if (this.isMonopoly && this.development == 0) // doubles rent if has monopoly and unimproved
@@ -94,7 +94,8 @@ class Property {
 		}
 		else
 		{
-			console.log("Landed on " + this.name);
+			console.log(players[activePlayer].name + " landed on " + this.name);
+			//do i need to change this too? \/
 			document.getElementById('log').innerHTML += "<p>Landed on " + this.name + "</p>";
 			updateScroll();
 			endTurn();
@@ -130,7 +131,7 @@ class Utility {
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
 		{
-			console.log("Must pay rent for " + this.name);
+			console.log(this.name " is owned by " + players[this.ownedBy].name + " You owe rent.");
 			document.getElementById('log').innerHTML += "<p>Must pay rent for " + this.name + "</p>";
 			updateScroll();
 			let numOwned = 0;
@@ -164,7 +165,7 @@ class Utility {
 		}
 		else
 		{
-			console.log("Landed on " + this.name);
+			console.log(players[activePlayer].name + " landed on " + this.name);
 			document.getElementById('log').innerHTML += "<p>Landed on " + this.name + "</p>";
 			updateScroll();
 			endTurn();
@@ -202,7 +203,7 @@ class BusStop {
 		}
 		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
 		{
-			console.log("Must pay rent for " + this.name);
+			console.log( this.name + " is owned by " + players[this.ownedBy].name + " You owe rent.");
 			document.getElementById('log').innerHTML += "<p>Must pay rent for " + this.name + "</p>";
 			updateScroll();
 			let numOwned = 0;
@@ -222,7 +223,7 @@ class BusStop {
 		}
 		else
 		{
-			console.log("Landed on " + this.name);
+			console.log(players[activePlayer].name + " landed on " + this.name);
 			document.getElementById('log').innerHTML += "<p>Landed on " + this.name + "</p>";
 			updateScroll();
 			endTurn();
@@ -388,7 +389,7 @@ function diceRoll()
 		{
 			if (players[activePlayer].inHell) // leave hell if double rolled while helled
 			{
-				console.log("Leaving hell");
+				console.log("Leaving Parking Hell");
 				document.getElementById('log').innerHTML += "<p>Leaving hell</p>";
 				updateScroll();
 				players[activePlayer].inHell = false;
@@ -399,7 +400,7 @@ function diceRoll()
 				doubleCount++;
 				if (doubleCount == 3) // send player to hell if three doubles rolled in a row
 				{
-					console.log("3 doubles rolled, go to hell");
+					console.log("3 doubles rolled! Go straight to parking hell. Do not pass the Union. Do not collect $200.");
 					document.getElementById('log').innerHTML += "<p>3 doubles rolled, go to hell</p>";
 					updateScroll();
 					players[activePlayer].inHell = true;
@@ -407,7 +408,7 @@ function diceRoll()
 				}
 				else
 				{
-					console.log("Double!");
+					console.log("Double! Roll again at the end of your turn!");
 					document.getElementById('log').innerHTML += "<p>Double!</p>";
 					updateScroll();
 					doubleRolled = true;
@@ -441,14 +442,14 @@ function startTurn()
 		updateScroll();
 	}
 
-	console.log('Position is now ' + players[activePlayer].position);
+	console.log( players[activePlayer].name + "'s position is now " + players[activePlayer].position);
 	document.getElementById('log').innerHTML += "<p>Position is now " + players[activePlayer].position + "</p>";
 	updateScroll();
 
 	switch (players[activePlayer].position)
 	{
 		case 0:		// Union
-			console.log('Union');
+			console.log(players[activePlayer].name + " has landed on the Union. Grab a snack and listen to the jazz bands play!");
 			document.getElementById('log').innerHTML += "<p>Union</p>";
 			updateScroll();
 			endTurn();
@@ -457,7 +458,7 @@ function startTurn()
 			properties[0].propertySpace();
 			break;
 		case 2:		// Community Chest
-			console.log('Community chest');
+			console.log(players[activePlayer].name + " has landed on the Community chest');
 			document.getElementById('log').innerHTML += "<p>Community chest</p>";
 			updateScroll();
 			endTurn();
