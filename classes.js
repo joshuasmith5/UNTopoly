@@ -453,15 +453,13 @@ function drawCard(deck)
 		document.getElementById('log').innerHTML += "<p>" + deck[card].description + "</p>";
 		updateScroll();
 
-document.getElementById('log').innerHTML += "<p>" + deck[card].type + "</p>";
-updateScroll();
 		switch (deck[card].type)
 		{
-			case advanceUnion:		// Advance to the Union (Collect $200)
+			case 'advanceUnion':		// Advance to the Union (Collect $200)
 				players[activePlayer].position = 0;
 				players[activePlayer].money += 200;
 				break;
-			case advanceDiscovery:	// Take a trip to the Discovery Park Bus Stop. If you pass the Union, collect $200
+			case 'advanceDiscovery':	// Take a trip to the Discovery Park Bus Stop. If you pass the Union, collect $200
 				if (players[activePlayer].position > 5)
 				{
 					players[activePlayer].money += 200;
@@ -469,7 +467,7 @@ updateScroll();
 				players[activePlayer].position = 5;
 				busStops[0].busStopSpace(false);
 				break;
-			case advanceKerr:		// Advance to Kerr Hall. If you pass the Union, collect $200
+			case 'advanceKerr':		// Advance to Kerr Hall. If you pass the Union, collect $200
 				if (players[activePlayer].position > 11)
 				{
 					players[activePlayer].money += 200;
@@ -477,7 +475,7 @@ updateScroll();
 				players[activePlayer].position = 11;
 				properties[5].propertySpace();
 				break;
-			case advanceEnviSci:	// Advance to the Environmental Science Building. If you pass the Union, collect $200
+			case 'advanceEnviSci':	// Advance to the Environmental Science Building. If you pass the Union, collect $200
 				if (players[activePlayer].position > 24)
 				{
 					players[activePlayer].money += 200;
@@ -485,11 +483,11 @@ updateScroll();
 				players[activePlayer].position = 24;
 				properties[13].propertySpace();
 				break;
-			case advanceWillis:		// Advance to Willis Library
+			case 'advanceWillis':		// Advance to Willis Library
 				players[activePlayer].position = 39;
 				properties[21].propertySpace();
 				break;
-			case advanceUtility:	// Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, pay owner a total ten times amount thrown
+			case 'advanceUtility':	// Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, pay owner a total ten times amount thrown
 				if (players[activePlayer].position == 7)
 				{
 					players[activePlayer].position = 12;
@@ -507,7 +505,7 @@ updateScroll();
 					utilities[0].utilitySpace(true);
 				}
 				break;
-			case advanceBusStop:	// Advance to the nearest Bus Stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled
+			case 'advanceBusStop':	// Advance to the nearest Bus Stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled
 				if (players[activePlayer].position == 7)
 				{
 					players[activePlayer].position = 15;
@@ -525,29 +523,29 @@ updateScroll();
 					busStops[0].busStopSpace(true);
 				}
 				break;
-			case backThree:			// Go back 3 spaces
+			case 'backThree':			// Go back 3 spaces
 				players[activePlayer].position -= 3;
 				break;
-			case speedingFine:		// Pay speeding fine of $15
+			case 'speedingFine':		// Pay speeding fine of $15
 				players[activePlayer].money -= 15;
 				break;
-			case doctorFee:			// Doctor’s fee. Pay $50
+			case 'doctorFee':			// Doctor’s fee. Pay $50
 				players[activePlayer].money -= 50;
 				break;
-			case schoolFee:			// Pay school fees of $50
+			case 'schoolFee':			// Pay school fees of $50
 				players[activePlayer].money -= 50;
 				break;
-			case hospitalFee:		// Pay hospital fees of $100
+			case 'hospitalFee':		// Pay hospital fees of $100
 				players[activePlayer].money -= 100;
 				break;
-			case chairman:			// You have been elected Chairman of the Board. Pay each player $50
+			case 'chairman':			// You have been elected Chairman of the Board. Pay each player $50
 				for (let i = 0; i < players.length; i++)
 				{
 					players[activePlayer].money -= 50;
 					players[i].money += 50;
 				}
 				break;
-			case generalRepairs:	// Make general repairs on all your property. For each house pay $25. For each hotel pay $100
+			case 'generalRepairs':	// Make general repairs on all your property. For each house pay $25. For each hotel pay $100
 				for (let i = 0; i < properties.length; i++)
 				{
 					if (properties[i].development < 5)
@@ -560,7 +558,7 @@ updateScroll();
 					}
 				}
 				break;
-			case streetRepairs:		// You are assessed for street repairs. $40 per house. $115 per hotel
+			case 'streetRepairs':		// You are assessed for street repairs. $40 per house. $115 per hotel
 				for (let i = 0; i < properties.length; i++)
 				{
 					if (properties[i].development < 5)
@@ -573,58 +571,54 @@ updateScroll();
 					}
 				}
 				break;
-			case birthday:			// It is your birthday. Collect $10 from every player
+			case 'birthday':			// It is your birthday. Collect $10 from every player
 				for (let i = 0; i < players.length; i++)
 				{
 					players[i].money -= 10;
 					players[activePlayer].money += 10;
 				}
 				break;
-			case beautyContest:		// You have won second prize in a beauty contest. Collect $10
+			case 'beautyContest':		// You have won second prize in a beauty contest. Collect $10
 				players[activePlayer].money += 10;
 				break;
-			case taxRefund:			// Income tax refund. Collect $20
+			case 'taxRefund':			// Income tax refund. Collect $20
 				players[activePlayer].money += 20;
 				break;
-			case consultancyFee:	// Collect $25 consultancy fee
+			case 'consultancyFee':	// Collect $25 consultancy fee
 				players[activePlayer].money += 25;
 				break;
-			case stockSale:			// From sale of stock you get $50
+			case 'stockSale':			// From sale of stock you get $50
 				players[activePlayer].money += 50;
 				break;
-			case dividend:			// Bank pays you dividend of $50
+			case 'dividend':			// Bank pays you dividend of $50
 				players[activePlayer].money += 50;
 				break;
-			case inherit:			// You inherit $100
+			case 'inherit':			// You inherit $100
 				players[activePlayer].money += 100;
 				break;
-			case fundMatures:		// Holiday fund matures. Collect $100
+			case 'fundMatures':		// Holiday fund matures. Collect $100
 				players[activePlayer].money += 100;
 				break;
-			case insuranceMatures:	// Life insurance matures. Collect $100
+			case 'insuranceMatures':	// Life insurance matures. Collect $100
 				players[activePlayer].money += 100;
 				break;
-			case loanMatures:		// Your building loan matures. Collect $150
+			case 'loanMatures':		// Your building loan matures. Collect $150
 				players[activePlayer].money += 150;
 				break;
-			case bankError:			// Bank error in your favor. Collect $200
+			case 'bankError':			// Bank error in your favor. Collect $200
 				players[activePlayer].money += 200;
 				break;
-			case goHell:			// Go to Parking Hell. Go directly to Parking Hell, do not pass the Union, do not collect $200
+			case 'goHell':			// Go to Parking Hell. Go directly to Parking Hell, do not pass the Union, do not collect $200
 				doubleRolled = false;
 				players[activePlayer].inHell = true;
 				players[activePlayer].position = 10;
 				break;
-			case hellFree:			// Get out of Parking Hell free. This card can be kept until needed
+			case 'hellFree':			// Get out of Parking Hell free. This card can be kept until needed
 				players[activePlayer].hellCards++;
 				break;
 		}
 
-document.getElementById('log').innerHTML += "<p>Before splice</p>";
-updateScroll();
 		deck.splice(card, 1); // Remove card from deck
-document.getElementById('log').innerHTML += "<p>After splice</p>";
-updateScroll();
 	}
 }
 
