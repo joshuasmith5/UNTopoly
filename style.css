@@ -51,35 +51,12 @@
  }
 */
 
-.player-info-back {
-  height: 550px;
-  width: 480px;
-  background-color: white;
-  /*float: left;
-  shape-margin: 30px;*/ 
-}
-
-.sub-settings-back {
-  height: 250px;
-  width: 260px;
-  background-color: white;
-  /*float: right;
-  shape-margin: 142px;*/
-}
-
 .dice-button{
   height: 270px;
   width: 260px;
   background-color: white;
   /*float: right;
   shape-margin: 142px;*/
-}
-
-.notifications-back {
-  height: 238px;
-  width: 764px;
-  background-color: white;
-  /*shape-margin: 364px; */
 }
 
 .container {
