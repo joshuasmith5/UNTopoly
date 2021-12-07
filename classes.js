@@ -448,7 +448,7 @@ function drawCard(deck)
 {
 	if (deck.length > 0) // checks if deck is empty
 	{
-		let card = Math.floor(Math.random() * deck.length - 1); // selects random card from deck
+		let card = Math.floor(Math.random() * (deck.length - 1)); // selects random card from deck
 		console.log(deck[card].description);
 		document.getElementById('log').innerHTML += "<p>" + deck[card].description + "</p>";
 		updateScroll();
