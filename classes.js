@@ -8,7 +8,6 @@ class Player {
 		this.hellCards = 0;
 		this.hellTurns = 0;
 		this.inHell = false;
-		this.hasLost = false;
 	}
 	logInfo() {
 		console.log(this.name);
@@ -17,7 +16,6 @@ class Player {
 		console.log(this.hellCards);
 		console.log(this.hellTurns);
 		console.log(this.inHell);
-		console.log(this.hasLost);
 	}
 }
 
@@ -120,7 +118,7 @@ class Utility {
 		console.log(this.ownedBy);
 		console.log(this.isMortgaged);
 	}
-	utilitySpace()
+	utilitySpace(isCard)
 	{
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
@@ -134,11 +132,18 @@ class Utility {
 			document.getElementById('log').innerHTML += "<p>Must pay rent for " + this.name + "</p>";
 			updateScroll();
 			let numOwned = 0;
-			for (let i = 0; i < 2; i++) // finds the amount of utilities owned by the player
+			if (isCard) // if the utility was landed on as a result of a card draw, default to x10 dice roll
 			{
-				if (utilities[i].ownedBy == this.ownedBy)
+				numOwned = 2;
+			}
+			else
+			{
+				for (let i = 0; i < 2; i++) // finds the amount of utilities owned by the player
 				{
-					numOwned++;
+					if (utilities[i].ownedBy == this.ownedBy)
+					{
+						numOwned++;
+					}
 				}
 			}
 			switch (numOwned)
@@ -191,7 +196,7 @@ class BusStop {
 		console.log(this.ownedBy);
 		console.log(this.isMortgaged);
 	}
-	busStopSpace()
+	busStopSpace(isCard)
 	{
 		if (this.ownedBy == -1) // runs if not owned by player
 		{
@@ -213,10 +218,20 @@ class BusStop {
 					numOwned++;
 				}
 			}
-			players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1); // 25, 50, 100, 200
-			players[this.ownedBy].money += 25 * Math.pow(2, numOwned - 1);
-			console.log(players[activePlayer].name + " has paid $" + 25 * Math.pow(2, numOwned - 1));
-			document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + " has paid $" + 25 * Math.pow(2, numOwned - 1) + "</p>";
+			if (isCard) // if the bus stop was landed on as a result of a card draw
+			{
+				players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1) * 2; // 50, 100, 200, 400
+				players[this.ownedBy].money += 25 * Math.pow(2, numOwned - 1) * 2;
+				console.log(players[activePlayer].name + " has paid $" + 25 * Math.pow(2, numOwned - 1) * 2);
+				document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + " has paid $" + 25 * Math.pow(2, numOwned - 1) * 2 + "</p>";
+			}
+			else
+			{
+				players[activePlayer].money -= 25 * Math.pow(2, numOwned - 1); // 25, 50, 100, 200
+				players[this.ownedBy].money += 25 * Math.pow(2, numOwned - 1);
+				console.log(players[activePlayer].name + " has paid $" + 25 * Math.pow(2, numOwned - 1));
+				document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + " has paid $" + 25 * Math.pow(2, numOwned - 1) + "</p>";
+			}
 			updateScroll();
 			endTurn();
 		}
@@ -311,7 +326,7 @@ const chanceCards = [	// creates pre-set chance card objects
     new Card('advanceKerr', 'Advance to Kerr Hall. If you pass the Union, collect $200'),
     new Card('advanceEnviSci', 'Advance to the Environmental Science Building. If you pass the Union, collect $200'),
     new Card('advanceWillis', 'Advance to Willis Library'),
-    new Card('advanceUtility', 'Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, throw dice and pay owner a total ten times amount thrown'),
+    new Card('advanceUtility', 'Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, pay owner a total ten times amount thrown'),
     new Card('advanceBusStop', 'Advance to the nearest Bus Stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled'),
     new Card('advanceBusStop', 'Advance to the nearest Bus Stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled'),
     new Card('backThree', 'Go back 3 spaces'),
@@ -429,6 +444,184 @@ function diceRoll()
 	}
 }
 
+function drawCard(deck)
+{
+	if (deck.length > 0) // checks if deck is empty
+	{
+		let card = Math.floor(Math.random() * deck.length - 1); // selects random card from deck
+		console.log(deck[card].description);
+		document.getElementById('log').innerHTML += "<p>" + deck[card].description + "</p>";
+		updateScroll();
+
+		switch (deck[card].type)
+		{
+			case advanceUnion:		// Advance to the Union (Collect $200)
+				players[activePlayer].position = 0;
+				players[activePlayer].money += 200;
+				break;
+			case advanceDiscovery:	// Take a trip to the Discovery Park Bus Stop. If you pass the Union, collect $200
+				if (players[activePlayer].position > 5)
+				{
+					players[activePlayer].money += 200;
+				}
+				players[activePlayer].position = 5;
+				busStops[0].busStopSpace(false);
+				break;
+			case advanceKerr:		// Advance to Kerr Hall. If you pass the Union, collect $200
+				if (players[activePlayer].position > 11)
+				{
+					players[activePlayer].money += 200;
+				}
+				players[activePlayer].position = 11;
+				properties[5].propertySpace();
+				break;
+			case advanceEnviSci:	// Advance to the Environmental Science Building. If you pass the Union, collect $200
+				if (players[activePlayer].position > 24)
+				{
+					players[activePlayer].money += 200;
+				}
+				players[activePlayer].position = 24;
+				properties[13].propertySpace();
+				break;
+			case advanceWillis:		// Advance to Willis Library
+				players[activePlayer].position = 39;
+				properties[21].propertySpace();
+				break;
+			case advanceUtility:	// Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, pay owner a total ten times amount thrown
+				if (players[activePlayer].position == 7)
+				{
+					players[activePlayer].position = 12;
+					utilities[0].utilitySpace(true);
+				}
+				else if (players[activePlayer].position == 22)
+				{
+					players[activePlayer].position = 27;
+					utilities[1].utilitySpace(true);
+				}
+				else if (players[activePlayer].position == 36)
+				{
+					players[activePlayer].position = 12;
+					players[activePlayer].money += 200;
+					utilities[0].utilitySpace(true);
+				}
+				break;
+			case advanceBusStop:	// Advance to the nearest Bus Stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled
+				if (players[activePlayer].position == 7)
+				{
+					players[activePlayer].position = 15;
+					busStops[1].busStopSpace(true);
+				}
+				else if (players[activePlayer].position == 22)
+				{
+					players[activePlayer].position = 25;
+					busStops[2].busStopSpace(true);
+				}
+				else if (players[activePlayer].position == 36)
+				{
+					players[activePlayer].position = 5;
+					players[activePlayer].money += 200;
+					busStops[0].busStopSpace(true);
+				}
+				break;
+			case backThree:			// Go back 3 spaces
+				players[activePlayer].position -= 3;
+				break;
+			case speedingFine:		// Pay speeding fine of $15
+				players[activePlayer].money -= 15;
+				break;
+			case doctorFee:			// Doctor’s fee. Pay $50
+				players[activePlayer].money -= 50;
+				break;
+			case schoolFee:			// Pay school fees of $50
+				players[activePlayer].money -= 50;
+				break;
+			case hospitalFee:		// Pay hospital fees of $100
+				players[activePlayer].money -= 100;
+				break;
+			case chairman:			// You have been elected Chairman of the Board. Pay each player $50
+				for (let i = 0; i < players.length; i++)
+				{
+					players[activePlayer].money -= 50;
+					players[i].money += 50;
+				}
+				break;
+			case generalRepairs:	// Make general repairs on all your property. For each house pay $25. For each hotel pay $100
+				for (let i = 0; i < properties.length; i++)
+				{
+					if (properties[i].development < 5)
+					{
+						players[activePlayer].money -= properties[i].development * 25;
+					}
+					else
+					{
+						players[activePlayer].money -= 200;
+					}
+				}
+				break;
+			case streetRepairs:		// You are assessed for street repairs. $40 per house. $115 per hotel
+				for (let i = 0; i < properties.length; i++)
+				{
+					if (properties[i].development < 5)
+					{
+						players[activePlayer].money -= properties[i].development * 40;
+					}
+					else
+					{
+						players[activePlayer].money -= 275;
+					}
+				}
+				break;
+			case birthday:			// It is your birthday. Collect $10 from every player
+				for (let i = 0; i < players.length; i++)
+				{
+					players[i].money -= 10;
+					players[activePlayer].money += 10;
+				}
+				break;
+			case beautyContest:		// You have won second prize in a beauty contest. Collect $10
+				players[activePlayer].money += 10;
+				break;
+			case taxRefund:			// Income tax refund. Collect $20
+				players[activePlayer].money += 20;
+				break;
+			case consultancyFee:	// Collect $25 consultancy fee
+				players[activePlayer].money += 25;
+				break;
+			case stockSale:			// From sale of stock you get $50
+				players[activePlayer].money += 50;
+				break;
+			case dividend:			// Bank pays you dividend of $50
+				players[activePlayer].money += 50;
+				break;
+			case inherit:			// You inherit $100
+				players[activePlayer].money += 100;
+				break;
+			case fundMatures:		// Holiday fund matures. Collect $100
+				players[activePlayer].money += 100;
+				break;
+			case insuranceMatures:	// Life insurance matures. Collect $100
+				players[activePlayer].money += 100;
+				break;
+			case loanMatures:		// Your building loan matures. Collect $150
+				players[activePlayer].money += 150;
+				break;
+			case bankError:			// Bank error in your favor. Collect $200
+				players[activePlayer].money += 200;
+				break;
+			case goHell:			// Go to Parking Hell. Go directly to Parking Hell, do not pass the Union, do not collect $200
+				doubleRolled = false;
+				players[activePlayer].inHell = true;
+				players[activePlayer].position = 10;
+				break;
+			case hellFree:			// Get out of Parking Hell free. This card can be kept until needed
+				players[activePlayer].hellCards++;
+				break;
+		}
+
+		deck.splice(card, 1); // Remove card from deck
+	}
+}
+
 function startTurn()
 {
 	players[activePlayer].position += diceOne + diceTwo;
@@ -441,6 +634,11 @@ function startTurn()
 		updateScroll();
 	}
 
+	midTurn();
+}
+
+function midTurn()
+{
 	console.log('Position is now ' + players[activePlayer].position);
 	document.getElementById('log').innerHTML += "<p>Position is now " + players[activePlayer].position + "</p>";
 	updateScroll();
@@ -460,6 +658,7 @@ function startTurn()
 			console.log('Community chest');
 			document.getElementById('log').innerHTML += "<p>Community chest</p>";
 			updateScroll();
+			drawCard(chestCards);
 			endTurn();
 			break;
 		case 3:		// Sycamore Hall
@@ -473,7 +672,7 @@ function startTurn()
 			endTurn();
 			break;
 		case 5:		// Discovery Park Bus Stop
-			busStops[0].busStopSpace();
+			busStops[0].busStopSpace(false);
 			break;
 		case 6:		// Wooten Hall
 			properties[2].propertySpace();
@@ -482,6 +681,7 @@ function startTurn()
 			console.log('Chance');
 			document.getElementById('log').innerHTML += "<p>Chance</p>";
 			updateScroll();
+			drawCard(chanceCards);
 			endTurn();
 			break;
 		case 8:		// Business Building
@@ -500,7 +700,7 @@ function startTurn()
 			properties[5].propertySpace();
 			break;
 		case 12:	// Eagle Landing
-			utilities[0].utilitySpace();
+			utilities[0].utilitySpace(false);
 			break;
 		case 13:	// Maple Hall
 			properties[6].propertySpace();
@@ -509,7 +709,7 @@ function startTurn()
 			properties[7].propertySpace();
 			break;
 		case 15:	// General Acedemic Building Bus Stop
-			busStops[1].busStopSpace();
+			busStops[1].busStopSpace(false);
 			break;
 		case 16:	// The Pit
 			properties[8].propertySpace();
@@ -518,6 +718,7 @@ function startTurn()
 			console.log('Community chest');
 			document.getElementById('log').innerHTML += "<p>Community chest</p>";
 			updateScroll();
+			drawCard(chestCards);
 			endTurn();
 			break;
 		case 18:	// Pohl Recreation Center
@@ -539,6 +740,7 @@ function startTurn()
 			console.log('Chance');
 			document.getElementById('log').innerHTML += "<p>Chance</p>";
 			updateScroll();
+			drawCard(chanceCards);
 			endTurn();
 			break;
 		case 23:	// Legends Hall
@@ -548,13 +750,13 @@ function startTurn()
 			properties[13].propertySpace();
 			break;
 		case 25:	// Maple Hall Bus Stop
-			busStops[2].busStopSpace();
+			busStops[2].busStopSpace(false);
 			break;
 		case 26:	// Chemistry Building
 			properties[14].propertySpace();
 			break;
 		case 27:	// Bruce Cafeteria
-			utilities[1].utilitySpace();
+			utilities[1].utilitySpace(false);
 			break;
 		case 28:	// Music Building
 			properties[15].propertySpace();
@@ -581,18 +783,20 @@ function startTurn()
 			console.log('Community chest');
 			document.getElementById('log').innerHTML += "<p>Community chest</p>";
 			updateScroll();
+			drawCard(chestCards);
 			endTurn();
 			break;
 		case 34:	// Language Building
 			properties[19].propertySpace();
 			break;
 		case 35:	// Union Bus Stop
-			busStops[3].busStopSpace();
+			busStops[3].busStopSpace(false);
 			break;
 		case 36:	// Chance
 			console.log('Chance');
 			document.getElementById('log').innerHTML += "<p>Chance</p>";
 			updateScroll();
+			drawCard(chanceCards);
 			endTurn();
 			break;
 		case 37:	// Eagle Student Services Center
