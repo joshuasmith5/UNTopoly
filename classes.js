@@ -407,6 +407,7 @@ function diceRoll()
 				document.getElementById('log').innerHTML += "<p>Leaving hell</p>";
 				updateScroll();
 				players[activePlayer].inHell = false;
+				players[activePlayer].hellTurns = 0;
 				startTurn();
 			}
 			else
@@ -850,7 +851,50 @@ function hellTurn()
 	console.log("In parking hell");
 	document.getElementById('log').innerHTML += "<p>In parking hell</p>";
 	updateScroll();
-	endTurn();
+
+	players[activePlayer].hellTurns++;
+	if (players[activePlayer].hellTurns == 3)
+	{
+		console.log("Three consecutive turns in parking hell, you will be forced to pay the fee");
+		document.getElementById('log').innerHTML += "<p>Three consecutive turns in parking hell, you will be forced to pay the fee</p>";
+		updateScroll();
+	}
+
+	if (players[activePlayer].hellCards > 0)
+	{
+		console.log("Would you like to use a Get Out of Parking Hell Free Card?");
+		document.getElementById('log').innerHTML += "<p>Would you like to use a Get Out of Parking Hell Free Card?</p>";
+		updateScroll();
+		inputToggle = "Use Hell Card";
+	}
+	else
+	{
+		hellTurn2();
+	}	
+}
+
+function hellTurn2()
+{
+	if (players[activePlayer].hellTurns == 3)
+	{
+		players[activePlayer].money -= 50;
+		console.log("Paid parking fee of $50");
+		document.getElementById('log').innerHTML += "<p>Paid parking fee of $50</p>";
+		updateScroll();
+		console.log("Leaving hell");
+		document.getElementById('log').innerHTML += "<p>Leaving hell</p>";
+		updateScroll();
+		players[activePlayer].inHell = false;
+		players[activePlayer].hellTurns = 0;
+		startTurn();
+	}
+	else
+	{
+		console.log("Would you like to pay the parking fee of $50?");
+		document.getElementById('log').innerHTML += "<p>Would you like to pay the parking fee of $50?</p>";
+		updateScroll();
+		inputToggle = "Pay Hell Fee";
+	}
 }
 
 // runs if user presses enter while clicked onto the input box
@@ -976,6 +1020,7 @@ function input()
 				{
 					// AUCTION
 				}
+				endTurn();
 				break;
 			case "Buy Utility":
 				if (response == "Y" || response == "y")
@@ -996,6 +1041,7 @@ function input()
 				{
 					// AUCTION
 				}
+				endTurn();
 				break;
 			case "Buy Bus Stop":
 				if (response == "Y" || response == "y")
@@ -1022,18 +1068,47 @@ function input()
 				{
 					// AUCTION
 				}
+				endTurn();
 				break;
 			case "Use Hell Card":
-
+				if (response == "Y" || response == "y")
+				{
+					players[activePlayer].hellCards--;
+					console.log("Leaving hell");
+					document.getElementById('log').innerHTML += "<p>Leaving hell</p>";
+					updateScroll();
+					players[activePlayer].inHell = false;
+					players[activePlayer].hellTurns = 0;
+					startTurn();
+				}
+				else
+				{
+					hellTurn2();
+				}
 				break;
 			case "Pay Hell Fee":
-
+				if (response == "Y" || response == "y")
+				{
+					players[activePlayer].money -= 50;
+					console.log("Paid parking fee");
+					document.getElementById('log').innerHTML += "<p>Paid parking fee</p>";
+					updateScroll();
+					console.log("Leaving hell");
+					document.getElementById('log').innerHTML += "<p>Leaving hell</p>";
+					updateScroll();
+					players[activePlayer].inHell = false;
+					players[activePlayer].hellTurns = 0;
+					startTurn();
+				}
+				else
+				{
+					endTurn();
+				}
 				break;
 			default:
 				throw new Error("Input toggle unknown");
 		}
 		inputToggle = "None";
-		endTurn();
 	}
 	else
 	{
