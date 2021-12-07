@@ -453,6 +453,8 @@ function drawCard(deck)
 		document.getElementById('log').innerHTML += "<p>" + deck[card].description + "</p>";
 		updateScroll();
 
+document.getElementById('log').innerHTML += "<p>" + deck[card].type + "</p>";
+updateScroll();
 		switch (deck[card].type)
 		{
 			case advanceUnion:		// Advance to the Union (Collect $200)
@@ -618,7 +620,11 @@ function drawCard(deck)
 				break;
 		}
 
+document.getElementById('log').innerHTML += "<p>Before splice</p>";
+updateScroll();
 		deck.splice(card, 1); // Remove card from deck
+document.getElementById('log').innerHTML += "<p>After splice</p>";
+updateScroll();
 	}
 }
 
