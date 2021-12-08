@@ -458,15 +458,22 @@ function drawCard(deck)
 		document.getElementById('log').innerHTML += "<p>" + deck[card].description + "</p>";
 		updateScroll();
 
-		switch (deck[card].type)
+		let cardType = deck[card].type;
+		deck.splice(card, 1); // Remove card from deck
+
+		switch (cardType)
 		{
 			case 'advanceUnion':		// Advance to the Union (Collect $200)
 				players[activePlayer].position = 0;
 				players[activePlayer].money += 200;
+				endTurn();
 				break;
 			case 'advanceDiscovery':	// Take a trip to the Discovery Park Bus Stop. If you pass the Union, collect $200
 				if (players[activePlayer].position > 5)
 				{
+					console.log("Passed the Union, collect $200");
+					document.getElementById('log').innerHTML += "<p>Passed the Union, collect $200</p>";
+					updateScroll();
 					players[activePlayer].money += 200;
 				}
 				players[activePlayer].position = 5;
@@ -475,6 +482,9 @@ function drawCard(deck)
 			case 'advanceKerr':		// Advance to Kerr Hall. If you pass the Union, collect $200
 				if (players[activePlayer].position > 11)
 				{
+					console.log("Passed the Union, collect $200");
+					document.getElementById('log').innerHTML += "<p>Passed the Union, collect $200</p>";
+					updateScroll();
 					players[activePlayer].money += 200;
 				}
 				players[activePlayer].position = 11;
@@ -483,6 +493,9 @@ function drawCard(deck)
 			case 'advanceEnviSci':	// Advance to the Environmental Science Building. If you pass the Union, collect $200
 				if (players[activePlayer].position > 24)
 				{
+					console.log("Passed the Union, collect $200");
+					document.getElementById('log').innerHTML += "<p>Passed the Union, collect $200</p>";
+					updateScroll();
 					players[activePlayer].money += 200;
 				}
 				players[activePlayer].position = 24;
@@ -506,6 +519,9 @@ function drawCard(deck)
 				else if (players[activePlayer].position == 36)
 				{
 					players[activePlayer].position = 12;
+					console.log("Passed the Union, collect $200");
+					document.getElementById('log').innerHTML += "<p>Passed the Union, collect $200</p>";
+					updateScroll();
 					players[activePlayer].money += 200;
 					utilities[0].utilitySpace(true);
 				}
@@ -524,31 +540,40 @@ function drawCard(deck)
 				else if (players[activePlayer].position == 36)
 				{
 					players[activePlayer].position = 5;
+					console.log("Passed the Union, collect $200");
+					document.getElementById('log').innerHTML += "<p>Passed the Union, collect $200</p>";
+					updateScroll();
 					players[activePlayer].money += 200;
 					busStops[0].busStopSpace(true);
 				}
 				break;
-			case 'backThree':			// Go back 3 spaces
+			case 'backThree':		// Go back 3 spaces
 				players[activePlayer].position -= 3;
+				endTurn();
 				break;
-			case 'speedingFine':		// Pay speeding fine of $15
+			case 'speedingFine':	// Pay speeding fine of $15
 				players[activePlayer].money -= 15;
+				endTurn();
 				break;
-			case 'doctorFee':			// Doctor’s fee. Pay $50
+			case 'doctorFee':		// Doctor’s fee. Pay $50
 				players[activePlayer].money -= 50;
+				endTurn();
 				break;
-			case 'schoolFee':			// Pay school fees of $50
+			case 'schoolFee':		// Pay school fees of $50
 				players[activePlayer].money -= 50;
+				endTurn();
 				break;
 			case 'hospitalFee':		// Pay hospital fees of $100
 				players[activePlayer].money -= 100;
+				endTurn();
 				break;
-			case 'chairman':			// You have been elected Chairman of the Board. Pay each player $50
+			case 'chairman':		// You have been elected Chairman of the Board. Pay each player $50
 				for (let i = 0; i < players.length; i++)
 				{
 					players[activePlayer].money -= 50;
 					players[i].money += 50;
 				}
+				endTurn();
 				break;
 			case 'generalRepairs':	// Make general repairs on all your property. For each house pay $25. For each hotel pay $100
 				for (let i = 0; i < properties.length; i++)
@@ -562,8 +587,9 @@ function drawCard(deck)
 						players[activePlayer].money -= 200;
 					}
 				}
+				endTurn();
 				break;
-			case 'streetRepairs':		// You are assessed for street repairs. $40 per house. $115 per hotel
+			case 'streetRepairs':	// You are assessed for street repairs. $40 per house. $115 per hotel
 				for (let i = 0; i < properties.length; i++)
 				{
 					if (properties[i].development < 5)
@@ -575,55 +601,67 @@ function drawCard(deck)
 						players[activePlayer].money -= 275;
 					}
 				}
+				endTurn();
 				break;
-			case 'birthday':			// It is your birthday. Collect $10 from every player
+			case 'birthday':		// It is your birthday. Collect $10 from every player
 				for (let i = 0; i < players.length; i++)
 				{
 					players[i].money -= 10;
 					players[activePlayer].money += 10;
 				}
+				endTurn();
 				break;
-			case 'beautyContest':		// You have won second prize in a beauty contest. Collect $10
+			case 'beautyContest':	// You have won second prize in a beauty contest. Collect $10
 				players[activePlayer].money += 10;
+				endTurn();
 				break;
-			case 'taxRefund':			// Income tax refund. Collect $20
+			case 'taxRefund':		// Income tax refund. Collect $20
 				players[activePlayer].money += 20;
+				endTurn();
 				break;
 			case 'consultancyFee':	// Collect $25 consultancy fee
 				players[activePlayer].money += 25;
+				endTurn();
 				break;
-			case 'stockSale':			// From sale of stock you get $50
+			case 'stockSale':		// From sale of stock you get $50
 				players[activePlayer].money += 50;
+				endTurn();
 				break;
-			case 'dividend':			// Bank pays you dividend of $50
+			case 'dividend':		// Bank pays you dividend of $50
 				players[activePlayer].money += 50;
+				endTurn();
 				break;
 			case 'inherit':			// You inherit $100
 				players[activePlayer].money += 100;
+				endTurn();
 				break;
 			case 'fundMatures':		// Holiday fund matures. Collect $100
 				players[activePlayer].money += 100;
+				endTurn();
 				break;
 			case 'insuranceMatures':	// Life insurance matures. Collect $100
 				players[activePlayer].money += 100;
+				endTurn();
 				break;
 			case 'loanMatures':		// Your building loan matures. Collect $150
 				players[activePlayer].money += 150;
+				endTurn();
 				break;
 			case 'bankError':			// Bank error in your favor. Collect $200
 				players[activePlayer].money += 200;
+				endTurn();
 				break;
 			case 'goHell':			// Go to Parking Hell. Go directly to Parking Hell, do not pass the Union, do not collect $200
 				doubleRolled = false;
 				players[activePlayer].inHell = true;
 				players[activePlayer].position = 10;
+				endTurn();
 				break;
 			case 'hellFree':			// Get out of Parking Hell free. This card can be kept until needed
 				players[activePlayer].hellCards++;
+				endTurn();
 				break;
 		}
-
-		deck.splice(card, 1); // Remove card from deck
 	}
 }
 
@@ -664,7 +702,6 @@ function midTurn()
 			document.getElementById('log').innerHTML += "<p>Community chest</p>";
 			updateScroll();
 			drawCard(chestCards);
-			endTurn();
 			break;
 		case 3:		// Sycamore Hall
 			properties[1].propertySpace();
@@ -687,7 +724,6 @@ function midTurn()
 			document.getElementById('log').innerHTML += "<p>Chance</p>";
 			updateScroll();
 			drawCard(chanceCards);
-			endTurn();
 			break;
 		case 8:		// Business Building
 			properties[3].propertySpace();
@@ -724,7 +760,6 @@ function midTurn()
 			document.getElementById('log').innerHTML += "<p>Community chest</p>";
 			updateScroll();
 			drawCard(chestCards);
-			endTurn();
 			break;
 		case 18:	// Pohl Recreation Center
 			properties[9].propertySpace();
@@ -746,7 +781,6 @@ function midTurn()
 			document.getElementById('log').innerHTML += "<p>Chance</p>";
 			updateScroll();
 			drawCard(chanceCards);
-			endTurn();
 			break;
 		case 23:	// Legends Hall
 			properties[12].propertySpace();
@@ -789,7 +823,6 @@ function midTurn()
 			document.getElementById('log').innerHTML += "<p>Community chest</p>";
 			updateScroll();
 			drawCard(chestCards);
-			endTurn();
 			break;
 		case 34:	// Language Building
 			properties[19].propertySpace();
@@ -802,7 +835,6 @@ function midTurn()
 			document.getElementById('log').innerHTML += "<p>Chance</p>";
 			updateScroll();
 			drawCard(chanceCards);
-			endTurn();
 			break;
 		case 37:	// Eagle Student Services Center
 			properties[20].propertySpace();
@@ -1021,6 +1053,15 @@ function input()
 			{
 				case "property":
 					properties[sellable[input-1][1]].ownedBy = -1;
+					if (properties[sellable[input-1][1]].development == 5)
+					{
+						hotelCount++;
+					}
+					else
+					{
+						houseCount += properties[sellable[input-1][1]].development;
+					}
+					properties[sellable[input-1][1]].development = 0;
 					break;
 				case "utility":
 					utilities[sellable[input-1][1]].ownedBy = -1;
