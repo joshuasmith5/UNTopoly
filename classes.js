@@ -60,7 +60,7 @@ class Property {
 		}
 	}
 	propertySpace() {
-		if (this.ownedBy == -1) // runs if not owned by player
+		if (this.ownedBy == -1 && players[activePlayer].money > this.cost) // runs if not owned by player
 		{
 			console.log("Would you like to buy " + this.name + " for $" + this.cost + "?");
 			document.getElementById('log').innerHTML += "<p>Would you like to buy " + this.name + " for $" + this.cost + "?</p>";
@@ -118,7 +118,7 @@ class Utility {
 	}
 	utilitySpace(isCard)
 	{
-		if (this.ownedBy == -1) // runs if not owned by player
+		if (this.ownedBy == -1 && players[activePlayer].money > 150) // runs if not owned by player
 		{
 			console.log("Would you like to buy " + this.name + " for $150?");
 			document.getElementById('log').innerHTML +="<p>Would you like to buy " + this.name + " for $150?</p>";
@@ -195,7 +195,7 @@ class BusStop {
 	}
 	busStopSpace(isCard)
 	{
-		if (this.ownedBy == -1) // runs if not owned by player
+		if (this.ownedBy == -1 && players[activePlayer].money > 200) // runs if not owned by player
 		{
 			console.log("Would you like to buy " + this.name + " for $200?");
 			document.getElementById('log').innerHTML += "<p>Would you like to buy " + this.name + " for $200?</p>";
@@ -380,8 +380,8 @@ function playerSetup(numP)
 		y.style.display = "block";
   	}
 	
-	console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
-	document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, roll the dice</p>";
+	console.log("\n" + players[activePlayer].name + "'s turn, you have $" + players[activePlayer].money + " roll the dice");
+	document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, you have $" + players[activePlayer].money + ", roll the dice</p>";
 	updateScroll();
 }
 
@@ -917,9 +917,10 @@ function endTurn2()
 			activePlayer %= players.length;	// returns to first player’s turn after all others
 		} while (players[activePlayer].hasLost) // skips players that have lost
 		doubleCount = 0;
-		console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
+		console.log("\n" + players[activePlayer].name + "<p>----------------------------------------</p>");
 		document.getElementById('log').innerHTML += "<p>----------------------------------------</p>";
-		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, roll the dice</p>";
+		console.log("\n" + players[activePlayer].name + "'s turn, you have $" + players[activePlayer].money + ", roll the dice");
+		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, you have $" + players[activePlayer].money + ", roll the dice</p>";
 		updateScroll();
 	}
 	else
