@@ -8,6 +8,7 @@ class Player {
 		this.hellCards = 0;
 		this.hellTurns = 0;
 		this.inHell = false;
+		this.hasLost = false;
 	}
 	logInfo() {
 		console.log(this.name);
@@ -16,6 +17,7 @@ class Player {
 		console.log(this.hellCards);
 		console.log(this.hellTurns);
 		console.log(this.inHell);
+		console.log(this.hasLost);
 	}
 }
 
@@ -28,7 +30,6 @@ class Property {
 		this.development = 0;
 		this.ownedBy = -1;
 		this.isMonopoly = false;
-		this.isMortgaged = false;
 	}
 	logInfo() {
 		console.log(this.name);
@@ -38,7 +39,6 @@ class Property {
 		console.log(this.development);
 		console.log(this.ownedBy);
 		console.log(this.isMonopoly);
-		console.log(this.isMortgaged);
 	}
 	checkMonopoly(pairNum, pair1Property, pair2Property) {
 		if (pairNum == 2) {
@@ -67,7 +67,7 @@ class Property {
 			updateScroll();
 			inputToggle = "Buy Property";
 		}
-		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
+		else if (this.ownedBy != activePlayer) // runs if owned by different player
 		{
 			console.log("Must pay rent for " + this.name);
 			document.getElementById('log').innerHTML += "<p>Must pay rent for " + this.name + "</p>";
@@ -111,12 +111,10 @@ class Utility {
 	constructor(name) {
 		this.name = name;
 		this.ownedBy = -1;
-		this.isMortgaged = false;
 	}
 	logInfo() {
 		console.log(this.name);
 		console.log(this.ownedBy);
-		console.log(this.isMortgaged);
 	}
 	utilitySpace(isCard)
 	{
@@ -126,7 +124,7 @@ class Utility {
 			document.getElementById('log').innerHTML +="<p>Would you like to buy " + this.name + " for $150?</p>";
 			inputToggle = "Buy Utility";
 		}
-		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
+		else if (this.ownedBy != activePlayer) // runs if owned by different player
 		{
 			console.log("Must pay rent for " + this.name);
 			document.getElementById('log').innerHTML += "<p>Must pay rent for " + this.name + "</p>";
@@ -189,12 +187,10 @@ class BusStop {
 	constructor(name) {
 		this.name = name;
 		this.ownedBy = -1;
-		this.isMortgaged = false;
 	}
 	logInfo() {
 		console.log(this.name);
 		console.log(this.ownedBy);
-		console.log(this.isMortgaged);
 	}
 	busStopSpace(isCard)
 	{
@@ -205,7 +201,7 @@ class BusStop {
 			updateScroll();
 			inputToggle = "Buy Bus Stop";
 		}
-		else if (this.ownedBy != activePlayer && !this.isMortgaged) // runs if owned by different player and not mortgaged
+		else if (this.ownedBy != activePlayer) // runs if owned by different player
 		{
 			console.log("Must pay rent for " + this.name);
 			document.getElementById('log').innerHTML += "<p>Must pay rent for " + this.name + "</p>";
@@ -347,7 +343,10 @@ let diceTwo = 0;        	// second dice roll
 let doubleCount = 0;    	// how many consecutive doubles have been rolled
 let doubleRolled = false; 	// determines if double rolled
 
-let response = "";		// user response
+let sellable = []; // array of objects that can be sold to avoid bankruptcy
+let sellableList = ""; // list of sellable objects that will be output
+
+let response = "";			// user response
 let diceRollable = true; 	// determines if dice can be rolled (at beginning of turn and such)
 let inputToggle = "None"; 	// determines what input is needed for
 
@@ -443,6 +442,11 @@ function diceRoll()
 			}
 		}
 	}
+}
+
+function buyHouse()
+{
+	
 }
 
 function drawCard(deck)
@@ -824,12 +828,27 @@ function endTurn()
 	document.getElementById('log').innerHTML += "<p>Money is now $" + players[activePlayer].money + "</p>";
 	updateScroll();
 
-	// NEED TO CHECK FOR BANKRUPTCY
+	if (players[activePlayer].money <= 0) // check for bankruptcy
+	{
+		console.log('You are now bankrupt');
+		document.getElementById('log').innerHTML += "<p>You are now bankrupt</p>";
+		updateScroll();
+		bankrupt();
+	}
+	else
+	{
+		endTurn2();
+	}
+}
 
+function endTurn2()
+{
 	if (!doubleRolled) // ends turn if player didn't roll double
 	{
-		activePlayer++;
-		activePlayer %= players.length;	// returns to first player’s turn after all others
+		do {
+			activePlayer++;
+			activePlayer %= players.length;	// returns to first player’s turn after all others
+		} while (!players[activePlayer].hasLost) // skips players that have lost
 		doubleCount = 0;
 		console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
 		document.getElementById('log').innerHTML += "";
@@ -897,6 +916,83 @@ function hellTurn2()
 	}
 }
 
+function bankrupt()
+{
+	sellable = [];
+	sellableList = "What would you like to sell? (Input list item number)\n";
+	let listNum = 0; // location in sellableList
+	for (let i = 0; i < properties.length; i++)
+	{
+		if (properties[i].ownedBy == activePlayer)
+		{
+			// gather indexes and sell costs of all owned properties
+			sellable.push(['property', i, properties[i].name, (properties[i].money / 2) + (properties[i].development * properties[i].houseCost / 2)]);
+			sellableList += (listNum + 1) + ") " + properties[i].name + " $" + sellable[listNum][3] + "\n";
+			listNum++;
+		}
+	}
+	for (let i = 0; i < utilities.length; i++)
+	{
+		if (utilities[i].ownedBy == activePlayer)
+		{
+			// gather indexes of all owned utilities
+			sellable.push(['utility', i, utilities[i].name, (utilities[i].money / 2)]);
+			sellableList += (listNum + 1) + ") " + utilities[i].name + " $" + sellable[listNum][3] + "\n";
+			listNum++;
+		}
+	}
+	for (let i = 0; i < busStops.length; i++)
+	{
+		if (busStops[i].ownedBy == activePlayer)
+		{
+			// gather indexes of all owned bus stops
+			sellable.push(['bus stop', i, busStops[i].name, (busStops[i].money / 2)]);
+			sellableList += (listNum + 1) + ") " + busStops[i].name + " $" + sellable[listNum][3] + "\n";
+			listNum++;
+		}
+	}
+
+	if (sellable.length == 0) // if player has nothing to sell
+	{
+		console.log(players[activePlayer].name + "has lost");
+		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "has lost</p>";
+		updateScroll();
+		players[activePlayer].hasLost = true;
+		doubleRolled = false;
+
+		// check if game is over
+		let playerCount = 0;
+		let winningPlayer = -1;
+		for (let i = 0; i < players.length; i++)
+		{
+			if (!players[i].hasLost)
+			{
+				playerCount++;
+				winningPlayer = i;
+			}
+		}
+		if (playerCount < 2)
+		{
+			console.log(players[winningPlayer].name + "has won!");
+			document.getElementById('log').innerHTML += "";
+			document.getElementById('log').innerHTML += "<p>" + players[winningPlayer].name + "has won!</p>";
+			updateScroll();
+			// GAME ENDS
+		}
+		else
+		{
+			endTurn2();
+		}
+	}
+	else
+	{
+		console.log(sellableList);
+		document.getElementById('log').innerHTML += "<p>" + sellableList + "</p>";
+		updateScroll();
+		inputToggle = "Sell Property";
+	}
+}
+
 // runs if user presses enter while clicked onto the input box
 window.onload = function() {
     document.getElementById('answer').addEventListener('keyup', function(event)
@@ -915,7 +1011,50 @@ window.onload = function() {
 
 function input()
 {
-	if (response == "Y" || response == "N" || response == "y" || response == "n")
+	if (inputToggle == "Sell Property")
+	{
+		if (input > 0 && input <= sellable.length)
+		{
+			inputToggle = "None";
+
+			switch (sellable[input-1][0])
+			{
+				case "property":
+					properties[sellable[input-1][1]].ownedBy = -1;
+					break;
+				case "utility":
+					utilities[sellable[input-1][1]].ownedBy = -1;
+					break;
+				case "bus stop":
+					busStops[sellable[input-1][1]].ownedBy = -1;
+					break;
+			}
+
+			players[activePlayer].money += sellable[input-1][3];
+			console.log("Sold " + sellable[input-1][2] + " for $" + sellable[input-1][3]);
+			document.getElementById('log').innerHTML += "<p>Sold " + sellable[input-1][2] + " for $" + sellable[input-1][3] + "</p>";
+			updateScroll();
+			
+			if (players[activePlayer].money <= 0)
+			{
+				console.log('Money is now $' + players[activePlayer].money);
+				document.getElementById('log').innerHTML += "<p>Money is now $" + players[activePlayer].money + "</p>";
+				updateScroll();
+				bankrupt();
+			}
+			else
+			{
+				endTurn();
+			}
+		}
+		else
+		{
+			console.log("Incorrect input");
+			document.getElementById('log').innerHTML += "<p>Incorrect input</p>";
+			updateScroll();
+		}
+	}
+	else if (response == "Y" || response == "N" || response == "y" || response == "n")
 	{
 		switch (inputToggle)
 		{
