@@ -122,6 +122,7 @@ class Utility {
 		{
 			console.log("Would you like to buy " + this.name + " for $150?");
 			document.getElementById('log').innerHTML +="<p>Would you like to buy " + this.name + " for $150?</p>";
+			updateScroll();
 			inputToggle = "Buy Utility";
 		}
 		else if (this.ownedBy != activePlayer) // runs if owned by different player
@@ -959,7 +960,7 @@ function bankrupt()
 		if (properties[i].ownedBy == activePlayer)
 		{
 			// gather indexes and sell costs of all owned properties
-			sellAmount = (properties[i].money / 2) + (properties[i].development * properties[i].houseCost / 2);
+			sellAmount = (properties[i].cost / 2) + (properties[i].development * properties[i].houseCost / 2);
 			sellable.push(['property', i, properties[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + properties[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + properties[i].name + " $" + sellAmount + "</p>";
@@ -972,7 +973,7 @@ function bankrupt()
 		if (utilities[i].ownedBy == activePlayer)
 		{
 			// gather indexes of all owned utilities
-			sellAmount = utilities[i].money / 2;
+			sellAmount = utilities[i].cost / 2;
 			sellable.push(['utility', i, utilities[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + utilities[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + utilities[i].name + " $" + sellAmount + "</p>";
@@ -985,7 +986,7 @@ function bankrupt()
 		if (busStops[i].ownedBy == activePlayer)
 		{
 			// gather indexes of all owned bus stops
-			sellAmount = busStops[i].money / 2;
+			sellAmount = busStops[i].cost / 2;
 			sellable.push(['bus stop', i, busStops[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + busStops[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + busStops[i].name + " $" + sellAmount + "</p>";
@@ -1052,35 +1053,35 @@ function input()
 {
 	if (inputToggle == "Sell Property")
 	{
-		if (input > 0 && input <= sellable.length)
+		if (response > 0 && response <= sellable.length)
 		{
 			inputToggle = "None";
 
-			switch (sellable[input-1][0])
+			switch (sellable[response-1][0])
 			{
 				case "property":
-					properties[sellable[input-1][1]].ownedBy = -1;
-					if (properties[sellable[input-1][1]].development == 5)
+					properties[sellable[response-1][1]].ownedBy = -1;
+					if (properties[sellable[response-1][1]].development == 5)
 					{
 						hotelCount++;
 					}
 					else
 					{
-						houseCount += properties[sellable[input-1][1]].development;
+						houseCount += properties[sellable[response-1][1]].development;
 					}
-					properties[sellable[input-1][1]].development = 0;
+					properties[sellable[response-1][1]].development = 0;
 					break;
 				case "utility":
-					utilities[sellable[input-1][1]].ownedBy = -1;
+					utilities[sellable[response-1][1]].ownedBy = -1;
 					break;
 				case "bus stop":
-					busStops[sellable[input-1][1]].ownedBy = -1;
+					busStops[sellable[response-1][1]].ownedBy = -1;
 					break;
 			}
 
-			players[activePlayer].money += sellable[input-1][3];
-			console.log("Sold " + sellable[input-1][2] + " for $" + sellable[input-1][3]);
-			document.getElementById('log').innerHTML += "<p>Sold " + sellable[input-1][2] + " for $" + sellable[input-1][3] + "</p>";
+			players[activePlayer].money += sellable[response-1][3];
+			console.log("Sold " + sellable[response-1][2] + " for $" + sellable[response-1][3]);
+			document.getElementById('log').innerHTML += "<p>Sold " + sellable[response-1][2] + " for $" + sellable[response-1][3] + "</p>";
 			updateScroll();
 			
 			if (players[activePlayer].money <= 0)
