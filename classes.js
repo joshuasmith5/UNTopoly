@@ -387,6 +387,8 @@ function playerSetup(numP)
 				break;
 		}
 	}
+	
+	updateBalance();
 
 	var x = document.getElementById("start");
 	var y = document.getElementById("game")
