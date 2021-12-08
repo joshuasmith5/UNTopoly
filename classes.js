@@ -362,10 +362,10 @@ function updateScroll()
 
 function updateBalance()
 {
-	document.getElementById("pl1balance").innerHTML = players[0].money;
-	document.getElementById("pl2balance").innerHTML = players[1].money;
-	document.getElementById("pl3balance").innerHTML = players[2].money;
-	document.getElementById("pl4balance").innerHTML = players[3].money;
+	document.getElementById("pl1balance").innerHTML = '$' + players[0].money;
+	document.getElementById("pl2balance").innerHTML = '$' + players[1].money;
+	document.getElementById("pl3balance").innerHTML = '$' + players[2].money;
+	document.getElementById("pl4balance").innerHTML = '$' + players[3].money;
 }
 
 function playerSetup(numP)
