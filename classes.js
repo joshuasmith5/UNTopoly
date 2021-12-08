@@ -883,7 +883,7 @@ function endTurn2()
 		} while (players[activePlayer].hasLost) // skips players that have lost
 		doubleCount = 0;
 		console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
-		document.getElementById('log').innerHTML += "<p>\n</p>";
+		document.getElementById('log').innerHTML += "<p>----------------------------------------</p>";
 		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, roll the dice</p>";
 		updateScroll();
 	}
@@ -973,7 +973,7 @@ function bankrupt()
 		if (utilities[i].ownedBy == activePlayer)
 		{
 			// gather indexes of all owned utilities
-			sellAmount = utilities[i].cost / 2;
+			sellAmount = 75;
 			sellable.push(['utility', i, utilities[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + utilities[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + utilities[i].name + " $" + sellAmount + "</p>";
@@ -1017,7 +1017,7 @@ function bankrupt()
 		if (playerCount < 2)
 		{
 			console.log(players[winningPlayer].name + "has won!");
-			document.getElementById('log').innerHTML += "<p>\n</p>";
+			document.getElementById('log').innerHTML += "<p>----------------------------------------</p>";
 			document.getElementById('log').innerHTML += "<p>" + players[winningPlayer].name + "has won!</p>";
 			updateScroll();
 			// GAME ENDS
