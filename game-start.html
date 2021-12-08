@@ -55,6 +55,27 @@
 			<img src="board.PNG" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
 		</div>
 		<div class "info">
+			<p id="pl1name"></p>
+			<p id="pl1balance"></p>
+			<p id="pl2name"></p>
+			<p id="pl2balance"></p>
+			<p id="pl3name"></p>
+			<p id="pl3balance"></p>
+			<p id="pl4name"></p>
+			<p id="pl4balance"></p>
+			
+			<script>
+				document.getElementById("pl1name").innerHTML = player[0].name;
+				document.getElementById("pl1balance").innerHTML = player[0].money;
+				document.getElementById("pl2name").innerHTML = player[1].name;
+				document.getElementById("pl2balance").innerHTML = player[1].money;
+				document.getElementById("pl3name").innerHTML = player[2].name;
+				document.getElementById("pl3balance").innerHTML = player[2].money;
+				document.getElementById("pl4name").innerHTML = player[3].name;
+				document.getElementById("pl4balance").innerHTML = player[3].money;
+				
+			</script>
+			
 			<input type="text" placeholder="Y/N" name="answer" id="answer">
 		</div>
 		<div class "settings" />
