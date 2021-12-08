@@ -238,6 +238,7 @@ class BusStop {
 			updateScroll();
 			endTurn();
 		}
+		
 	}
 	buyBusStop()
 	{
@@ -359,6 +360,14 @@ function updateScroll()
     element.scrollTop = element.scrollHeight;
 }
 
+function updateBalance()
+{
+	document.getElementById("pl1balance").innerHTML = players[0].money;
+	document.getElementById("pl2balance").innerHTML = players[1].money;
+	document.getElementById("pl3balance").innerHTML = players[2].money;
+	document.getElementById("pl4balance").innerHTML = players[3].money;
+}
+
 function playerSetup(numP)
 {
 	for (let i=0; i<numP; i++)
@@ -366,6 +375,17 @@ function playerSetup(numP)
 		//players[i].name = String(document.getElementById("p"+(i+1)+"Name").value);
 		players.push(new Player(String(document.getElementById("p"+(i+1)+"Name").value)));
 		console.log(players[i].name + " is player " + (i+1));
+		
+		switch(i){
+			case 0: document.getElementById("pl1name").innerHTML = players[i].name;
+				break;
+			case 1: document.getElementById("pl2name").innerHTML = players[i].name;
+				break;
+			case 2: document.getElementById("pl3name").innerHTML = players[i].name;
+				break;
+			case 3: document.getElementById("pl4name").innerHTML = players[i].name;
+				break;
+		}
 	}
 
 	var x = document.getElementById("start");
@@ -839,6 +859,7 @@ function endTurn()
 	{
 		endTurn2();
 	}
+	updateBalance();
 }
 
 function endTurn2()
@@ -863,6 +884,7 @@ function endTurn2()
 	}
 
 	diceRollable = true;
+	updateBalance();
 }
 
 function hellTurn()
