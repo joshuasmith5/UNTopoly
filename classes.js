@@ -343,8 +343,8 @@ let diceTwo = 0;        	// second dice roll
 let doubleCount = 0;    	// how many consecutive doubles have been rolled
 let doubleRolled = false; 	// determines if double rolled
 
-let sellable = []; // array of objects that can be sold to avoid bankruptcy
-let sellableList = ""; // list of sellable objects that will be output
+let sellable = []; 			// array of objects that can be sold to avoid bankruptcy
+let sellAmount = 0; 		// cost of sellable object
 
 let response = "";			// user response
 let diceRollable = true; 	// determines if dice can be rolled (at beginning of turn and such)
@@ -371,11 +371,11 @@ function playerSetup(numP)
 	var x = document.getElementById("start");
 	var y = document.getElementById("game")
   	if (x.style.display === "none") {
-    	x.style.display = "none";
+		x.style.display = "none";
 		y.style.display = "block";
   	} 
 	else {
-    	x.style.display = "none";
+		x.style.display = "none";
 		y.style.display = "block";
   	}
 	
@@ -950,15 +950,20 @@ function hellTurn2()
 function bankrupt()
 {
 	sellable = [];
-	sellableList = "What would you like to sell? (Input list item number)\n";
-	let listNum = 0; // location in sellableList
+	console.log("What would you like to sell? (Input list item number)");
+	document.getElementById('log').innerHTML += "<p>What would you like to sell? (Input list item number)</p>";
+	updateScroll();
+	let listNum = 0;
 	for (let i = 0; i < properties.length; i++)
 	{
 		if (properties[i].ownedBy == activePlayer)
 		{
 			// gather indexes and sell costs of all owned properties
-			sellable.push(['property', i, properties[i].name, (properties[i].money / 2) + (properties[i].development * properties[i].houseCost / 2)]);
-			sellableList += (listNum + 1) + ") " + properties[i].name + " $" + sellable[listNum][3] + "\n";
+			sellAmount = (properties[i].money / 2) + (properties[i].development * properties[i].houseCost / 2);
+			sellable.push(['property', i, properties[i].name, sellAmount]);
+			console.log((listNum + 1) + ") " + properties[i].name + " $" + sellAmount);
+			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + properties[i].name + " $" + sellAmount + "</p>";
+			updateScroll();
 			listNum++;
 		}
 	}
@@ -967,8 +972,11 @@ function bankrupt()
 		if (utilities[i].ownedBy == activePlayer)
 		{
 			// gather indexes of all owned utilities
-			sellable.push(['utility', i, utilities[i].name, (utilities[i].money / 2)]);
-			sellableList += (listNum + 1) + ") " + utilities[i].name + " $" + sellable[listNum][3] + "\n";
+			sellAmount = utilities[i].money / 2;
+			sellable.push(['utility', i, utilities[i].name, sellAmount]);
+			console.log((listNum + 1) + ") " + utilities[i].name + " $" + sellAmount);
+			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + utilities[i].name + " $" + sellAmount + "</p>";
+			updateScroll();
 			listNum++;
 		}
 	}
@@ -977,8 +985,11 @@ function bankrupt()
 		if (busStops[i].ownedBy == activePlayer)
 		{
 			// gather indexes of all owned bus stops
-			sellable.push(['bus stop', i, busStops[i].name, (busStops[i].money / 2)]);
-			sellableList += (listNum + 1) + ") " + busStops[i].name + " $" + sellable[listNum][3] + "\n";
+			sellAmount = busStops[i].money / 2;
+			sellable.push(['bus stop', i, busStops[i].name, sellAmount]);
+			console.log((listNum + 1) + ") " + busStops[i].name + " $" + sellAmount);
+			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + busStops[i].name + " $" + sellAmount + "</p>";
+			updateScroll();
 			listNum++;
 		}
 	}
@@ -1017,9 +1028,6 @@ function bankrupt()
 	}
 	else
 	{
-		console.log(sellableList);
-		document.getElementById('log').innerHTML += "<p>" + sellableList + "</p>";
-		updateScroll();
 		inputToggle = "Sell Property";
 	}
 }
@@ -1099,6 +1107,7 @@ function input()
 		switch (inputToggle)
 		{
 			case "Buy Property":
+				inputToggle = "None";
 				if (response == "Y" || response == "y")
 				{
 					switch (players[activePlayer].position)
@@ -1202,6 +1211,7 @@ function input()
 				endTurn();
 				break;
 			case "Buy Utility":
+				inputToggle = "None";
 				if (response == "Y" || response == "y")
 				{
 					switch (players[activePlayer].position)
@@ -1223,6 +1233,7 @@ function input()
 				endTurn();
 				break;
 			case "Buy Bus Stop":
+				inputToggle = "None";
 				if (response == "Y" || response == "y")
 				{
 					switch (players[activePlayer].position)
@@ -1250,6 +1261,7 @@ function input()
 				endTurn();
 				break;
 			case "Use Hell Card":
+				inputToggle = "None";
 				if (response == "Y" || response == "y")
 				{
 					players[activePlayer].hellCards--;
@@ -1266,6 +1278,7 @@ function input()
 				}
 				break;
 			case "Pay Hell Fee":
+				inputToggle = "None";
 				if (response == "Y" || response == "y")
 				{
 					players[activePlayer].money -= 50;
@@ -1287,7 +1300,6 @@ function input()
 			default:
 				throw new Error("Input toggle unknown");
 		}
-		inputToggle = "None";
 	}
 	else
 	{
