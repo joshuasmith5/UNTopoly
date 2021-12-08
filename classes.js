@@ -848,7 +848,7 @@ function endTurn2()
 		do {
 			activePlayer++;
 			activePlayer %= players.length;	// returns to first player’s turn after all others
-		} while (!players[activePlayer].hasLost) // skips players that have lost
+		} while (players[activePlayer].hasLost) // skips players that have lost
 		doubleCount = 0;
 		console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
 		document.getElementById('log').innerHTML += "";
