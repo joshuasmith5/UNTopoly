@@ -986,7 +986,7 @@ function bankrupt()
 		if (busStops[i].ownedBy == activePlayer)
 		{
 			// gather indexes of all owned bus stops
-			sellAmount = busStops[i].cost / 2;
+			sellAmount = 100;
 			sellable.push(['bus stop', i, busStops[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + busStops[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + busStops[i].name + " $" + sellAmount + "</p>";
