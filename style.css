@@ -133,3 +133,42 @@
 	background-color: #FFFFFF;
 	overflow-y: scroll;
 }
+
+.game{
+	display: grid;
+  	grid-template-columns: repeat(4, 1fr);
+ 	 gap: 10px;
+  	grid-auto-rows: minmax(100px, auto);
+}
+
+.board{
+	grid-column: 1/2;
+	grid-row: 1/2;
+	/*background="board.PNG";
+	height: 870px;
+	width: 870px; 
+	float: left; 
+	object-fit: contain;*/
+}
+
+.info{
+	grid-column: 3;
+	grid-row: 1/2;
+}
+
+.settings{
+	grid-column: 4;
+	grid-row: 1;
+}
+
+.dice{
+	grid-column: 4;
+	grid-row: 2;
+}
+
+.log{
+	grid-column: 3/4;
+	grid-row: 3;
+	
+}
+
