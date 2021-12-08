@@ -43,7 +43,7 @@ class Property {
 	checkMonopoly(pairNum, pair1Property, pair2Property) {
 		if (pairNum == 2) {
 			if (!this.isMonopoly && properties[pair1Property].ownedBy == activePlayer && this.ownedBy == activePlayer){
-				properties[pair1Property].isMonopoly = this.isMonopoly = true;
+				this.isMonopoly = properties[pair1Property].isMonopoly = true;
 				console.log("Monopoly!");
 				document.getElementById('log').innerHTML += "<p>Monopoly!</p>";
 				updateScroll();
@@ -319,9 +319,9 @@ const chestCards = [ // creates pre-set community chest card objects
 ];
 const chanceCards = [	// creates pre-set chance card objects
     new Card('advanceUnion', 'Advance to the Union (Collect $200)'),
-    new Card('advanceDiscovery', 'Take a trip to the Discovery Park Bus Stop. If you pass the Union, collect $200'),
-    new Card('advanceKerr', 'Advance to Kerr Hall. If you pass the Union, collect $200'),
-    new Card('advanceEnviSci', 'Advance to the Environmental Science Building. If you pass the Union, collect $200'),
+    new Card('advanceDiscovery', 'Take a trip to the Discovery Park Bus Stop.'),
+    new Card('advanceKerr', 'Advance to Kerr Hall.'),
+    new Card('advanceEnviSci', 'Advance to the Environmental Science Building.'),
     new Card('advanceWillis', 'Advance to Willis Library'),
     new Card('advanceUtility', 'Advance token to nearest Utility. If unowned, you may buy it from the Bank. If owned, pay owner a total ten times amount thrown'),
     new Card('advanceBusStop', 'Advance to the nearest Bus Stop. If unowned, you may buy it from the Bank. If owned, pay wonder twice the rental to which they are otherwise entitled'),
@@ -344,8 +344,8 @@ let diceTwo = 0;        	// second dice roll
 let doubleCount = 0;    	// how many consecutive doubles have been rolled
 let doubleRolled = false; 	// determines if double rolled
 
-let sellable = []; 			// array of objects that can be sold to avoid bankruptcy
-let sellAmount = 0; 		// cost of sellable object
+let propertyList = []; 		// array of objects that can be sold to avoid bankruptcy or are able to be developed
+let sellAmount = 0; 		// cost of propertyList object
 
 let response = "";			// user response
 let diceRollable = true; 	// determines if dice can be rolled (at beginning of turn and such)
@@ -446,7 +446,36 @@ function diceRoll()
 
 function buyHouse()
 {
-	
+	if (diceRollable)
+	{
+		propertyList = [];
+		console.log("What property would you like to develop? (Input list item number)");
+		document.getElementById('log').innerHTML += "<p>What property would you like to develop? (Input list item number)</p>";
+		updateScroll();
+		let listNum = 0;
+		for (let i = 0; i < properties.length; i++)
+		{
+			if (((properties[i].development < 4 && houseCount > 0) || (properties[i].development == 4 && hotelCount > 0)) && properties[i].isMonopoly && players[activePlayer].money > properties[i].houseCost)
+			{
+				propertyList.push([i, properties[i].name, properties[i].development, properties[i].houseCost]);
+				console.log((listNum + 1) + ") " + properties[i].name + ", " + properties[i].development + " houses");
+				document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + properties[i].name + ", " + properties[i].development + " houses</p>";
+				updateScroll();
+				listNum++;
+			}
+		}
+
+		if (propertyList.length == 0)
+		{
+			console.log("No properties can be developed");
+			document.getElementById('log').innerHTML += "<p>No properties can be developed</p>";
+			updateScroll();
+		}
+		else
+		{
+			inputToggle = "Buy House";
+		}
+	}
 }
 
 function drawCard(deck)
@@ -663,6 +692,12 @@ function drawCard(deck)
 				break;
 		}
 	}
+	else
+	{
+		console.log("No cards to draw");
+		document.getElementById('log').innerHTML += "<p>No cards to draw</p>";
+		updateScroll();
+	}
 }
 
 function startTurn()
@@ -689,8 +724,8 @@ function midTurn()
 	switch (players[activePlayer].position)
 	{
 		case 0:		// Union
-			console.log('Union');
-			document.getElementById('log').innerHTML += "<p>Union</p>";
+			console.log('Landed on the Union');
+			document.getElementById('log').innerHTML += "<p>Landed on the Union</p>";
 			updateScroll();
 			endTurn();
 			break;
@@ -698,8 +733,8 @@ function midTurn()
 			properties[0].propertySpace();
 			break;
 		case 2:		// Community Chest
-			console.log('Community chest');
-			document.getElementById('log').innerHTML += "<p>Community chest</p>";
+			console.log('Landed on Community Chest, draw a card');
+			document.getElementById('log').innerHTML += "<p>Landed on Community Chest, draw a card</p>";
 			updateScroll();
 			drawCard(chestCards);
 			break;
@@ -720,8 +755,8 @@ function midTurn()
 			properties[2].propertySpace();
 			break;
 		case 7:		// Chance
-			console.log('Chance');
-			document.getElementById('log').innerHTML += "<p>Chance</p>";
+			console.log('Landed on Chance, draw a card');
+			document.getElementById('log').innerHTML += "<p>Landed on Chance, draw a card</p>";
 			updateScroll();
 			drawCard(chanceCards);
 			break;
@@ -732,8 +767,8 @@ function midTurn()
 			properties[4].propertySpace();
 			break;
 		case 10:	// Garage
-			console.log('Garage');
-			document.getElementById('log').innerHTML += "<p>Garage</p>";
+			console.log('Landed on Garage');
+			document.getElementById('log').innerHTML += "<p>Landed on Garage</p>";
 			updateScroll();
 			endTurn();
 			break;
@@ -756,8 +791,8 @@ function midTurn()
 			properties[8].propertySpace();
 			break;
 		case 17:	// Community Chest
-			console.log('Community chest');
-			document.getElementById('log').innerHTML += "<p>Community chest</p>";
+			console.log('Landed on Community Chest, draw a card');
+			document.getElementById('log').innerHTML += "<p>Landed on Community Chest, draw a card</p>";
 			updateScroll();
 			drawCard(chestCards);
 			break;
@@ -768,8 +803,8 @@ function midTurn()
 			properties[10].propertySpace();
 			break;
 		case 20:	// Voertman's
-			console.log("Voertman's");
-			document.getElementById('log').innerHTML += "<p>Voertman's</p>";
+			console.log("Landed on Voertman's");
+			document.getElementById('log').innerHTML += "<p>Landed on Voertman's</p>";
 			updateScroll();
 			endTurn();
 			break;
@@ -777,8 +812,8 @@ function midTurn()
 			properties[11].propertySpace();
 			break;
 		case 22:	// Chance
-			console.log('Chance');
-			document.getElementById('log').innerHTML += "<p>Chance</p>";
+			console.log('Landed on Chance, draw a card');
+			document.getElementById('log').innerHTML += "<p>Landed on Chance, draw a card</p>";
 			updateScroll();
 			drawCard(chanceCards);
 			break;
@@ -804,8 +839,8 @@ function midTurn()
 			properties[16].propertySpace();
 			break;
 		case 30:	// Go to Parking Hell
-			console.log('Go to parking hell');
-			document.getElementById('log').innerHTML += "<p>Go to parking hell</p>";
+			console.log('Go to Parking Hell');
+			document.getElementById('log').innerHTML += "<p>Go to Parking Hell</p>";
 			updateScroll();
 			doubleRolled = false;
 			players[activePlayer].inHell = true;
@@ -819,8 +854,8 @@ function midTurn()
 			properties[18].propertySpace();
 			break;
 		case 33:	// Community Chest
-			console.log('Community chest');
-			document.getElementById('log').innerHTML += "<p>Community chest</p>";
+			console.log('Landed on Community Chest, draw a card');
+			document.getElementById('log').innerHTML += "<p>Landed on Community Chest, draw a card</p>";
 			updateScroll();
 			drawCard(chestCards);
 			break;
@@ -831,8 +866,8 @@ function midTurn()
 			busStops[3].busStopSpace(false);
 			break;
 		case 36:	// Chance
-			console.log('Chance');
-			document.getElementById('log').innerHTML += "<p>Chance</p>";
+			console.log('Landed on Chance, draw a card');
+			document.getElementById('log').innerHTML += "<p>Landed on Chance, draw a card</p>";
 			updateScroll();
 			drawCard(chanceCards);
 			break;
@@ -950,7 +985,7 @@ function hellTurn2()
 
 function bankrupt()
 {
-	sellable = [];
+	propertyList = [];
 	console.log("What would you like to sell? (Input list item number)");
 	document.getElementById('log').innerHTML += "<p>What would you like to sell? (Input list item number)</p>";
 	updateScroll();
@@ -961,7 +996,7 @@ function bankrupt()
 		{
 			// gather indexes and sell costs of all owned properties
 			sellAmount = (properties[i].cost / 2) + (properties[i].development * properties[i].houseCost / 2);
-			sellable.push(['property', i, properties[i].name, sellAmount]);
+			propertyList.push(['property', i, properties[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + properties[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + properties[i].name + " $" + sellAmount + "</p>";
 			updateScroll();
@@ -974,7 +1009,7 @@ function bankrupt()
 		{
 			// gather indexes of all owned utilities
 			sellAmount = 75;
-			sellable.push(['utility', i, utilities[i].name, sellAmount]);
+			propertyList.push(['utility', i, utilities[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + utilities[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + utilities[i].name + " $" + sellAmount + "</p>";
 			updateScroll();
@@ -987,7 +1022,7 @@ function bankrupt()
 		{
 			// gather indexes of all owned bus stops
 			sellAmount = 100;
-			sellable.push(['bus stop', i, busStops[i].name, sellAmount]);
+			propertyList.push(['bus stop', i, busStops[i].name, sellAmount]);
 			console.log((listNum + 1) + ") " + busStops[i].name + " $" + sellAmount);
 			document.getElementById('log').innerHTML += "<p>" + (listNum + 1) + ") " + busStops[i].name + " $" + sellAmount + "</p>";
 			updateScroll();
@@ -995,10 +1030,12 @@ function bankrupt()
 		}
 	}
 
-	if (sellable.length == 0) // if player has nothing to sell
+	if (propertyList.length == 0) // if player has nothing to sell
 	{
-		console.log(players[activePlayer].name + "has lost");
-		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "has lost</p>";
+		console.log("Nothing to sell");
+		document.getElementById('log').innerHTML += "<p>Nothing to sell</p>";
+		console.log(players[activePlayer].name + " has lost");
+		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + " has lost</p>";
 		updateScroll();
 		players[activePlayer].hasLost = true;
 		doubleRolled = false;
@@ -1016,9 +1053,9 @@ function bankrupt()
 		}
 		if (playerCount < 2)
 		{
-			console.log(players[winningPlayer].name + "has won!");
+			console.log(players[winningPlayer].name + " has won!");
 			document.getElementById('log').innerHTML += "<p>----------------------------------------</p>";
-			document.getElementById('log').innerHTML += "<p>" + players[winningPlayer].name + "has won!</p>";
+			document.getElementById('log').innerHTML += "<p>" + players[winningPlayer].name + " has won!</p>";
 			updateScroll();
 			// GAME ENDS
 		}
@@ -1051,37 +1088,74 @@ window.onload = function() {
 
 function input()
 {
-	if (inputToggle == "Sell Property")
+	if (inputToggle == "Buy House")
 	{
-		if (response > 0 && response <= sellable.length)
+		if (response > 0 && response <= propertyList.length)
 		{
 			inputToggle = "None";
+			if (propertyList[response-1][2] == 4)
+			{
+				console.log("Bought hotel for " + propertyList[response-1][1]);
+				document.getElementById('log').innerHTML += "<p>Bought hotel for " + propertyList[response-1][1] + "</p>";
+				console.log(propertyList[response-1][1] + " now has 1 hotel");
+				document.getElementById('log').innerHTML += "<p>" + propertyList[response-1][1] + " now has 1 hotel</p>";
+				updateScroll();
+				hotelCount--;
+			}
+			else
+			{
+				console.log("Bought house for " + propertyList[response-1][1]);
+				document.getElementById('log').innerHTML += "<p>Bought house for " + propertyList[response-1][1] + "</p>";
+				console.log(propertyList[response-1][1] + " now has " + (propertyList[response-1][2] + 1) + " house(s)");
+				document.getElementById('log').innerHTML += "<p>" + propertyList[response-1][1] + " now has " + (propertyList[response-1][2] + 1) + " house(s)</p>";
+				updateScroll();
+				houseCount--;
+			}
+			players[activePlayer].money -= propertyList[response-1][3];
+			properties[propertyList[response-1][0]].development++;
 
-			switch (sellable[response-1][0])
+			console.log('Money is now $' + players[activePlayer].money);
+			document.getElementById('log').innerHTML += "<p>Money is now $" + players[activePlayer].money + "</p>";
+			updateScroll();
+		}
+		else
+		{
+			console.log("Incorrect input");
+			document.getElementById('log').innerHTML += "<p>Incorrect input</p>";
+			updateScroll();
+		}
+	}
+	else if (inputToggle == "Sell Property")
+	{
+		if (response > 0 && response <= propertyList.length)
+		{
+			inputToggle = "None";
+			switch (propertyList[response-1][0])
 			{
 				case "property":
-					properties[sellable[response-1][1]].ownedBy = -1;
-					if (properties[sellable[response-1][1]].development == 5)
+					properties[propertyList[response-1][1]].ownedBy = -1;
+					properties[propertyList[response-1][1]].isMonopoly = false;
+					if (properties[propertyList[response-1][1]].development == 5)
 					{
 						hotelCount++;
 					}
 					else
 					{
-						houseCount += properties[sellable[response-1][1]].development;
+						houseCount += properties[propertyList[response-1][1]].development;
 					}
-					properties[sellable[response-1][1]].development = 0;
+					properties[propertyList[response-1][1]].development = 0;
 					break;
 				case "utility":
-					utilities[sellable[response-1][1]].ownedBy = -1;
+					utilities[propertyList[response-1][1]].ownedBy = -1;
 					break;
 				case "bus stop":
-					busStops[sellable[response-1][1]].ownedBy = -1;
+					busStops[propertyList[response-1][1]].ownedBy = -1;
 					break;
 			}
 
-			players[activePlayer].money += sellable[response-1][3];
-			console.log("Sold " + sellable[response-1][2] + " for $" + sellable[response-1][3]);
-			document.getElementById('log').innerHTML += "<p>Sold " + sellable[response-1][2] + " for $" + sellable[response-1][3] + "</p>";
+			players[activePlayer].money += propertyList[response-1][3];
+			console.log("Sold " + propertyList[response-1][2] + " for $" + propertyList[response-1][3]);
+			document.getElementById('log').innerHTML += "<p>Sold " + propertyList[response-1][2] + " for $" + propertyList[response-1][3] + "</p>";
 			updateScroll();
 			
 			if (players[activePlayer].money <= 0)
@@ -1302,7 +1376,7 @@ function input()
 				throw new Error("Input toggle unknown");
 		}
 	}
-	else
+	else if (inputToggle != "None")
 	{
 		console.log("Incorrect input, only enter 'Y', 'y', 'N', or 'n'");
 		document.getElementById('log').innerHTML += "<p>Incorrect input, only enter 'Y', 'y', 'N', or 'n'</p>";
