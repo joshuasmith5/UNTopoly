@@ -380,7 +380,6 @@ function playerSetup(numP)
   	}
 	
 	console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
-	document.getElementById('log').innerHTML += "";
 	document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, roll the dice</p>";
 	updateScroll();
 }
@@ -883,7 +882,7 @@ function endTurn2()
 		} while (players[activePlayer].hasLost) // skips players that have lost
 		doubleCount = 0;
 		console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
-		document.getElementById('log').innerHTML += "";
+		document.getElementById('log').innerHTML += "<p>\n</p>";
 		document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, roll the dice</p>";
 		updateScroll();
 	}
@@ -1006,7 +1005,7 @@ function bankrupt()
 		if (playerCount < 2)
 		{
 			console.log(players[winningPlayer].name + "has won!");
-			document.getElementById('log').innerHTML += "";
+			document.getElementById('log').innerHTML += "<p>\n</p>";
 			document.getElementById('log').innerHTML += "<p>" + players[winningPlayer].name + "has won!</p>";
 			updateScroll();
 			// GAME ENDS
