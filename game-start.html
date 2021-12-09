@@ -18,7 +18,7 @@
 <section class="container">
 	<div id="col-1">
 		<div class="center">
-		<h1 style="color:white; text-align:center">UNT-opoly</h1>
+		<h1 id="title" style="color:white; text-align:center">UNT-opoly</h1>
 			<div style="color: white; text-align: center; font-size: 30px;">
 				<label for="numPlayers">
 					How many players will there be?
@@ -66,9 +66,44 @@
 	</div>
 </section>
 </div>
-
-<div id="game">
-	<img src="board.PNG"  alt="UNT themed monopoly board" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
+  
+<section class="game-container">
+	<div id="game">
+		<div class "board">
+			<img src="board.PNG" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
+		</div>
+		<div class "info">
+			<p id="pl1name" style='font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			<p id="pl1balance" style='font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			<p id="pl2name" style='font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			<p id="pl2balance" style='font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			<p id="pl3name" style='display: none; font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			<p id="pl3balance" style='display: none; font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			<p id="pl4name" style='display: none; font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			<p id="pl4balance" style='display: none; font-family: Consolas, "Courier New", monospace; color: white; font-size: 24px; background-color: dimgrey'></p>
+			
+		</div>
+		<div class "settings" />
+		<div class "dice">
+			<button id="d20" onclick="diceRoll()" class="button3">
+				<img src="button.PNG"/>
+			</button>
+      
+      <button onclick="buyHouse()" class="button3">
+		      Buy House/Hotel
+	    </button>
+      
+		</div>
+		<div class "log" >
+			<div id= "log"></div>
+			
+      <label hidden for="answer">
+		    Input:
+	    </label>
+      <input type="text" placeholder="Y/N" name="answer" id="answer" style='font-family: Consolas, "Courier New", monospace; color: white; font-size: 18px; background-color: dimgrey'>
+		</div>
+	
+	<!-- <img src="board.PNG" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
 	
 	<label hidden for="answer">
 		Input:
@@ -83,16 +118,17 @@
 	
 	<section class="game-container">
 		<div id="col-1">
-			<div class= "player-info-back"></div>
+		<div class= "player-info-back"></div> 
 		</div>
 		<div id="col-2">
-			<div class= "sub-settings-back"></div>
-			<!-- <div class= "dice-button"></div> -->
+			 <div class= "sub-settings-back"></div> 
+			 <div class= "dice-button"></div> 
 		</div>
+		
+		<div id= "log"></div>
+	</section>-->
+	</div>
 	</section>
-
-	<div id= "log"></div>
-</div>
 </body>
 </main>
 </html>
