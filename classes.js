@@ -392,12 +392,12 @@ function playerSetup(numP)
 
 	var x = document.getElementById("start");
 	var y = document.getElementById("game")
-  	if (x.style.display === "none") {
-    	x.style.display = "none";
+  	if (x.style.display === "inline") {
+    		x.style.display = "none";
 		y.style.display = "grid";
   	} 
 	else {
-    	x.style.display = "none";
+    		x.style.display = "none";
 		y.style.display = "grid";
   	}
 	
