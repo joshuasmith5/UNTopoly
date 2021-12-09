@@ -484,7 +484,7 @@ function diceRoll()
 function lightMode(){
 	//start
 	document.getElementById("title").style.color = "black";
-	document.getElementById("number").style.color = "black";
+	document.getElementById("howMany").style.color = "black";
 	document.getElementById("p1info").style.color = "black";
 	document.getElementById("p2info").style.color = "black";
 	document.getElementById("p3info").style.color = "black";
@@ -497,7 +497,7 @@ function lightMode(){
 	document.getElementById("button2").style.color = "black";
 	document.getElementById("button2").style.background-color = "#02de69";
 
-	document.getElementById("boardpng").src = "board2.PNG";
+	//document.getElementById("boardpng").src = "board2.PNG";
 
 	//player info
 	document.getElementById("pl1name").style.color = "black";
@@ -533,7 +533,7 @@ function lightMode(){
 function darkMode(){
 	//start
 	document.getElementById("title").style.color = "white";
-	document.getElementById("number").style.color = "white";
+	document.getElementById("howMany").style.color = "white";
 	document.getElementById("p1info").style.color = "white";
 	document.getElementById("p2info").style.color = "white";
 	document.getElementById("p3info").style.color = "white";
@@ -546,7 +546,7 @@ function darkMode(){
 	document.getElementById("button2").style.color = "white";
 	document.getElementById("button2").style.background-color = "#00853E";
 
-	document.getElementById("boardpng").src = "board2.PNG";
+	//document.getElementById("boardpng").src = "board2.PNG";
 
 	//player info
 	document.getElementById("pl1name").style.color = "white";
