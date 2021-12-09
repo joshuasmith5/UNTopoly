@@ -15,8 +15,8 @@
 <section class="container">
 	<div id="col-1">
 		<div class="center">
-		<h1 style="color:white; text-align:center">UNT-opoly</h1>
-			<div style="color: white; text-align: center; font-size: 30px;">
+		<h1 id="title" style="color:white; text-align:center">UNT-opoly</h1>
+			<div id="number" style="color: white; text-align: center; font-size: 30px;">
 				How many players will there be?
 				<select name:"numPlayers" id="numPlayers" title="How many players will there be?">
 					<option selected="selected">2</option>
@@ -41,18 +41,18 @@
 				Player 4: <input type="text" id="p4Name" maxlength="16"/>
 			</div>
 			<br>
-			<input type="button" class="button2" value="Start Game" onclick="playerSetup(document.getElementById('numPlayers').value);"/>
+			<input id="button2" type="button" class="button2" value="Start Game" onclick="playerSetup(document.getElementById('numPlayers').value);"/>
 		</div>
 	</div>
 	<div id="col-2">
-		<img src="board.PNG" style='height: 100%; width: 100%; opacity: 75%; object-fit: contain'/>
+		<img id = "boardpng" src="board.PNG" style='height: 100%; width: 100%; opacity: 75%; object-fit: contain'/>
 	</div>
 </section>
 </div>
 <section class="game-container">
 	<div id="game">
 		<div class "board">
-			<img src="board.PNG" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
+			<img id = "boardpng" src="board.PNG" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
 		</div>
 		<div class "info">
 			<p id="pl1name" style='font-family: Consolas, "Courier New", monospace; font-size: 24px; background-color: #FFFFFF'></p>
@@ -67,9 +67,17 @@
 			
 			<input type="text" placeholder="Y/N" name="answer" id="answer">
 		</div>
-		<div class "settings" />
+		<div class "settings">
+			<button id="lightMode" onclick="lightMode()">
+				Light Mode
+			</button>
+			
+			<button id="darkMode" onclick="darkMode()">
+				Dark Mode
+			</button>
+		</div>
 		<div class "dice">
-			<button onclick="diceRoll()">
+			<button id="d20" onclick="diceRoll()">
 				Roll Dice
 			</button>
 		</div>
