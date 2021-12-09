@@ -362,15 +362,14 @@ function updateScroll()
 
 function updateBalance()
 {
-	var size = players[].length();
+	var size = players.length();
 	document.getElementById("pl1balance").innerHTML = '$' + players[0].money;
 	document.getElementById("pl2balance").innerHTML = '$' + players[1].money;
 	
-	switch(size){
-		case 3: document.getElementById("pl3balance").innerHTML = '$' + players[2].money;
-			break;
-		case 4: document.getElementById("pl4balance").innerHTML = '$' + players[3].money;
-			break;
+	if(size == 3){
+		document.getElementById("pl3balance").innerHTML = '$' + players[2].money;
+	}else if(size == 4){
+		document.getElementById("pl4balance").innerHTML = '$' + players[3].money;
 	}
 }
 
