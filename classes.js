@@ -382,14 +382,23 @@ function playerSetup(numP)
 		players.push(new Player(String(document.getElementById("p"+(i+1)+"Name").value)));
 		console.log(players[i].name + " is player " + (i+1));
 		
+		var m = document.getElementById("pl3name");
+		var n = document.getElementById("pl4name");
+		var o = document.getElementById("pl3balance");
+		var p = document.getElementById("pl4balance");
+		
 		switch(i){
 			case 0: document.getElementById("pl1name").innerHTML = players[i].name;
 				break;
 			case 1: document.getElementById("pl2name").innerHTML = players[i].name;
 				break;
 			case 2: document.getElementById("pl3name").innerHTML = players[i].name;
+				m.style.display = "inline";
+				o.style.display = "inline";
 				break;
 			case 3: document.getElementById("pl4name").innerHTML = players[i].name;
+				n.style.display = "inline";
+				p.style.display = "inline";
 				break;
 		}
 	}
