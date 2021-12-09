@@ -360,6 +360,104 @@ function updateScroll()
     element.scrollTop = element.scrollHeight;
 }
 
+function lightMode(){
+	//start
+	document.getElementById("title").style.color = "black";
+	document.getElementById("number").style.color = "black";
+	document.getElementById("p1info").style.color = "black";
+	document.getElementById("p2info").style.color = "black";
+	document.getElementById("p3info").style.color = "black";
+	document.getElementById("p4info").style.color = "black";
+	document.getElementById("p1name").style.color = "black";
+	document.getElementById("p2name").style.color = "black";
+	document.getElementById("p3name").style.color = "black";
+	document.getElementById("p4name").style.color = "black";
+	
+	document.getElementById("button2").style.color = "black";
+	document.getElementById("button2").style.background-color = "#02de69";
+	
+	document.getElementById("boardpng").src = "board2.PNG";
+	
+	//player info
+	document.getElementById("pl1name").style.color = "black";
+	document.getElementById("pl1balance").style.color = "black";
+	document.getElementById("pl2name").style.color = "black";
+	document.getElementById("pl2balance").style.color = "black";
+	document.getElementById("pl3name").style.color = "black";
+	document.getElementById("pl3balance").style.color = "black";
+	document.getElementById("pl4name").style.color = "black";
+	document.getElementById("pl4balance").style.color = "black";
+	
+	document.getElementById("pl1name").style.background-color = "white";
+	document.getElementById("pl1balance").style.background-color = "white";
+	document.getElementById("pl2name").style.background-color = "white";
+	document.getElementById("pl2balance").style.background-color = "white";
+	document.getElementById("pl3name").style.background-color = "white";
+	document.getElementById("pl3balance").style.background-color = "white";
+	document.getElementById("pl4name").style.background-color = "white";
+	document.getElementById("pl4balance").style.background-color = "white";
+	
+	document.getElementById("answer").style.color = "black";
+	document.getElementById("answer").style.background-color = "white";
+	
+	//log
+	document.getElementById("log").style.color = "black";
+	document.getElementById("log").style.background-color = "white";
+	
+	//other
+	document.getElementById("d20").style.color = "black";
+	document.getElementById("d20").style.background-color = "white";
+}
+
+function darkMode(){
+	//start
+	document.getElementById("title").style.color = "white";
+	document.getElementById("number").style.color = "white";
+	document.getElementById("p1info").style.color = "white";
+	document.getElementById("p2info").style.color = "white";
+	document.getElementById("p3info").style.color = "white";
+	document.getElementById("p4info").style.color = "white";
+	document.getElementById("p1name").style.color = "white";
+	document.getElementById("p2name").style.color = "white";
+	document.getElementById("p3name").style.color = "white";
+	document.getElementById("p4name").style.color = "white";
+	
+	document.getElementById("button2").style.color = "white";
+	document.getElementById("button2").style.background-color = "#00853E";
+	
+	document.getElementById("boardpng").src = "board2.PNG";
+	
+	//player info
+	document.getElementById("pl1name").style.color = "white";
+	document.getElementById("pl1balance").style.color = "white";
+	document.getElementById("pl2name").style.color = "white";
+	document.getElementById("pl2balance").style.color = "white";
+	document.getElementById("pl3name").style.color = "white";
+	document.getElementById("pl3balance").style.color = "white";
+	document.getElementById("pl4name").style.color = "white";
+	document.getElementById("pl4balance").style.color = "white";
+	
+	document.getElementById("pl1name").style.background-color = "rgba(0, 0, 0, .8)";
+	document.getElementById("pl1balance").style.background-color = "rgba(0, 0, 0, .8)";
+	document.getElementById("pl2name").style.background-color = "rgba(0, 0, 0, .8)";
+	document.getElementById("pl2balance").style.background-color = "rgba(0, 0, 0, .8)";
+	document.getElementById("pl3name").style.background-color = "rgba(0, 0, 0, .8)";
+	document.getElementById("pl3balance").style.background-color = "rgba(0, 0, 0, .8)";
+	document.getElementById("pl4name").style.background-color = "rgba(0, 0, 0, .8)";
+	document.getElementById("pl4balance").style.background-color = "rgba(0, 0, 0, .8)";
+	
+	document.getElementById("answer").style.color = "white";
+	document.getElementById("answer").style.background-color = "rgba(0, 0, 0, .8)";
+	
+	//log
+	document.getElementById("log").style.color = "white";
+	document.getElementById("log").style.background-color = "rgba(0, 0, 0, .8)";
+	
+	//other
+	document.getElementById("d20").style.color = "white";
+	document.getElementById("d20").style.background-color = "rgba(0, 0, 0, .8)";
+}
+
 function updateBalance()
 {
 	document.getElementById("pl1balance").innerHTML = '$' + players[0].money;
