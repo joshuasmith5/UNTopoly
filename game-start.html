@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
+<main>
 <head>
+	<html lang="en-us">
+	<title>UNT-opoly</title>
 	<script type="text/javascript" src="classes.js"></script>
 	<link rel="stylesheet" href="style.css"></head>
 	<style>
@@ -17,7 +20,9 @@
 		<div class="center">
 		<h1 id="title" style="color:white; text-align:center">UNT-opoly</h1>
 			<div style="color: white; text-align: center; font-size: 30px;">
-				How many players will there be?
+				<label for="numPlayers">
+					How many players will there be?
+				</label>
 				<select name:"numPlayers" id="numPlayers" title="How many players will there be?">
 					<option selected="selected">2</option>
 					<option>3</option>
@@ -25,30 +30,43 @@
 				</select>
 			</div>
 			<br>
-			<div id="p1info" style ="color: white; text-align:center; font-size: 22px;" >
-				Player 1: <input type="text"  id="p1Name" maxlength="16"/>
+			<div id="p1info" style ="color: white; text-align:center; font-size: 22px;"  >
+				<label for="p1Name">
+					Player 1: 
+				</label>
+				<input type="text"  id="p1Name" maxlength="16" value="Player 1"/>
 			</div>
 			<br>
 			<div id="p2info" style ="color: white; text-align:center; font-size: 22px;" >
-				Player 2: <input type="text" id="p2Name" maxlength="16"/>
+				<label for="p2Name">
+					Player 2: 
+				</label>
+				<input type="text" id="p2Name" maxlength="16" value="Player 2"/>
 			</div>
 			<br>
 			<div id="p3info" style ="color: white; text-align:center; font-size: 22px;" >
-				Player 3: <input type="text" id="p3Name" maxlength="16"/>
+				<label for="p3Name">
+					Player 3: 
+				</label>
+				<input type="text" id="p3Name" maxlength="16" value="Player 3"/>
 			</div>
 			<br>
 			<div id="p4info" style ="color: white; text-align:center; font-size: 22px;" >
-				Player 4: <input type="text" id="p4Name" maxlength="16"/>
+				<label for="p4Name">
+					Player 4: 
+				</label>
+				<input type="text" id="p4Name" maxlength="16" value="Player 4"/>
 			</div>
 			<br>
 			<input type="button" class="button2" value="Start Game" onclick="playerSetup(document.getElementById('numPlayers').value);"/>
 		</div>
 	</div>
 	<div id="col-2">
-		<img src="board.PNG" style='height: 100%; width: 100%; opacity: 75%; object-fit: contain'/>
+		<img src="board.PNG"  alt="UNT themed monopoly board" style='height: 100%; width: 100%; opacity: 75%; object-fit: contain'/>
 	</div>
 </section>
 </div>
+  
 <section class="game-container">
 	<div id="game">
 		<div class "board">
@@ -70,17 +88,32 @@
 			<button id="d20" onclick="diceRoll()" class="button3">
 				<img src="button.PNG"/>
 			</button>
+      
+      <button onclick="buyHouse()" class="button3">
+		      Buy House/Hotel
+	    </button>
+      
 		</div>
 		<div class "log" >
 			<div id= "log"></div>
-			<input type="text" placeholder="Y/N" name="answer" id="answer" style='font-family: Consolas, "Courier New", monospace; color: white; font-size: 18px; background-color: dimgrey'>
+			
+      <label hidden for="answer">
+		    Input:
+	    </label>
+      <input type="text" placeholder="Y/N" name="answer" id="answer" style='font-family: Consolas, "Courier New", monospace; color: white; font-size: 18px; background-color: dimgrey'>
 		</div>
 	
 	<!-- <img src="board.PNG" style='height: 870px; width: 870px; float: left; object-fit: contain'/>
 	
-	<input type="text" placeholder="Y/N" name="answer" id="answer">
+	<label hidden for="answer">
+		Input:
+	</label>
+	<input type="text" placeholder="Y/N" name="answer" id="answer" size="12">
 	<button onclick="diceRoll()">
 		Roll Dice
+	</button>
+	<button onclick="buyHouse()">
+		Buy House/Hotel
 	</button>
 	
 	<section class="game-container">
@@ -97,4 +130,5 @@
 	</div>
 	</section>
 </body>
+</main>
 </html>
