@@ -360,104 +360,6 @@ function updateScroll()
     element.scrollTop = element.scrollHeight;
 }
 
-function lightMode(){
-	//start
-	document.getElementById("title").style.color = "black";
-	document.getElementById("number").style.color = "black";
-	document.getElementById("p1info").style.color = "black";
-	document.getElementById("p2info").style.color = "black";
-	document.getElementById("p3info").style.color = "black";
-	document.getElementById("p4info").style.color = "black";
-	document.getElementById("p1name").style.color = "black";
-	document.getElementById("p2name").style.color = "black";
-	document.getElementById("p3name").style.color = "black";
-	document.getElementById("p4name").style.color = "black";
-	
-	document.getElementById("button2").style.color = "black";
-	document.getElementById("button2").style.background-color = "#02de69";
-	
-	document.getElementById("boardpng").src = "board2.PNG";
-	
-	//player info
-	document.getElementById("pl1name").style.color = "black";
-	document.getElementById("pl1balance").style.color = "black";
-	document.getElementById("pl2name").style.color = "black";
-	document.getElementById("pl2balance").style.color = "black";
-	document.getElementById("pl3name").style.color = "black";
-	document.getElementById("pl3balance").style.color = "black";
-	document.getElementById("pl4name").style.color = "black";
-	document.getElementById("pl4balance").style.color = "black";
-	
-	document.getElementById("pl1name").style.background-color = "white";
-	document.getElementById("pl1balance").style.background-color = "white";
-	document.getElementById("pl2name").style.background-color = "white";
-	document.getElementById("pl2balance").style.background-color = "white";
-	document.getElementById("pl3name").style.background-color = "white";
-	document.getElementById("pl3balance").style.background-color = "white";
-	document.getElementById("pl4name").style.background-color = "white";
-	document.getElementById("pl4balance").style.background-color = "white";
-	
-	document.getElementById("answer").style.color = "black";
-	document.getElementById("answer").style.background-color = "white";
-	
-	//log
-	document.getElementById("log").style.color = "black";
-	document.getElementById("log").style.background-color = "white";
-	
-	//other
-	document.getElementById("d20").style.color = "black";
-	document.getElementById("d20").style.background-color = "white";
-}
-
-function darkMode(){
-	//start
-	document.getElementById("title").style.color = "white";
-	document.getElementById("number").style.color = "white";
-	document.getElementById("p1info").style.color = "white";
-	document.getElementById("p2info").style.color = "white";
-	document.getElementById("p3info").style.color = "white";
-	document.getElementById("p4info").style.color = "white";
-	document.getElementById("p1name").style.color = "white";
-	document.getElementById("p2name").style.color = "white";
-	document.getElementById("p3name").style.color = "white";
-	document.getElementById("p4name").style.color = "white";
-	
-	document.getElementById("button2").style.color = "white";
-	document.getElementById("button2").style.background-color = "#00853E";
-	
-	document.getElementById("boardpng").src = "board2.PNG";
-	
-	//player info
-	document.getElementById("pl1name").style.color = "white";
-	document.getElementById("pl1balance").style.color = "white";
-	document.getElementById("pl2name").style.color = "white";
-	document.getElementById("pl2balance").style.color = "white";
-	document.getElementById("pl3name").style.color = "white";
-	document.getElementById("pl3balance").style.color = "white";
-	document.getElementById("pl4name").style.color = "white";
-	document.getElementById("pl4balance").style.color = "white";
-	
-	document.getElementById("pl1name").style.background-color = "rgba(0, 0, 0, .8)";
-	document.getElementById("pl1balance").style.background-color = "rgba(0, 0, 0, .8)";
-	document.getElementById("pl2name").style.background-color = "rgba(0, 0, 0, .8)";
-	document.getElementById("pl2balance").style.background-color = "rgba(0, 0, 0, .8)";
-	document.getElementById("pl3name").style.background-color = "rgba(0, 0, 0, .8)";
-	document.getElementById("pl3balance").style.background-color = "rgba(0, 0, 0, .8)";
-	document.getElementById("pl4name").style.background-color = "rgba(0, 0, 0, .8)";
-	document.getElementById("pl4balance").style.background-color = "rgba(0, 0, 0, .8)";
-	
-	document.getElementById("answer").style.color = "white";
-	document.getElementById("answer").style.background-color = "rgba(0, 0, 0, .8)";
-	
-	//log
-	document.getElementById("log").style.color = "white";
-	document.getElementById("log").style.background-color = "rgba(0, 0, 0, .8)";
-	
-	//other
-	document.getElementById("d20").style.color = "white";
-	document.getElementById("d20").style.background-color = "rgba(0, 0, 0, .8)";
-}
-
 function updateBalance()
 {
 	document.getElementById("pl1balance").innerHTML = '$' + players[0].money;
@@ -474,12 +376,16 @@ function updateBalance()
 
 function playerSetup(numP)
 {
-	document.getElementById("title").innerHTML = "HELLO"; //test
 	for (let i=0; i<numP; i++)
 	{
 		//players[i].name = String(document.getElementById("p"+(i+1)+"Name").value);
 		players.push(new Player(String(document.getElementById("p"+(i+1)+"Name").value)));
 		console.log(players[i].name + " is player " + (i+1));
+		
+		var m = document.getElementById("pl3name");
+		var n = document.getElementById("pl4name");
+		var o = document.getElementById("pl3balance");
+		var p = document.getElementById("pl4balance");
 		
 		switch(i){
 			case 0: document.getElementById("pl1name").innerHTML = players[i].name;
@@ -487,12 +393,12 @@ function playerSetup(numP)
 			case 1: document.getElementById("pl2name").innerHTML = players[i].name;
 				break;
 			case 2: document.getElementById("pl3name").innerHTML = players[i].name;
-				document.getElementById("pl3name").style.display = "inline";
-				document.getElementById("pl3balance").style.display = "inline";
+				m.style.display = "inline";
+				o.style.display = "inline";
 				break;
 			case 3: document.getElementById("pl4name").innerHTML = players[i].name;
-				document.getElementById("pl4name").style.display = "inline";
-				document.getElementById("pl4balance").style.display = "inline";
+				n.style.display = "inline";
+				p.style.display = "inline";
 				break;
 		}
 	}
@@ -501,7 +407,7 @@ function playerSetup(numP)
 
 	var x = document.getElementById("start");
 	var y = document.getElementById("game")
-  	if (x.style.display === "none") {
+  	if (x.style.display === "inline") {
     		x.style.display = "none";
 		y.style.display = "grid";
   	} 
