@@ -474,6 +474,7 @@ function updateBalance()
 
 function playerSetup(numP)
 {
+	document.getElementById("title").innerHTML = "HELLO"; //test
 	for (let i=0; i<numP; i++)
 	{
 		//players[i].name = String(document.getElementById("p"+(i+1)+"Name").value);
