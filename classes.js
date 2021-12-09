@@ -375,10 +375,10 @@ function playerSetup(numP)
 		x.style.display = "none";
 		y.style.display = "block";
   	} 
-	/*else {
+	else {
 		x.style.display = "none";
 		y.style.display = "block";
-  	}*/
+  	}
 	
 	console.log("\n" + players[activePlayer].name + "'s turn, you have $" + players[activePlayer].money + " roll the dice");
 	document.getElementById('log').innerHTML += "<p>" + players[activePlayer].name + "'s turn, you have $" + players[activePlayer].money + ", roll the dice</p>";
