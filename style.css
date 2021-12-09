@@ -109,6 +109,9 @@
 
 #game {
 	display: none;
+  	grid-template-columns: repeat(4, 1fr);
+ 	 gap: 10px;
+  	grid-auto-rows: minmax(100px, auto);
   background-color: rgba(0, 123, 60, .8);
 	border: 2px solid black;
 	border-spacing: 3px;
@@ -134,12 +137,12 @@
 	overflow-y: scroll;
 }
 
-.game{
+/* .game{
 	display: none;
   	grid-template-columns: repeat(4, 1fr);
  	 gap: 10px;
   	grid-auto-rows: minmax(100px, auto);
-}
+}*/
 
 .board{
 	grid-column: 1/2;
