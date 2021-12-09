@@ -481,7 +481,7 @@ function diceRoll()
 	}
 }
 
-function lightMode(){
+/*function lightMode(){
 	//start
 	document.getElementById("title").style.color = "black";
 	document.getElementById("numPlayers").style.color = "black";
@@ -577,7 +577,7 @@ function darkMode(){
 	//other
 	document.getElementById("d20").style.color = "white";
 	document.getElementById("d20").style.background-color = "rgba(0, 0, 0, .8)";
-}
+}*/
 
 
 function buyHouse()
