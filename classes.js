@@ -484,7 +484,7 @@ function diceRoll()
 function lightMode(){
 	//start
 	document.getElementById("title").style.color = "black";
-	document.getElementById("howMany").style.color = "black";
+	document.getElementById("numPlayers").style.color = "black";
 	document.getElementById("p1info").style.color = "black";
 	document.getElementById("p2info").style.color = "black";
 	document.getElementById("p3info").style.color = "black";
@@ -533,7 +533,7 @@ function lightMode(){
 function darkMode(){
 	//start
 	document.getElementById("title").style.color = "white";
-	document.getElementById("howMany").style.color = "white";
+	document.getElementById("numPlayers").style.color = "white";
 	document.getElementById("p1info").style.color = "white";
 	document.getElementById("p2info").style.color = "white";
 	document.getElementById("p3info").style.color = "white";
