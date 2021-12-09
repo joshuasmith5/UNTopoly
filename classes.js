@@ -394,11 +394,11 @@ function playerSetup(numP)
 	var y = document.getElementById("game")
   	if (x.style.display === "none") {
     	x.style.display = "none";
-		y.style.display = "block";
+		y.style.display = "grid";
   	} 
 	else {
     	x.style.display = "none";
-		y.style.display = "block";
+		y.style.display = "grid";
   	}
 	
 	console.log("\n" + players[activePlayer].name + "'s turn, roll the dice");
