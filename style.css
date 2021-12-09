@@ -10,6 +10,14 @@
     font-family: Verdana, Arial, sans-serif;
   }
 
+ h2{
+    color: white; 
+    font-size: 18px;
+    margin: 15px;
+    display: block;
+    font-family: Verdana, Arial, sans-serif;
+  }
+
   p{
     margin-top: 2px;
     margin-bottom: 2px;
