@@ -33,9 +33,25 @@
     display: block;
     font-size: 2vw;
     margin: 15px 25%;
+    width: 50%;
     cursor: pointer;
     border-radius: 8px;
     float: left;
+    font-family: Verdana, Arial, sans-serif;
+  }
+
+  .button3 {
+    background-color: dimgrey;
+    border: none;
+    color: white;
+    padding: 15px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 2vw;
+    margin: 15px 15px;
+    cursor: pointer;
+    border-radius: 8px;
     font-family: Verdana, Arial, sans-serif;
   }
 
