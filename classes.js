@@ -494,8 +494,8 @@ function lightMode(){
 	document.getElementById("p3name").style.color = "black";
 	document.getElementById("p4name").style.color = "black";
 
-	document.getElementById("button2").style.color = "black";
-	document.getElementById("button2").style.background-color = "#02de69";
+	//document.getElementById("button2").style.color = "black";
+	//document.getElementById("button2").style.background-color = "#02de69";
 
 	//document.getElementById("boardpng").src = "board2.PNG";
 
@@ -543,8 +543,8 @@ function darkMode(){
 	document.getElementById("p3name").style.color = "white";
 	document.getElementById("p4name").style.color = "white";
 
-	document.getElementById("button2").style.color = "white";
-	document.getElementById("button2").style.background-color = "#00853E";
+	//document.getElementById("button2").style.color = "white";
+	//document.getElementById("button2").style.background-color = "#00853E";
 
 	//document.getElementById("boardpng").src = "board2.PNG";
 
